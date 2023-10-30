@@ -250,6 +250,7 @@ class MiningShip {
                 }
                 if (mouse.pressed(RIGHT) && !this.asteroidClicked) {
                     this.setTargetVector(mouseX, mouseY);
+                    this.miningTarget = 'none';
                     this.sprite.move(this.distance, this.direction, this.speed);
                     this.returning = false;
                 }
