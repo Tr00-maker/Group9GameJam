@@ -10,7 +10,8 @@ function setup() {
     new Canvas(windowWidth, windowHeight);
     selectionSquare = new SelectionSquare();
     mothership = new Mothership(width/2, height/2);
-    asteroids.push(new Asteroid(mothership.sprite.x - 600, mothership.sprite.y - 300));
+    asteroids.push(new Asteroid(mothership.sprite.x - 500, mothership.sprite.y - 250));
+    asteroids.push(new Asteroid(mothership.sprite.x + 500, mothership.sprite.y - 250));
 }
 
 function draw() {
@@ -18,7 +19,6 @@ function draw() {
     
     resourceDisplay();
 
-    
     if (kb.pressed('space')) {
         gamePause = !gamePause;
     }
@@ -26,6 +26,12 @@ function draw() {
     world.step(gamePause ? -1 : 0);
     allSprites.autoUpdate = !gamePause;
     
+    if (!gamePause) {
+        gameStateUpdate();    
+    }
+}
+
+function gameStateUpdate() {
     selectionSquare.display();
     mothership.receiveResource();
     
@@ -108,7 +114,6 @@ class SelectionSquare {
             pop();
         } else {
             this.drawing = false;
-            this.selection = true;
         }
         for (let i = selectableSprites.length - 1; i >= 0; i--) {
             if (this.isInSelectionSquare(selectableSprites[i].sprite)) {
@@ -140,7 +145,8 @@ class MiningShip {
         this.sprite = new Sprite(x, y, 'd');
         this.sprite.d = 20;
         this.sprite.color = 'red';
-        this.selected = false;
+        
+
         selectableSprites.push(this);
         this.sprite.overlaps(allSprites);
         
@@ -148,23 +154,30 @@ class MiningShip {
         this.iron = 0;
         this.sprite.text = this.iron;
 
-        //mining stats
-        this.miningRate = 5;
+        //default stats
+        this.miningRate = 5;// 5 ticks per second
         this.lastMined = 0;
         this.capacity = 10;
+        this.speed = 1;
 
         //status
+        this.selected = false;
         this.returning = false;
+        this.isMining = false;
+        this.movingToAsteroid = false;
+        this.miningTarget = 'none';
+        this.asteroidClicked = false;
     }
     
     update() {
         this.pointSelect();
-        this.move();
+        this.setDestination();
+        this.returnFromInactiveASteroid();
         this.sprite.text = this.iron;
     }
 
     pointSelect() {
-        if (this.sprite.mouse.presses()) {
+        if (this.sprite.mouse.presses(LEFT)) {
             for (let i = selectableSprites.length - 1; i >= 0; i--) {
                 selectableSprites[i].selected = false;
             }
@@ -175,38 +188,71 @@ class MiningShip {
             }, 100);
         }
     }
-    move() {
+
+    setDestination() { 
+        this.asteroidClicked = false;  
         if (this.selected) {
             this.sprite.color = 'blue';
-            if (mouse.pressed(RIGHT)) {
-                this.setTarget(mouseX, mouseY);
-                this.sprite.move(this.distance, this.direction, 1);
-                this.returning = false;
-            }
-        } else {
+                for (let i = 0; i < asteroids.length; i++) {
+                    if (asteroids[i].sprite.mouse.pressed(RIGHT)) {
+                        this.setTargetVector(asteroids[i].sprite.x, asteroids[i].sprite.y);
+                        this.miningTarget = asteroids[i];
+                        console.log('this.miningTarget :'+ this.miningTarget);
+                        this.sprite.move(this.distance, this.direction, this.speed);
+                        this.movingToAsteroid = true;
+                        this.returning = false;
+                        this.asteroidClicked = true;
+                    }
+                }
+                if (mouse.pressed(RIGHT) && !this.asteroidClicked) {
+                    this.setTargetVector(mouseX, mouseY);
+                    this.sprite.move(this.distance, this.direction, this.speed);
+                    this.returning = false;
+                }
+            } else {
             this.sprite.color = 'red';
         }
         if (this.returning) {
-            if (dist(this.sprite.x, this.sprite.y, mothership.sprite.x, mothership.sprite.y) <= 100) {
-                console.log('returned');
-                this.sprite.speed = 0;
-                this.returning = false;
+            this.checkReturnedToMothership();
+        }
+        if (!this.miningTarget.active) {
+            this.miningTarget = 'none';
+        }      
+    }
+
+    checkReturnedToMothership() {
+        if (dist(this.sprite.x, this.sprite.y, mothership.sprite.x, mothership.sprite.y) <= 100) {
+            console.log('returned');
+            this.sprite.speed = 0;
+            this.returning = false;
+            if (this.miningTarget !== 'none') {
+                this.returnToAsteroid(this.miningTarget);
             }
         }
     }
 
-    returnToMothership(recipient) {
+    returnToAsteroid(asteroid) {
+        this.sprite.moveTo(asteroid.sprite, this.speed);
+    }
+
+    returnToMothership(destination) {
         if (!this.returning) {
-            if (this.iron === this.capacity) {
-                if (dist(this.sprite.x, this.sprite.y, recipient.sprite.x, recipient.sprite.y) > 100) {
-                    this.returning = true;
-                    this.sprite.moveTo(recipient.sprite, this.speed);
-                }
+            if (dist(this.sprite.x, this.sprite.y, destination.sprite.x, destination.sprite.y) > 100) {
+                this.returning = true;
+                this.sprite.moveTo(destination.sprite, this.speed);
             }
         }
     }
 
-    setTarget(x, y) {
+    returnFromInactiveASteroid() {
+        if ((this.isMining || this.movingToAsteroid) && this.miningTarget === 'none') {
+            this.returnToMothership(mothership);
+            this.isMining = false;
+            this.movingToAsteroid = false;
+        }
+    }
+
+    setTargetVector(x, y) {
         this.target = createVector(x, y);
         this.directionVector = p5.Vector.sub(this.target, createVector(this.sprite.x, this.sprite.y));
         this.direction = this.directionVector.heading();
@@ -214,6 +260,7 @@ class MiningShip {
     }
 
     mine(asteroid) {
+        this.isMining = true;
         const currentTime = Date.now();
         const miningDelay = 1000/this.miningRate
 
@@ -223,7 +270,9 @@ class MiningShip {
                 asteroid.iron -= 1;
                 this.lastMined = currentTime;
             } else {
-                this.returnToMothership(mothership);
+                if (this.iron === this.capacity) {
+                    this.returnToMothership(mothership);
+                }
             }
         }
     }
@@ -235,7 +284,6 @@ class MiningShip {
     }
 }
 
-
 class Asteroid {
     constructor(x, y) {
         this.sprite = new Sprite(x, y, 'd');
@@ -244,44 +292,59 @@ class Asteroid {
         this.sprite.color = 'grey';
 
         this.sprite.direction = 360;
-        this.sprite.speed = 0.1;
+        this.sprite.speed = 0;
 
-        this.iron = 100;
+        this.iron = 50;
         this.sprite.text = this.iron;
+        this.active = true;
     }
 
     update() {
         this.sprite.text = this.iron;
         this.move();
+        this.showMiningTarget();
     }
 
-        move() {
-            for (let i = miningShips.length - 1; i >= 0; i--) {
-                if (dist(miningShips[i].sprite.x, miningShips[i].sprite.y, this.sprite.x, this.sprite.y) <= 100) {
-                    this.sprite.speed = 0;
-                    this.transferResource(miningShips[i]);
-                } else {
-                    this.sprite.speed = 0.1;
-                }
-            }
-        }
-
-        transferResource(miningShip) {
-            if (this.iron > 0) {
-                miningShip.mine(this);
+    move() {
+        for (let i = miningShips.length - 1; i >= 0; i--) {
+            if (dist(miningShips[i].sprite.x, miningShips[i].sprite.y, this.sprite.x, this.sprite.y) <= 100) {
+                this.sprite.speed = 0;
+                this.transferResource(miningShips[i]);
             } else {
-                this.dies();                    
+                this.sprite.speed = 0;
             }
         }
+    }
 
-        dies() {
+    transferResource(miningShip) {
+        if (this.iron > 0) {
+            miningShip.mine(this);
+        } else {
+            this.dies();                    
+        }
+    }
+
+    dies() {
+        this.active = false;
+        setTimeout(() => {
             this.sprite.remove();
             this.index = asteroids.indexOf(this)
             if (this.index != -1) {
                 asteroids.splice(this.index, 1);
             }
-        }
+        }, 100);
+    }
 
+    showMiningTarget() {
+        this.sprite.color = 'grey';
+
+        for (let i = 0; i < miningShips.length; i++) {
+            if (miningShips[i].selected && miningShips[i].miningTarget === this) {
+                this.sprite.color = 'brown';
+                break;
+            }
+        }
+    }
 }
 
 
