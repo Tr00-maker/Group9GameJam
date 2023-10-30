@@ -218,7 +218,24 @@ class MiningShip {
             this.sprite.ani = 'default';
             this.sprite.ani.scale = 1.5;
         }
+        this.stationarySpread();
     }
+
+    stationarySpread() {
+        for (let i = 0; i < miningShips.length; i++) {
+            if (this !== miningShips[i]) {
+                let overlappingMiningShip = dist(this.sprite.x, this.sprite.y, miningShips[i].sprite.x, miningShips[i].sprite.y) <= this.sprite.d;
+                let overlappingMothership = dist(this.sprite.x, this.sprite.y, mothership.sprite.x, mothership.sprite.y) <= this.sprite.d;
+                if ((overlappingMiningShip || overlappingMothership) && this.sprite.speed === 0) {
+                    let dir = createVector(this.sprite.x - miningShips[i].sprite.x, this.sprite.y - miningShips[i].sprite.y);
+                    dir.setMag(7);
+                    this.sprite.x += dir.x;
+                    this.sprite.y += dir.y;
+                }
+            }
+        }
+    }
+    
 
     pointSelect() {
         if (this.sprite.mouse.presses(LEFT)) {
