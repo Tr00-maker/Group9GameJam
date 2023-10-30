@@ -168,6 +168,7 @@ class MiningShip {
     constructor(x, y) {
         this.sprite = new Sprite(x, y, 'd');
         this.sprite.d = 20;
+        this.sprite.debug = false;
         this.sprite.addAni('default', miningShipImg);
         this.sprite.addAni('selected', miningShipSelectedImg);
         this.sprite.ani.scale = 1.5;
@@ -210,7 +211,7 @@ class MiningShip {
             this.miningTarget = 'none';
         }  
         this.sprite.text = this.resource;
-        this.sprite.rotation = this.sprite.direction;
+        this.sprite.rotateTowards(this.sprite.direction, 0.05);
         if (this.selected) {
             this.sprite.ani = 'selected';
             this.sprite.ani.scale = 1.5;
