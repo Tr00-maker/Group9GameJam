@@ -42,6 +42,7 @@ class MiningShip {
         this.handleSelection();
         this.handleDestination();
         this.handleReturning();
+        this.returnFromInactiveAsteroid();
         this.checkOverlapAndSpread();
         this.updateAnimation();
     }
@@ -126,13 +127,16 @@ class MiningShip {
     updateAnimation() {
         this.sprite.ani.scale = 1.5;
         this.sprite.text = this.resource;
-        this.sprite.rotateTowards(this.sprite.direction, 0.05);
         this.sprite.ani = this.selected ? 'selected' : 'default';
+
+        this.sprite.rotateTowards(this.sprite.direction, 0.05);
+
     }
 
     setTargetVector(x, y) {
         this.target = createVector(x, y);
         this.directionVector = p5.Vector.sub(this.target, createVector(this.sprite.x, this.sprite.y));
+        this.sprite.direction = this.direction;
         this.direction = this.directionVector.heading();
         this.distance = this.directionVector.mag();
     }

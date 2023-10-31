@@ -5,12 +5,14 @@ class Asteroid {
         this.sprite.color = 'grey';
 
         this.sprite.direction = 360;
-        this.sprite.speed = 0;
+        this.speed = 0.1;
+        this.sprite.speed = this.speed;
 
         this.resource = 200;
         this.sprite.textColor = 'white';
         this.sprite.textSize = 20;
         this.sprite.text = this.resource;
+        
         this.active = true;
     }
 
@@ -22,15 +24,22 @@ class Asteroid {
     }
 
     move() {
-        for (let i = miningShips.length - 1; i >= 0; i--) {
+        let beingMinedByAnyShip = false;
+        
+        for (let i = 0; i < miningShips.length; i++) {
             if (dist(miningShips[i].sprite.x, miningShips[i].sprite.y, this.sprite.x, this.sprite.y) <= 100) {
-                this.sprite.speed = 0;
+                beingMinedByAnyShip = true;
                 this.transferResource(miningShips[i]);
-            } else {
-                this.sprite.speed = 0;
             }
         }
+    
+        if (beingMinedByAnyShip) {
+            this.sprite.speed = 0;
+        } else {
+            this.sprite.speed = this.speed;
+        }
     }
+    
 
     transferResource(miningShip) {
         if (this.resource > 0) {
