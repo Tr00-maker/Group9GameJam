@@ -50,7 +50,7 @@ class MiningShip {
         if (this.sprite.mouse.presses(LEFT)) {
             selectableSprites.forEach(sprite => sprite.selected = false);
             this.selected = true;
-            setTimeout(() => selectionFlag = false, 100);
+            setTimeout(() => selectionSquare.selectionFlag = false, 100);
         }
     }
 

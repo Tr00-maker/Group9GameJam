@@ -2,22 +2,20 @@ class SelectionSquare {
     constructor() {
         this.x = 0;
         this.y = 0;
-        this.drawing = false;
-        this.selection = false;
         this.sprite = new Sprite(0, 0, 'd');
+        this.sprite.overlaps(allSprites);
         this.sprite.w = 0;
         this.sprite.h = 0;
-        this.sprite.overlaps(allSprites);
-    }
 
+        this.drawing = false;
+        this.selectionFlag = false;
+    }
+    
     display() {
         if (!this.drawing) {
             this.x = mouseX;
             this.y = mouseY;
-        }
-        if (mouse.pressing(LEFT)) {
-            this.drawing = true;
-    
+        } else {
             this.sprite.x = min(this.x, mouseX);
             this.sprite.y = min(this.y, mouseY);
             this.sprite.w = abs(mouseX - this.x);
@@ -29,26 +27,32 @@ class SelectionSquare {
             strokeWeight(0.5);
             rect(this.sprite.x, this.sprite.y, this.sprite.w, this.sprite.h);
             pop();
-        } else {
+        }
+
+        if (mouse.pressing(LEFT) && !this.isInUiBar(mouseX, mouseY)) {
+            this.drawing = true;
+        }
+
+        if (mouse.released(LEFT) && this.drawing && !this.isInUiBar(mouseX, mouseY)) {
             this.drawing = false;
+            setTimeout(() => this.selectionFlag = false, 200);
         }
+  
         for (let i = selectableSprites.length - 1; i >= 0; i--) {
-            if (this.isInSelectionSquare(selectableSprites[i].sprite)) {
-                selectableSprites[i].selected = true;
-                selectionFlag = true;
-            } else if (mouse.presses(LEFT)) {
-                const insideUiBar = this.isInUiBar(mouseX, mouseY);
-                if (!insideUiBar) {
+            if (this.drawing) {        
+                if (this.isInSelectionSquare(selectableSprites[i].sprite)) {
+                    selectableSprites[i].selected = true;
+                    this.selectionFlag = true;
+                } else if (!this.isInUiBar(mouseX, mouseY)) {
                     selectableSprites[i].selected = false;
-                    console.log(`Deselected sprite at index ${i}`);
+                }            
+            } else if (!this.drawing && !this.selectionFlag && !this.isInUiBar(mouseX, mouseY)) {
+                if (mouse.released(LEFT)) {
+                    selectableSprites[i].selected = false;
                 }
-            }            
+            }
         }
-        if (mouse.released(LEFT)) {
-            setTimeout(() => {
-                selectionFlag = false;
-            }, 100);
-        }
+    
     }
 
     isInSelectionSquare(otherSprite) {
@@ -61,13 +65,11 @@ class SelectionSquare {
     }
 
     isInUiBar(x, y) {
-        const isInBar = (
+        return (
             x >= uiX && 
             x <= uiX + uiW && 
             y >= uiY && 
             y <= uiY + uiH
         );
-        console.log(`MouseX: ${x}, MouseY: ${y}, isInBar: ${isInBar}`);
-        return isInBar;
     }     
 }

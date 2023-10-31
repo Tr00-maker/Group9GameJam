@@ -14,7 +14,6 @@ const pressedButtonColor = [255, 255, 255, 255];
 
 //selectionSquare
 let selectionSquare;
-let selectionFlag = false;
 let selectableSprites = [];
 
 //mining ships

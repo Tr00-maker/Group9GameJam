@@ -40,13 +40,7 @@ function playStateUpdate() {
 
         for (let i = miningShips.length - 1; i >= 0; i--) {
             miningShips[i].update();
-        }
-
-        if (mouse.presses(LEFT) && !selectionFlag && !selectionSquare.isInUiBar(mouseX, mouseY)) {
-            for (let i = selectableSprites.length - 1; i >= 0; i--) {
-                selectableSprites[i].selected = false;
-            }
-        }        
+        } 
     }
 }
 
