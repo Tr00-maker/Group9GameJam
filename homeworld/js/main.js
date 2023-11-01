@@ -20,6 +20,9 @@ let selectableSprites = [];
 let miningShips = [];
 let miningTargetImg, miningShipImg, miningShipSelectedImg;
 
+//enemy units
+let enemyUnits = [];
+
 //asteroids
 let asteroids = [];
 let asteroidImg;
