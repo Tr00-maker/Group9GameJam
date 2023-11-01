@@ -1,25 +1,44 @@
 <!DOCTYPE html>
-	<html>
-		<head>
-			<title>New p5project</title>
-			<meta charset="utf-8"/>
-			<script src="https://cdn.jsdelivr.net/npm/p5@1/lib/p5.min.js"></script>
-			<script src="https://cdn.jsdelivr.net/npm/p5@1/lib/addons/p5.sound.min.js"></script>		
-			<script src="https://p5play.org/v3/planck.min.js"></script>
-			<script src="https://p5play.org/v3/p5play.js"></script>
-			
-			<script src="./js/asteroid.js" defer></script>
-			<script src="./js/bombDrone.js" defer></script>
-			<script src="./js/main.js" defer></script>
-			<script src="./js/menuState.js" defer></script>
-			<script src="./js/miningShip.js" defer></script>
-			<script src="./js/mothership.js" defer></script>
-			<script src="./js/playState.js" defer></script>
-			<script src="./js/selectionSquare.js" defer></script>
-			<script src="./js/stateSwitch.js" defer></script>
-			<link href="./css/base.css" rel="stylesheet" type="text/css">
-		</head>
-		<body>
-			<main id="container"></main>
-		</body>
-		</html>
+<html lang="en">
+
+  <head>
+    <title>RTS Unit Selection Test</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+    <style>
+      body {
+        overflow: hidden;
+        padding: 0;
+        margin: 0;
+        background-color:#1e2e3e;
+      }
+    </style>
+    <script src="./lib/p5/p5.js"></script>
+    <script src="./lib/p5/p5.sound.js"></script>
+    <script src="./lib/p5/p5.sound.min.js"></script>
+		<script src="./lib/p5/planck.min.js"></script>
+		<script src="./lib/p5/p5play.js"></script>
+    <script src="./js/main.js"></script>
+    <script src="./js/globals.js"></script>
+    <script src="./js/stateSwitch.js"></script>
+    <script src="./js/playState.js"></script>
+    <script src="./js/menuState.js"></script>
+    <script src="./js/selectionSquare.js"></script>
+    <script src="./js/mothership.js"></script>
+    <script src="./js/miningShip.js"></script>
+    <script src="./js/asteroid.js"></script>
+    <script>
+      window.addEventListener('wheel', function(e) {
+          e.preventDefault();
+      }, { passive: false });
+    </script>
+
+  </head>
+
+  <body>
+  </body>
+
+</html>
