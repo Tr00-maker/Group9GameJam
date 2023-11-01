@@ -8,7 +8,7 @@ class Asteroid {
         this.speed = 0.1;
         this.sprite.speed = this.speed;
 
-        this.resource = 200;
+        this.resource = 100;
         this.sprite.textColor = 'white';
         this.sprite.textSize = 20;
         this.sprite.text = this.resource;

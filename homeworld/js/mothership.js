@@ -5,10 +5,10 @@ class Mothership {
         this.sprite.addAni('selected', mothershipSelectedImg);
         this.sprite.rotationLock = true;
         this.sprite.overlaps(allSprites);
+        selectableSprites.push(this);
 
         //display
         this.sprite.d = 100;
-        this.sprite.color = 'yellow';
         this.selected = false;
 
         //resources
@@ -16,7 +16,6 @@ class Mothership {
 
         //buttons
         this.buttonsCreated = false;
-        selectableSprites.push(this);
     }
 
     update() {
@@ -68,7 +67,7 @@ class Button {
         this.y = y;
         this.sprite = new Sprite(x + this.w/2, y + this.h/2, 'd');
         this.sprite.addAni('default', image);
-        this.sprite.d = 50;
+        this.sprite.d = w;
         this.name = name;
         this.cost = cost;
         this.color = defaultButtonColor;
@@ -119,6 +118,7 @@ class Button {
         if (mothership.resource >= 50) {
             mothership.resource -= 50;
             mothership.spawnMiningShip();
+            unitQueue.push(new UnitQueue('Minging Ship', 100, 100, 1, miningShipImg))
         }
     }
 
@@ -129,5 +129,4 @@ class Button {
         }
         this.sprite.remove();
     }
-
 }

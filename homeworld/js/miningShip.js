@@ -18,13 +18,14 @@ class MiningShip {
         this.resource = 0;
         this.lastMined = 0;
         this.capacity = 10;
-        this.miningRate = 1;
+        this.miningRate = 2;
         this.sprite.text = this.resource;
         this.sprite.textColor = 'white';
         this.sprite.textSize = 20;
     }
 
     initializeStatus() {
+        this.waypoints = [];
         this.speed = 1;
         this.resetStatusFlags();
     }
