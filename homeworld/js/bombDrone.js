@@ -12,6 +12,11 @@ class MiningShip {
         this.sprite.addAni('selected', miningShipSelectedImg);
         selectableSprites.push(this);
         this.sprite.overlaps(allSprites);
+
+        this.sprite.health = 10
+        this.sprite.text = 'bomba';
+        this.sprite.textColor = 'red';
+        this.sprite.textSize = 20;
     }
 
 
@@ -68,27 +73,10 @@ class MiningShip {
     }
 
 
-    checkOverlapAndSpread() {
-        for (let ship of miningShips) {
-            if (this === ship) continue;
-            
-            const distToShip = dist(this.sprite.x, this.sprite.y, ship.sprite.x, ship.sprite.y);
-            const distToMothership = dist(this.sprite.x, this.sprite.y, mothership.sprite.x, mothership.sprite.y);
-            
-            if (this.sprite.speed === 0 && (distToShip <= this.sprite.d * 2 || distToMothership <= this.sprite.d * 2)) {
-                let dir = createVector(this.sprite.x - ship.sprite.x, this.sprite.y - ship.sprite.y);
-                dir.setMag(0.2);
-                this.sprite.x += dir.x;
-                this.sprite.y += dir.y;
-            }
-        }
-    }
-
     updateAnimation() {
         this.sprite.ani.scale = 1.5;
         this.sprite.text = this.resource;
         this.sprite.ani = this.selected ? 'selected' : 'default';
-
         this.sprite.rotateTowards(this.sprite.direction, 0.05);
 
     }
@@ -102,8 +90,11 @@ class MiningShip {
     }
 
     explode(enemy) {
-        if (dist(this.sprite.x, this.sprite.y, enemy.sprite.x, enemy.sprite.y) <= 5)
-        recipient.resource += this.resource;
-        this.resource = 0;
+        if (dist(this.sprite.x, this.sprite.y, enemy.sprite.x, enemy.sprite.y) <= 1)
+        {
+            recipient.health -= 20;
+            this.resource = 0;
+            this.sprite.remove();
+        }
     }
 }
