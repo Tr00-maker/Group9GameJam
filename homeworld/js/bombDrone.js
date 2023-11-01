@@ -1,4 +1,4 @@
-class MiningShip {
+class Missile {
     constructor(x, y) {
         this.initializeSprite(x, y);
         this.initializeResources();
@@ -12,6 +12,7 @@ class MiningShip {
         this.sprite.addAni('selected', miningShipSelectedImg);
         selectableSprites.push(this);
         this.sprite.overlaps(allSprites);
+        this.sprite.type = 'bomb-drone';
 
         this.sprite.health = 10
         this.sprite.text = 'bomba';
