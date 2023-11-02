@@ -2,44 +2,44 @@ class Mothership extends PlayerShip {
     constructor(x, y) {
         const defaultSpeed = 0.2;
         const defaultHealth = 1000;
-        super(x, y, defaultSpeed, defaultHealth); 
+        const defaultRange = 200;
+
+        super(x, y, defaultSpeed, defaultHealth, defaultRange); 
         
         this.sprite.addAni('default', mothershipImg);
         this.sprite.addAni('selected', mothershipSelectedImg);
         this.sprite.d = 70;
 
         this.name = 'Mothership';
-        this.buttonsCreated = false;
         
         this.initializeResources();
     }
 
     initializeResources() {
-        this.resource = 0;
+        this.resource = 100;
     }
 
     update() {
         super.update();
-        this.receiveResource();
         this.updateAnimation();
     }
 
-    receiveResource() {
-        for (let i = miningShips.length - 1; i >= 0; i--) {
-            if (dist(miningShips[i].sprite.x, miningShips[i].sprite.y, this.sprite.x, this.sprite.y) <= 100) {
-                miningShips[i].transferResource(this);
-            }
-        }
+    setIdle() {
+        
     }
 
     spawnMiningShip() {
         miningShips.push(new MiningShip(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100)));
     }
 
-    selectedUI() {
+    updateAnimation() {
+        this.sprite.ani.scale = 3;
+    }
+
+    showUI() {
         if (!this.buttonsCreated) {
             this.buttonsCreated = true;
-            buttons.push(new Button('Mining Ship', miningShipCost, uiX + uiW/2, uiY + uiH/2, 50, 50, miningShipImg));
+            buttons.push(new UnitButton('Mining Ship', miningShipCost, uiX + uiW/2, uiY + uiH/2, 50, 50, miningShipImg));
         }
     }
 
@@ -47,17 +47,6 @@ class Mothership extends PlayerShip {
         this.buttonsCreated = false;
         for (let i = 0; i < buttons.length; i++) {
             buttons[i].remove();
-        }
-    }
-
-    updateAnimation() {
-        this.sprite.ani.scale = 3;
-        if (this.selected) {
-            this.sprite.ani = 'selected';
-            this.selectedUI();
-        } else {
-            this.sprite.ani = 'default';
-            this.removeUI();
         }
     }
 }
