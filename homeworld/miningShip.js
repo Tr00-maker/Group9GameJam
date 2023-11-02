@@ -1,0 +1,109 @@
+class MiningShip extends PlayerShip {
+    constructor(x, y) {
+        const defaultSpeed = 1;
+        const defaultHealth = 100;
+        const defaultRange = 100;
+
+        super(x, y, defaultSpeed, defaultHealth, defaultRange); 
+
+        this.sprite.d = 20;
+        this.sprite.addAni('default', miningShipImg);
+        this.sprite.addAni('selected', miningShipSelectedImg);
+        
+        this.name = 'Mining Ship';
+        this.initializeResources();
+    }
+
+    initializeResources() {
+        this.resource = 0;
+        this.lastMined = 0;
+        this.capacity = 10;
+        this.miningRate = 2;
+        this.sprite.text = this.resource;
+        this.sprite.textColor = 'white';
+        this.sprite.textSize = 20;
+    }
+
+    update() {
+        super.update();
+        let mothershipRange = dist(mothership.sprite.x, mothership.sprite.y, this.sprite.x, this.sprite.y);
+        if (mothershipRange <= this.range) {
+            this.depositResource();
+        }
+        this.updateAnimation();
+    }
+
+    updateAnimation() {
+        this.sprite.ani.scale = 1.5;
+        this.sprite.text = this.resource;
+
+    }
+
+    showUI() {
+
+    }
+
+    removeUI() {
+
+    }
+
+    mineTarget(target) {
+        const currentTime = Date.now();
+        const miningDelay = 1000/this.miningRate
+
+        if (currentTime - this.lastMined >= miningDelay) {
+            if (this.resource < this.capacity) {
+                this.resource += 1;
+                target.resource -= 1;
+                this.lastMined = currentTime;
+            }
+        }
+    }
+
+    //minging ship resource gathering logic
+    handleMiningLogic(target) {
+        let targetRange = dist(target.sprite.x, target.sprite.y, this.sprite.x, this.sprite.y);
+
+        if (this.resource < this.capacity && targetRange < this.range) {
+            this.mineTarget(target);
+            this.handleMoveToTarget();
+        }
+
+        if (this.resource < this.capacity && targetRange > this.range) {
+            this.handleMoveToTarget();
+        }
+
+        if (this.resource === this.capacity || !target.active) {
+            this.returnToMothership();
+        }
+
+        if (!this.targetSprite.active) {
+            this.targetSprite = null;
+        }
+
+    }
+
+    //return miners to mothership
+    returnToMothership() {
+        let mothershipRange = dist(mothership.sprite.x, mothership.sprite.y, this.sprite.x, this.sprite.y);
+
+        if (mothershipRange > this.range) {
+            this.setTarget(mothership.sprite.x, mothership.sprite.y);
+            this.sprite.rotateTo(this.target, this.rotationSpeed);
+            this.sprite.move(this.distance, this.direction, this.speed);
+        } 
+
+        if (mothershipRange <= this.range) {
+            if (this.targetSprite === null) {
+                this.sprite.speed = 0;
+                this.state = 'idle';
+            }
+        }
+
+    }
+    
+    depositResource() {
+        mothership.resource += this.resource;
+        this.resource = 0;
+    }
+}
