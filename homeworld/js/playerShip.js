@@ -193,6 +193,23 @@ class PlayerShip {
     updateSelection() {
         this.sprite.ani = this.selected ? 'selected' : 'default';
     }
+
+    takeDamage(x, y, damage, radius) {
+        this.health -= this.damage;
+        if (this.health <= 0) {
+            //explosions.push(new explosion(x, y, damage)) add later
+            this.dies();
+        }
+    }
+
+    dies() {
+        this.index = selectableSprites.indexOf(this);
+        if (this.index != -1) {
+            selectableSprites.splice(this.index, 1);
+        }
+        this.sprite.remove()
+    }
+
 }
 
 //anything added to the array can be set as a target by all player ships
