@@ -9,9 +9,9 @@ function playStateSetup() {
     
     //miningShips.push(new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100)));
     
-    battleShips.push(new BattleShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100)));
-    battleShips.push(new BattleShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100)));
-    battleShips.push(new BattleShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100)));
+    battleShips.push(new BattleShip(mothership.sprite.x + (random() * 400 - 200), mothership.sprite.y + (random() * 400 - 200)));
+    battleShips.push(new BattleShip(mothership.sprite.x + (random() * 400 - 200), mothership.sprite.y + (random() * 400 - 200)));
+    battleShips.push(new BattleShip(mothership.sprite.x + (random() * 400 - 200), mothership.sprite.y + (random() * 400 - 200)));
     
     enemyUnits.push(new ShootingUnit(100, 200));
     enemyUnits.push(new ShootingUnit(300, 100));
@@ -55,6 +55,15 @@ function playStateUpdate() {
         for (let i = enemyUnits.length - 1; i >= 0; i--) {
             enemyUnits[i].update();
         } 
+
+        for (let i = playerProjectiles.length - 1; i >= 0; i--) {
+            playerProjectiles[i].update();
+        } 
+
+        for (let i = enemyProjectiles.length - 1; i >= 0; i--) {
+            enemyProjectiles[i].update();
+        } 
+
 
     }
 }

@@ -55,6 +55,9 @@ function preload() {
 
     shootingUnitImg = loadAnimation('./images/ships.png', { frameSize: [32, 32], frames: 1, row: 1, col: 0 });
     shootingUnitDamagedImg = loadAnimation('./images/selected.png', { frameSize: [32, 32], frames: 1, row: 1, col: 0 });
+
+    redBulletImg = loadImage('./images/redBullet.png');
+    tealBulletImg = loadImage('./images/tealBullet.png');
 }
 
 function setup() {

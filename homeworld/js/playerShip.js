@@ -168,6 +168,8 @@ class PlayerShip {
     //stops sprites in the idle state
     handleIdle() {
         this.sprite.speed = 0;
+        this.onTarget = false;
+        this.lastFired = Date.now();
     }
 
     //spreads the ships apart when not moving or are on target
@@ -185,8 +187,7 @@ class PlayerShip {
                     this.sprite.y += dir.y;
                 }
 
-            }
-            
+            }        
         }
     }
 
