@@ -7,6 +7,7 @@ function playStateSetup() {
     miningShips.push(new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100)));
     miningShips.push(new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100)));
     spaceBackground.resize(400, 400);
+    gamePause = false;
 }
 
 function playState() {
@@ -21,7 +22,7 @@ function playStatePause() {
     if (kb.pressed('space')) {
         gamePause = !gamePause;
     } 
-    world.step(gamePause ? -1 : 0);
+    //world.step(gamePause ? -1 : 0);
     allSprites.autoUpdate = !gamePause;  
 }
 

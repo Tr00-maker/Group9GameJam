@@ -44,6 +44,7 @@ function preload() {
 function setup() {
     new Canvas(windowWidth, windowHeight, 'pixelated');
     changeState(state.play);
+    playStateSetup();
 }
 
 function draw() {  
