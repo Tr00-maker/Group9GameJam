@@ -3,9 +3,11 @@ function playStateSetup() {
     mothership = new Mothership(width/2, height/2);
     asteroids.push(new Asteroid(mothership.sprite.x - 500, mothership.sprite.y - 250));
     asteroids.push(new Asteroid(mothership.sprite.x + 500, mothership.sprite.y - 250));
+    
     miningShips.push(new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100)));
     miningShips.push(new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100)));
     miningShips.push(new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100)));
+    
     spaceBackground.resize(400, 400);
     gamePause = false;
 }

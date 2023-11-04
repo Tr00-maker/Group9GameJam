@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "module": "commonjs",
+      
+    },
+    "target": "es6", 
+    "exclude": ["p5","play","./lib/p5"],
+    "include": ["js/*.js", "./lib/*.d.ts", "js/unused/enemy.js", "js/unused/sparecode.js", "js/unused/explosiontest.js"], 
+    "baseUrl": ".", // this must be specified if "paths" is.
+    "paths": {
+      "*": ["*", "js/","lib/"]
+    },
+    "checkJs": true, 
+  }

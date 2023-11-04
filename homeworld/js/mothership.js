@@ -1,35 +1,27 @@
-class Mothership {
+class Mothership extends PlayerShip {
     constructor(x, y) {
-        this.sprite = new Sprite(x, y, 'd');
+        const defaultSpeed = 0.2;
+        const defaultHealth = 1000;
+        super(x, y, defaultSpeed, defaultHealth); 
+        
         this.sprite.addAni('default', mothershipImg);
         this.sprite.addAni('selected', mothershipSelectedImg);
-        this.sprite.rotationLock = true;
-        this.sprite.overlaps(allSprites);
+        this.sprite.d = 70;
 
-        //display
-        this.sprite.d = 100;
-        this.sprite.color = 'yellow';
-        this.selected = false;
-
-        //resources
-        this.resource = 0;
-
-        //buttons
+        this.name = 'Mothership';
         this.buttonsCreated = false;
-        selectableSprites.push(this);
+        
+        this.initializeResources();
+    }
+
+    initializeResources() {
+        this.resource = 0;
     }
 
     update() {
-        this.sprite.ani.scale = 3;
+        super.update();
         this.receiveResource();
-        if (this.selected) {
-            this.sprite.ani = 'selected';
-            
-            this.selectedUI();
-        } else {
-            this.sprite.ani = 'default';
-            this.removeUI();
-        }
+        this.updateAnimation();
     }
 
     receiveResource() {
@@ -45,7 +37,6 @@ class Mothership {
     }
 
     selectedUI() {
-
         if (!this.buttonsCreated) {
             this.buttonsCreated = true;
             buttons.push(new Button('Mining Ship', miningShipCost, uiX + uiW/2, uiY + uiH/2, 50, 50, miningShipImg));
@@ -58,76 +49,15 @@ class Mothership {
             buttons[i].remove();
         }
     }
-}
 
-class Button {
-    constructor(name, cost,  x, y, w, h, image) {
-        this.w = w;
-        this.h = h;
-        this.x = x;
-        this.y = y;
-        this.sprite = new Sprite(x + this.w/2, y + this.h/2, 'd');
-        this.sprite.addAni('default', image);
-        this.sprite.d = 50;
-        this.name = name;
-        this.cost = cost;
-        this.color = defaultButtonColor;
-    }
-
-    update() {
-        push();
-        fill(this.color);
-        rect(this.x, this.y, this.w, this.h);
-        pop();
-
-        push();
-        fill(255);
-        textAlign(CENTER, CENTER);
-        textSize(20);
-        text(this.name + ': ' + this.cost, this.x + this.w/2, this.y - 10);
-        pop();
-        if (this.isHovered(mouseX, mouseY) && mouse.pressed(LEFT)) {
-            this.checkPressed();
-        }
-        if (this.isHovered(mouseX, mouseY) && mouse.pressing(LEFT)) {
-            this.color = pressedButtonColor;
-        } else if (this.isHovered(mouseX, mouseY)) {
-            this.color = hoveredButtonColor;
+    updateAnimation() {
+        this.sprite.ani.scale = 3;
+        if (this.selected) {
+            this.sprite.ani = 'selected';
+            this.selectedUI();
         } else {
-            this.color = defaultButtonColor;
+            this.sprite.ani = 'default';
+            this.removeUI();
         }
     }
-
-    isHovered(x, y) {
-        return (
-            x >= this.x && 
-            x <= this.x + this.w && 
-            y >= this.y && 
-            y <= this.y + this.h
-        );
-    }
-
-    checkPressed() {  
-        switch(this.name) {
-            case 'Mining Ship':
-            this.queueMiningShip();
-            break;
-        } 
-    }
-
-    queueMiningShip() {
-        if (mothership.resource >= 50) {
-            mothership.resource -= 50;
-            mothership.spawnMiningShip();
-        }
-    }
-
-    remove() {
-        this.index = buttons.indexOf(this);
-        if (this.index != -1) {
-            buttons.splice(this.index, 1);
-        }
-        this.sprite.remove();
-    }
-
 }
