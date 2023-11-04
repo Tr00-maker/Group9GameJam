@@ -73,6 +73,7 @@ class PlayerShip {
     setSpriteTarget(target) {
         this.setTarget(target.sprite.x, target.sprite.y);
         this.targetSprite = target;
+        this.autoTarget = false;
     }
 
     //sets a mouse destination
@@ -81,6 +82,7 @@ class PlayerShip {
         this.sprite.rotateTo(this.target, this.rotationSpeed);
         this.sprite.move(this.distance, this.direction, this.speed);
         this.targetSprite = null;
+        this.autoTarget = true;
     }
 
     //set the target vector
@@ -169,6 +171,7 @@ class PlayerShip {
     handleIdle() {
         this.sprite.speed = 0;
         this.onTarget = false;
+        this.autoTarget = true;
         this.lastFired = Date.now();
     }
 

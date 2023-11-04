@@ -20,6 +20,8 @@ class EnemyUnit {
 
         this.closestShip = null;
 
+        this.inPatrol = false;
+
         this.state = 'idle';
 
         this.fireRate = 0.5;
@@ -32,6 +34,10 @@ class EnemyUnit {
         this.showTarget();
         this.handleDetectCombat();     
 
+        if (!this.closestShip) {
+            this.state = 'patrol';
+        }
+
         switch(this.state) {
             case 'idle':
                 this.handleIdle();
@@ -39,6 +45,28 @@ class EnemyUnit {
             case 'combat':
                 this.handleCombat();
                 break;
+            case 'patrol':
+                this.handlePatrol();
+                break;
+        }
+    }
+
+    //basic patrol method - change this to whatever
+    async handlePatrol() {
+        if (this.inPatrol) return;
+        this.inPatrol = true;
+
+        let x = random(0, width - 300);
+        let y = random(0, height - 300);
+    
+        // Await the completion of rotateTo and moveTo
+        await this.sprite.rotateTo(x, y, this.rotationSpeed);
+        await this.sprite.moveTo(x, y, this.speed);
+        
+        this.inPatrol = false;
+        // After the moveTo is complete, call handlePatrol again if still in patrol state
+        if (this.state === 'patrol') {
+            this.handlePatrol();
         }
     }
     
@@ -96,10 +124,9 @@ class EnemyUnit {
     //stops sprite in idle state
     handleIdle() {
         this.sprite.speed = 0;
-        this.handleDetectCombat();
     }
 
-    //moves and shoots while in combat state
+    //moves and shoots while in combat - modify it to whatver you like
     handleCombat() {
         this.sprite.rotateTo(this.closestShip.sprite, this.rotaionSpeed);
 
@@ -109,7 +136,7 @@ class EnemyUnit {
         if (distToClosestShip < this.detetctionRange && distToClosestShip > this.detetctionRange/1.2) {
             this.sprite.moveTo(this.closestShip.sprite, this.speed);
         } else if (distToClosestShip < this.detetctionRange/1.2 && distToClosestShip > this.range) {
-            this.sprite.attractTo(this.closestShip.sprite, this.speed);
+            this.sprite.attractTo(this.closestShip.sprite, this.speed/3);
         } else if (distToClosestShip < this.range) {
             this.shoot();
             this.handlePlayerShipSpread();
@@ -136,7 +163,7 @@ class EnemyUnit {
             this.state = 'combat';
         } else {
             this.closestShip = null;
-            this.state = 'idle';
+            this.state = 'patrol';
         }
     }
 
