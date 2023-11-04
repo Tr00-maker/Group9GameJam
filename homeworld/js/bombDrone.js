@@ -12,7 +12,7 @@ class Missile{
         this.sprite.addAni('default', missileImg);
         this.sprite.addAni('selected', missileImg);
         selectableSprites.push(this);
-        this.sprite.overlaps(allSprites);
+        this.sprite.collides(allSprites);
         this.sprite.type = 'bomb-drone';
 
         
@@ -25,6 +25,7 @@ class Missile{
     initializeStatus() {
         this.speed = 1.2;
         this.resetStatusFlags();
+
     }
 
     resetStatusFlags() {
@@ -39,6 +40,12 @@ class Missile{
         this.handleSelection();
         this.handleDestination();
         this.updateAnimation();
+        this.sprite.overlaps(allSprites, this.explode);
+        if(this.sprite.collides(allSprites))
+        {
+            console.log('overlaps');
+        }
+        //this.explode(this.sprite, this.target);
     }
     
     handleSelection() {
@@ -89,12 +96,12 @@ class Missile{
         this.distance = this.directionVector.mag();
     }
 
-    explode(enemy) {
-        if (dist(this.sprite.x, this.sprite.y, enemy.sprite.x, enemy.sprite.y) <= 1)
+    explode(missile, enemy) {
+        console.log('explode');
+        if (dist(missile.sprite.x, missile.sprite.y, enemy.sprite.x, enemy.sprite.y) <= 1)
         {
             enemy.defaultHealth -= this.damage;
-            this.resource = 0;
-            this.sprite.remove();
+            missile.remove();
         }
     }
 }
