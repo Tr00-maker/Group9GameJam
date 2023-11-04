@@ -1,20 +1,21 @@
-class Missile {
-    constructor(x, y) {
+class Missile{
+    constructor(x, y, dmg, health) {
         this.initializeSprite(x, y);
-        this.initializeResources();
         this.initializeStatus();
+        this.health = health;
+        this.damage = dmg;
     }
     
     initializeSprite(x, y) {
         this.sprite = new Sprite(x, y, 'd');
         this.sprite.d = 10;
-        this.sprite.addAni('default', miningShipImg);
-        this.sprite.addAni('selected', miningShipSelectedImg);
+        this.sprite.addAni('default', missileImg);
+        this.sprite.addAni('selected', missileImg);
         selectableSprites.push(this);
         this.sprite.overlaps(allSprites);
         this.sprite.type = 'bomb-drone';
 
-        this.sprite.health = 10
+        
         this.sprite.text = 'bomba';
         this.sprite.textColor = 'red';
         this.sprite.textSize = 20;
@@ -37,9 +38,6 @@ class Missile {
     update() {
         this.handleSelection();
         this.handleDestination();
-        this.handleReturning();
-        this.returnFromInactiveAsteroid();
-        this.checkOverlapAndSpread();
         this.updateAnimation();
     }
     
@@ -47,6 +45,7 @@ class Missile {
         if (this.sprite.mouse.presses(LEFT)) {
             selectableSprites.forEach(sprite => sprite.selected = false);
             this.selected = true;
+            console.log('missile select');
             setTimeout(() => selectionSquare.selectionFlag = false, 100);
         }
     } 
@@ -55,7 +54,7 @@ class Missile {
         if (!this.selected) return;
     
         if (mouse.pressed(RIGHT)) {
-            for (let target of targets) {
+            for (let target of selectableSprites) {
                 if (target.sprite.mouse.pressed(RIGHT)) {
                     this.setTarget(target);
                     return;
@@ -93,7 +92,7 @@ class Missile {
     explode(enemy) {
         if (dist(this.sprite.x, this.sprite.y, enemy.sprite.x, enemy.sprite.y) <= 1)
         {
-            recipient.health -= 20;
+            enemy.defaultHealth -= this.damage;
             this.resource = 0;
             this.sprite.remove();
         }

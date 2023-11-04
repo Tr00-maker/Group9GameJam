@@ -1,5 +1,5 @@
 class Mothership extends PlayerShip {
-    constructor(x, y) {
+    constructor(x, y, dmg) {
         const defaultSpeed = 0.2;
         const defaultHealth = 1000;
         super(x, y, defaultSpeed, defaultHealth); 
@@ -35,11 +35,17 @@ class Mothership extends PlayerShip {
     spawnMiningShip() {
         miningShips.push(new MiningShip(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100)));
     }
+    spawnMissile()
+    {
+        missiles.push(new Missile(this.sprite.x + (random() * 300 - 50), this.sprite.y + (random() * 300 - 50), 30, 10));
+    }
+
 
     selectedUI() {
         if (!this.buttonsCreated) {
             this.buttonsCreated = true;
             buttons.push(new Button('Mining Ship', miningShipCost, uiX + uiW/2, uiY + uiH/2, 50, 50, miningShipImg));
+            buttons.push(new Button('Missile', missileCost, uiX + uiW/3, uiY + uiH/2, 50, 50, missileImg));
         }
     }
 

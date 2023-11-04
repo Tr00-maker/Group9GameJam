@@ -50,6 +50,9 @@ class Button {
             case 'Mining Ship':
             this.queueMiningShip();
             break;
+            case 'Missile':
+            this.queueMissile();
+            break;
         } 
     }
 
@@ -57,6 +60,14 @@ class Button {
         if (mothership.resource >= 50) {
             mothership.resource -= 50;
             mothership.spawnMiningShip();
+        }
+    }
+    queueMissile()
+    {
+        if(mothership.resource >= this.cost)
+        {
+            mothership.resouce -= this.cost;
+            mothership.spawnMissile();
         }
     }
 

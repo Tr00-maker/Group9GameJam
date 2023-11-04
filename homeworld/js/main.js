@@ -8,6 +8,7 @@ let mothershipImg, mothership;
 let buttons = [];
 let button;
 let miningShipCost = 50;
+let missileCost = 40;
 const defaultButtonColor = [255, 255, 255, 100];
 const hoveredButtonColor = [255, 255, 255, 200];
 const pressedButtonColor = [255, 255, 255, 255];
@@ -27,6 +28,10 @@ let enemyUnits = [];
 let asteroids = [];
 let asteroidImg;
 
+//missiles
+let missiles = [];
+let missileImg;
+
 //background
 let spaceBackground;
 
@@ -41,12 +46,12 @@ function preload() {
     miningShipSelectedImg = loadAnimation('./images/selected.png', { frameSize: [32, 32], frames: 1, row: 0, col: 1 });
     mothershipImg = loadAnimation('./images/ships.png', { frameSize: [32, 32], frames: 1, row: 2, col: 1 });
     mothershipSelectedImg = loadAnimation('./images/selected.png', { frameSize: [32, 32], frames: 1, row: 2, col: 1 });
+    missileImg = loadAnimation('./images/redmissile.png');
 }
 
 function setup() {
     new Canvas(windowWidth, windowHeight, 'pixelated');
     changeState(state.play);
-    playStateSetup();
 }
 
 function draw() {  

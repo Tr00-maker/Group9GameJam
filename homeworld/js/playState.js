@@ -43,6 +43,10 @@ function playStateUpdate() {
 
         for (let i = miningShips.length - 1; i >= 0; i--) {
             miningShips[i].update();
+        }
+        //missiles
+        for (let i = missiles.length - 1; i >= 0; i--) {
+            missiles[i].update();
         } 
     }
 }
