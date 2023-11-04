@@ -16,15 +16,11 @@ class BaseShip extends PlayerShip {
     }
 
     initializeStats() {
-        this.fireRate = 1;
-        this.lastFired = 0;
-        this.shotSpeed = 5;
-        this.damage = 10;
+
     }
 
     update() {
         super.update();
-        this.shoot();
     }
 
     updateAnimation() {
