@@ -57,6 +57,7 @@ class BattleShip extends PlayerShip {
         }
     }
 
+    //finds nearest enemy unit
     findClosestUnit() {
         let closestDistance = Number.MAX_VALUE;
         let closestShip = null;
@@ -87,7 +88,7 @@ class BattleShip extends PlayerShip {
             this.autoTarget = true;
         }
     }
-
+    
     checkOnTarget() {
         if (this.onTarget) {
             this.shoot();

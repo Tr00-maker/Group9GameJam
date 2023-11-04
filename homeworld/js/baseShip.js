@@ -39,24 +39,4 @@ class BaseShip extends PlayerShip {
         
     }
 
-    shoot() {
-        for (let unit of enemyUnits) {
-            if (this.onTarget && this.targetSprite === unit) {
-                const currentTime = Date.now();
-                const shotDelay = 1000/this.fireRate;
-    
-                if (currentTime - this.lastFired >= shotDelay) {
-                    playerProjectiles.push(new Projectile(
-                        this.sprite.x + this.sprite.d * cos(this.sprite.rotation), 
-                        this.sprite.y + this.sprite.d * sin(this.sprite.rotation), 
-                        this.sprite.rotation, 
-                        this.shotSpeed, 
-                        this.damage, 10, 
-                        tealBulletImg, 
-                        playerProjectiles));
-                    this.lastFired = currentTime;
-                }
-            }
-        }
-    }
 }

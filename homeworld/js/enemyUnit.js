@@ -5,11 +5,10 @@ class EnemyUnit {
         this.speed = speed;
         this.health = health;
         this.range = 200;
-        this.detetctionRange = this.range*2;
+        this.detetctionRange = this.range*1.5;
         this.rotationSpeed = this.speed*3;
 
-        this.sprite.debug = true;
-
+        this.sprite.debug = false;
         targetableSprites.push(this);
         this.sprite.overlaps(allSprites);
 
@@ -60,7 +59,7 @@ class EnemyUnit {
         let y = random(0, height - 300);
     
         // Await the completion of rotateTo and moveTo
-        await this.sprite.rotateTo(x, y, this.rotationSpeed);
+        this.sprite.rotateTo(x, y, this.rotationSpeed);
         await this.sprite.moveTo(x, y, this.speed);
         
         this.inPatrol = false;
@@ -203,12 +202,12 @@ class ShootingUnit extends EnemyUnit {
         const defaultSpeed = 0.3;
         const defaultHealth = 100;
         super(x, y, defaultSpeed, defaultHealth);
-        this.sprite.d = 30;
         
         this.name = 'Shooting Unit';
-
+        
         this.sprite.addAni('default', shootingUnitImg);
         this.sprite.addAni('selected', shootingUnitDamagedImg);
+        this.sprite.d = 30;
     }
 
     update() {

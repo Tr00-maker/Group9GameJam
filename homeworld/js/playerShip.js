@@ -8,7 +8,7 @@ class PlayerShip {
         this.sprite.rotationLock = true;
         this.sprite.bounciness = 0.01;
         
-        this.sprite.debug = true;
+        this.sprite.debug = false;
         selectableSprites.push(this);
         this.sprite.overlaps(allSprites);
         

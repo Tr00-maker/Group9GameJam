@@ -6,9 +6,9 @@ class MiningShip extends PlayerShip {
 
         super(x, y, defaultSpeed, defaultHealth, defaultRange); 
 
-        this.sprite.d = 20;
         this.sprite.addAni('default', miningShipImg);
         this.sprite.addAni('selected', miningShipSelectedImg);
+        this.sprite.d = 20;
         
         this.name = 'Mining Ship';
         this.initializeResources();
