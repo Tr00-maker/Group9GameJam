@@ -1,4 +1,4 @@
-class Button {
+class UnitButton {
     constructor(name, cost,  x, y, w, h, image) {
         this.w = w;
         this.h = h;
@@ -24,7 +24,7 @@ class Button {
         textSize(20);
         text(this.name + ': ' + this.cost, this.x + this.w/2, this.y - 10);
         pop();
-        if (this.isHovered(mouseX, mouseY) && mouse.pressed(LEFT)) {
+        if (this.isHovered(mouseX, mouseY) && mouse.released(LEFT)) {
             this.checkPressed();
         }
         if (this.isHovered(mouseX, mouseY) && mouse.pressing(LEFT)) {
@@ -46,14 +46,19 @@ class Button {
     }
 
     checkPressed() {  
-        switch(this.name) {
-            case 'Mining Ship':
-            this.queueMiningShip();
-            break;
-            case 'Missile':
-            this.queueMissile();
-            break;
-        } 
+        if (!clickedFlag) {
+            switch(this.name) {
+                case 'Mining Ship':
+                this.queueMiningShip();
+                break;
+                case 'Missile':
+                this.queueMissile();
+                break;
+            } 
+        }
+        if (clickedFlag) {
+            setTimeout(() => clickedFlag = false, 200);
+        }
     }
 
     queueMiningShip() {
@@ -79,3 +84,4 @@ class Button {
         this.sprite.remove();
     }
 }
+let clickedFlag = false;

@@ -1,94 +1,222 @@
 class PlayerShip {
-    constructor(x, y, speed, health) {
+    constructor(x, y, speed, health, range) {
         this.sprite = new Sprite(x, y, 'd');
         this.speed = speed;
         this.health = health;
+        this.range = range;
+        this.rotationSpeed = this.speed*5;
+        this.sprite.rotationLock = true;
+        this.sprite.bounciness = 0.01;
         
-        this.sprite.debug = true;
+        this.sprite.debug = false;
         selectableSprites.push(this);
         this.sprite.overlaps(allSprites);
         
-        this.selected = false;
-        this.movingToUnit = false;
-        this.unitClicked = false;
-        this.unitTarget = 'none';
+        this.state = 'spawned';
+
+        this.moveTimer = 0;
     } 
 
     update() {
-        this.handleSelection();
-        this.handleDestination();
-        this.updateDirection();
-    }
-
-    handleSelection() {
-        if (this.sprite.mouse.presses(LEFT)) {
-            selectableSprites.forEach(sprite => sprite.selected = false);
-            this.selected = true;
-            setTimeout(() => selectionSquare.selectionFlag = false, 100);
+        if (this.selected && mouse.pressed(RIGHT)) {
+            this.handleSetTarget();
         }
-    }
-
-    handleDestination() {
-        if (this.movingToUnit && this.unitTarget && this.sprite.speed != 0) {
-            this.setTargetVector(this.unitTarget.sprite.x, this.unitTarget.sprite.y);
-            this.sprite.move(this.distance, this.direction, this.speed);
+        
+        if (this.selected) {
+            this.showUI();
+        } else {
+            this.removeUI();
         }
 
-        if (!this.selected) return;
-    
-        if (mouse.pressed(RIGHT)) {
-            for (let unit of enemyUnits) {
-                if (unit.sprite.mouse.pressed(RIGHT)) {
-                    this.setEnemyTarget(unit);
-                    return;
-                }
-            }
-
-            this.clearUnitTarget();
+        switch(this.state) {
+            case 'idle':
+                this.handleIdle();
+                break;
+            case 'spawned':
+                this.handleSpawned();
+                break;
+            case 'hasTarget':
+                this.handleHasTarget();
+                break;
         }
-    }   
 
-    setEnemyTarget(unit) {
-        this.setTargetVector(unit.sprite.x, unit.sprite.y);
-        this.unitTarget = unit;
-        this.sprite.move(this.distance, this.direction, this.speed);
-        this.movingToUnit = true;
-        this.unitClicked = true;
+        this.updateSelection();
+        this.handleSpread();
+        this.handleStateReset();
     }
 
-    clearUnitTarget() {
-        this.setTargetVector(mouseX, mouseY);
-        this.unitTarget = 'none';
-        this.sprite.move(this.distance, this.direction, this.speed);
-        this.movingToUnit = false;
-    }
+    //resets the state to idle if the target has not moved or has no target
+    handleStateReset() {
+        const currentTime = Date.now();
 
-    checkOverlapAndSpread() {
-        for (let ship of miningShips) {
-            if (this === ship) continue;
-            
-            const distToShip = dist(this.sprite.x, this.sprite.y, ship.sprite.x, ship.sprite.y);
-            const distToMothership = dist(this.sprite.x, this.sprite.y, mothership.sprite.x, mothership.sprite.y);
-            
-            if (this.sprite.speed === 0 && (distToShip <= this.sprite.d * 2 || distToMothership <= this.sprite.d * 2)) {
-                let dir = createVector(this.sprite.x - ship.sprite.x, this.sprite.y - ship.sprite.y);
-                dir.setMag(0.2);
-                this.sprite.x += dir.x;
-                this.sprite.y += dir.y;
+        if (this.targetSprite || this.sprite.speed != 0) {
+            this.moveTimer = Date.now();
+        }
+
+        if (this.state != 'idle' && currentTime - this.moveTimer > 3000) {
+            this.state = 'idle';
+        }
+    }
+    //check if a target is set
+    handleSetTarget() {
+        for (let targetableSprite of targetableSprites) {
+            if (targetableSprite.sprite.mouse.pressed(RIGHT)) {
+                this.setSpriteTarget(targetableSprite);
+                return;
             }
         }
+
+        this.setMouseTarget();
     }
 
-    setTargetVector(x, y) {
+    //sets a target destination
+    setSpriteTarget(target) {
+        this.setTarget(target.sprite.x, target.sprite.y);
+        this.targetSprite = target;
+        this.autoTarget = false;
+    }
+
+    //sets a mouse destination
+    setMouseTarget() {
+        this.setTarget(mouseX, mouseY);
+        this.sprite.rotateTo(this.target, this.rotationSpeed);
+        this.sprite.move(this.distance, this.direction, this.speed);
+        this.targetSprite = null;
+        this.autoTarget = true;
+    }
+
+    //set the target vector
+    setTarget(x, y) {
         this.target = createVector(x, y);
         this.directionVector = p5.Vector.sub(this.target, createVector(this.sprite.x, this.sprite.y));
-        this.sprite.direction = this.direction;
         this.direction = this.directionVector.heading();
-        this.distance = this.directionVector.mag();
+        this.distance = this.directionVector.mag(); 
+        this.state = 'hasTarget';
+
+        this.buttonsCreated = false;
     }
 
-    updateDirection() {
-        this.sprite.rotateTowards(this.sprite.direction, 0.05);
+    //handle moving to the target
+    handleHasTarget() {  
+        switch(this.name) {
+            case 'Mining Ship':
+                for (let asteroid of asteroids) {
+                    if (this.targetSprite != asteroid) {
+                        this.handleMoveToTarget();
+                    } else if (this.targetSprite === asteroid) {
+                        this.handleMiningLogic(asteroid);
+                    } else {
+                        this.returnToMothership();
+                        return
+                    }
+                    if (!this.targetSprite) {
+                        this.handleMoveToTarget();
+                    }
+                }
+                break;
+            case 'Battle Ship':
+                this.handleMoveToTarget();
+                break;
+            case 'Mothership':
+                if (this.targetSprite) {
+                    if (this.targetSprite.active) {
+                        this.spawnTarget = this.targetSprite;
+                    } else {
+                        this.spawnTarget = null;
+                    }
+                }
+                break;
+        }
+
+        if (this.targetSprite) {
+
+            if (!this.targetSprite.active) {
+                this.state = 'idle';
+            }
+        }
+    }
+
+    //continuously move to target until reaching the onTarget distance at which point the ships will spread
+    handleMoveToTarget() {
+        if (this.targetSprite) {
+            this.setTarget(this.targetSprite.sprite.x, this.targetSprite.sprite.y);
+            this.sprite.rotateTo(this.target, this.rotationSpeed);
+    
+            if (!this.onTarget) {
+                this.sprite.move(this.distance, this.direction, this.speed);
+            } else if (this.onTarget && this.sprite.speed != 0) {
+                this.sprite.speed -=0.1;
+            }
+    
+            if (dist(this.sprite.x, this.sprite.y, this.targetSprite.sprite.x, this.targetSprite.sprite.y) < this.range) {
+                this.onTarget = true;
+            } else {
+                this.onTarget = false;
+            }
+            
+        } else {
+            this.onTarget = false;
+        }
+    }
+
+    //all ships are spawned in the spawned state, they will pre set there target on the motherships target sprite
+    handleSpawned() {
+        if (mothership.spawnTarget) {
+            this.targetSprite = mothership.spawnTarget;
+            this.state = 'hasTarget';
+        }
+    }
+
+    //stops sprites in the idle state
+    handleIdle() {
+        this.sprite.speed = 0;
+        this.onTarget = false;
+        this.autoTarget = true;
+        this.lastFired = Date.now();
+    }
+
+    //spreads the ships apart when not moving or are on target
+    handleSpread() {
+        for (let i = selectableSprites.length - 1; i >= 0; i--) {
+            let ship = selectableSprites[i];
+            if (this !== ship && this.sprite != mothership.sprite) {
+
+                const distToShip = dist(this.sprite.x, this.sprite.y, ship.sprite.x, ship.sprite.y);
+                
+                if ((this.sprite.speed === 0 || this.onTarget) && (distToShip <= this.sprite.d * 2)) {
+                    let dir = createVector(this.sprite.x - ship.sprite.x, this.sprite.y - ship.sprite.y);
+                    dir.setMag(0.2);
+                    this.sprite.x += dir.x;
+                    this.sprite.y += dir.y;
+                }
+
+            }        
+        }
+    }
+
+    updateSelection() {
         this.sprite.ani = this.selected ? 'selected' : 'default';
     }
+
+    takeDamage(x, y, damage, radius) {
+        this.health -= this.damage;
+        if (this.health <= 0) {
+            //explosions.push(new explosion(x, y, damage)) add later
+            this.dies();
+        }
+    }
+
+    dies() {
+        this.index = selectableSprites.indexOf(this);
+        if (this.index != -1) {
+            selectableSprites.splice(this.index, 1);
+        }
+        this.sprite.remove()
+    }
+
 }
+
+//anything added to the array can be set as a target by all player ships
+let targetableSprites = [];
+
+

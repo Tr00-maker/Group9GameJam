@@ -1,15 +1,22 @@
 function playStateSetup() {
-    selectionSquare = new SelectionSquare();
-    mothership = new Mothership(width/2, height/2);
-    asteroids.push(new Asteroid(mothership.sprite.x - 500, mothership.sprite.y - 250));
-    asteroids.push(new Asteroid(mothership.sprite.x + 500, mothership.sprite.y - 250));
-    
-    miningShips.push(new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100)));
-    miningShips.push(new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100)));
-    miningShips.push(new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100)));
-    
     spaceBackground.resize(400, 400);
-    gamePause = false;
+
+    selectionSquare = new SelectionSquare();
+
+    mothership = new Mothership(width/2, height/2);
+
+    asteroids.push(new Asteroid(mothership.sprite.x - 500, mothership.sprite.y - 250));
+    
+    //miningShips.push(new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100)));
+    
+    battleShips.push(new BattleShip(mothership.sprite.x + (random() * 400 - 200), mothership.sprite.y + (random() * 400 - 200)));
+    battleShips.push(new BattleShip(mothership.sprite.x + (random() * 400 - 200), mothership.sprite.y + (random() * 400 - 200)));
+    battleShips.push(new BattleShip(mothership.sprite.x + (random() * 400 - 200), mothership.sprite.y + (random() * 400 - 200)));
+    
+    enemyUnits.push(new ShootingUnit(100, 200));
+    enemyUnits.push(new ShootingUnit(300, 100));
+    enemyUnits.push(new ShootingUnit(200, 200));
+
 }
 
 function playState() {
@@ -41,9 +48,23 @@ function playStateUpdate() {
             asteroids[i].update();
         }
 
-        for (let i = miningShips.length - 1; i >= 0; i--) {
-            miningShips[i].update();
+        for (let i = selectableSprites.length - 1; i >= 0; i--) {
+            selectableSprites[i].update();
+        } 
+
+        for (let i = enemyUnits.length - 1; i >= 0; i--) {
+            enemyUnits[i].update();
+        } 
+
+        for (let i = playerProjectiles.length - 1; i >= 0; i--) {
+            playerProjectiles[i].update();
+        } 
+
+        for (let i = enemyProjectiles.length - 1; i >= 0; i--) {
+            enemyProjectiles[i].update();
         }
+
+
         //missiles
         for (let i = missiles.length - 1; i >= 0; i--) {
             missiles[i].update();
