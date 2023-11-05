@@ -193,7 +193,7 @@ class PlayerShip {
     }
 
     takeDamage(x, y, damage, radius) {
-        this.health -= this.damage;
+        this.health -= damage;
         if (this.health <= 0) {
             //explosions.push(new explosion(x, y, damage)) add later
             this.dies();

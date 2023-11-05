@@ -24,6 +24,7 @@ class UnitButton {
         textSize(20);
         text(this.name + ': ' + this.cost, this.x + this.w/2, this.y - 10);
         pop();
+        
         if (this.isHovered(mouseX, mouseY) && mouse.released(LEFT)) {
             this.checkPressed();
         }
@@ -34,6 +35,7 @@ class UnitButton {
         } else {
             this.color = defaultButtonColor;
         }
+        
     }
 
     isHovered(x, y) {
