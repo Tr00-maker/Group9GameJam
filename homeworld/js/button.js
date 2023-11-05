@@ -47,6 +47,7 @@ class UnitButton {
 
     checkPressed() {  
         if (!clickedFlag) {
+            clickedFlag = true;
             switch(this.name) {
                 case 'Mining Ship':
                 this.queueMiningShip();
@@ -62,8 +63,8 @@ class UnitButton {
     }
 
     queueMiningShip() {
-        if (mothership.resource >= 50) {
-            mothership.resource -= 50;
+        if (mothership.resource >= this.cost) {
+            mothership.resource -= this.cost;
             mothership.spawnMiningShip();
         }
     }

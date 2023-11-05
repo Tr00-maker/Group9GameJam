@@ -118,13 +118,7 @@ class PlayerShip {
                 this.handleMoveToTarget();
                 break;
             case 'Mothership':
-                if (this.targetSprite) {
-                    if (this.targetSprite.active) {
-                        this.spawnTarget = this.targetSprite;
-                    } else {
-                        this.spawnTarget = null;
-                    }
-                }
+                this.setSpawnTarget();
                 break;
         }
 
