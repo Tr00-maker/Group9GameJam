@@ -1,9 +1,10 @@
 class Missile{
-    constructor(x, y, dmg, health) {
+    constructor(x, y, dmg, health, radius) {
         this.initializeSprite(x, y);
         this.initializeStatus();
         this.health = health;
         this.damage = dmg;
+        this.radius = radius;
     }
     
     initializeSprite(x, y) {
@@ -35,7 +36,7 @@ class Missile{
         this.targeting = false;
         this.targetClicked = false;
     }
-
+    //these run every frame
     update() {
         this.handleSelection();
         this.handleDestination();
@@ -101,17 +102,17 @@ class Missile{
         this.direction = this.directionVector.heading();
         this.distance = this.directionVector.mag();
     }
-
+    // damage target
     explode(missile, enemy) {
         console.log('explode');
         if (dist(missile.sprite.x, missile.sprite.y, enemy.sprite.x, enemy.sprite.y) <= 5)
         {
-            enemy.defaultHealth -= this.damage;
+            enemy.takeDamage(missile.sprite.x, missile.sprite.y, this.damage, this.radius);
             this.sprite.remove();
         }
     }
 
-    die()
+    dies()
     {
         if(this.health <= 0)
         {
