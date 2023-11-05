@@ -4,7 +4,7 @@ class UnitButton {
         this.h = h;
         this.x = x;
         this.y = y;
-        this.sprite = new Sprite(x + this.w/2, y + this.h/2, 'd');
+        this.sprite = new Sprite(this.x + this.w/2, this.y + this.h/2, 'd');
         this.sprite.addAni('default', image);
         this.sprite.d = w;
         this.name = name;
@@ -13,6 +13,8 @@ class UnitButton {
     }
 
     update() {
+        this.reposition();
+
         push();
         fill(this.color);
         rect(this.x, this.y, this.w, this.h);
@@ -25,12 +27,12 @@ class UnitButton {
         text(this.name + ': ' + this.cost, this.x + this.w/2, this.y - 10);
         pop();
         
-        if (this.isHovered(mouseX, mouseY) && mouse.released(LEFT)) {
+        if (this.isHovered(mx, my) && mouse.released(LEFT)) {
             this.checkPressed();
         }
-        if (this.isHovered(mouseX, mouseY) && mouse.pressing(LEFT)) {
+        if (this.isHovered(mx, my) && mouse.pressing(LEFT)) {
             this.color = pressedButtonColor;
-        } else if (this.isHovered(mouseX, mouseY)) {
+        } else if (this.isHovered(mx, my)) {
             this.color = hoveredButtonColor;
         } else {
             this.color = defaultButtonColor;
@@ -38,6 +40,12 @@ class UnitButton {
         
     }
 
+    reposition() {
+        this.x = uiX + uiW/2;
+        this.y = uiY + uiH/2;
+        this.sprite.x = this.x + this.w/2;
+        this.sprite.y = this.y + this.h/2;
+    }
     isHovered(x, y) {
         return (
             x >= this.x && 

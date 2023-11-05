@@ -13,9 +13,9 @@ function playStateSetup() {
     battleShips.push(new BattleShip(mothership.sprite.x + (random() * 400 - 200), mothership.sprite.y + (random() * 400 - 200)));
     battleShips.push(new BattleShip(mothership.sprite.x + (random() * 400 - 200), mothership.sprite.y + (random() * 400 - 200)));
     
-    enemyUnits.push(new ShootingUnit(100, 200));
-    enemyUnits.push(new ShootingUnit(300, 100));
-    enemyUnits.push(new ShootingUnit(200, 200));
+    //enemyUnits.push(new ShootingUnit(100, 200));
+    //enemyUnits.push(new ShootingUnit(300, 100));
+    //enemyUnits.push(new ShootingUnit(200, 200));
 
 }
 
@@ -31,7 +31,7 @@ function playStatePause() {
     if (kb.pressed('space')) {
         gamePause = !gamePause;
     } 
-    //world.step(gamePause ? -1 : 0);
+    world.step(gamePause ? -1 : 0);
     allSprites.autoUpdate = !gamePause;  
 }
 
@@ -73,18 +73,18 @@ function playStateUpdate() {
 }
 
 function drawBackground() {
-    for (let x = 0; x < windowWidth; x += 400) {
-        for (let y = 0; y < windowHeight; y += 400) {
+    for (let x = 0; x < width; x += 400) {
+        for (let y = 0; y < height; y += 400) {
             image(spaceBackground, x, y, 400, 400);
         }
     }
 }
 
 function setUiSize() {
-    uiW = width;
-    uiH = height/6;
-    uiX = 0;
-    uiY = height - uiH;
+    uiW = windowWidth;
+    uiH = windowHeight/6;
+    uiX = cameraSprite.x - windowWidth/2;
+    uiY = cameraSprite.y + windowHeight/2 - uiH;
     resourceTextX = uiX + 100;
     resourceTextY = uiY + 25;
 }

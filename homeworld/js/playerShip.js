@@ -60,7 +60,7 @@ class PlayerShip {
     //check if a target is set
     handleSetTarget() {
         for (let targetableSprite of targetableSprites) {
-            if (targetableSprite.sprite.mouse.pressed(RIGHT)) {
+            if (mouse.pressed(RIGHT) && dist(mx, my, targetableSprite.sprite.x, targetableSprite.sprite.y) <= targetableSprite.sprite.d - (targetableSprite.sprite.d/2)) {
                 this.setSpriteTarget(targetableSprite);
                 return;
             }
@@ -78,7 +78,7 @@ class PlayerShip {
 
     //sets a mouse destination
     setMouseTarget() {
-        this.setTarget(mouseX, mouseY);
+        this.setTarget(mx, my);
         this.sprite.rotateTo(this.target, this.rotationSpeed);
         this.sprite.move(this.distance, this.direction, this.speed);
         this.targetSprite = null;

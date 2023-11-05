@@ -67,10 +67,45 @@ function preload() {
 }
 
 function setup() {
-    new Canvas(windowWidth, windowHeight, 'pixelated');
+    new Canvas(5000, 5000, 'pixelated x1');
     changeState(state.play);
+
+    //test pan cam ini
+    initializeCamera();
 }
 
 function draw() {  
+    clear();
+    cameraEffect(); 
     loopStates();
 }
+
+function initializeCamera() {
+    cameraSprite = new Sprite(width/2, height/2, 'n');
+    cameraSprite.d = 10;
+    cameraSprite.color = color(255, 0);
+}
+
+function cameraEffect() {
+    tx = windowWidth/2 - cameraSprite.x;
+    ty = windowHeight/2 - cameraSprite.y;
+    translate(tx, ty);
+    mx = mouseX - tx;
+    my = mouseY - ty;
+    
+    let aspectRatio = windowWidth / windowHeight;
+    let cameraSpeed = 0.0075;
+
+    if (mx < cameraSprite.x - windowWidth/2 + 75 && cameraSprite.x > windowWidth/2 ||
+        mx > cameraSprite.x + windowWidth/2 - 75 && cameraSprite.x < width - windowWidth/2) {
+            cameraSprite.moveTowards(mx, my, cameraSpeed);
+        } else if (my < cameraSprite.y - windowHeight/2 + 75 && cameraSprite.y > windowHeight/2 ||
+        my > cameraSprite.y + windowHeight/2 - 10  && cameraSprite.y < height - windowHeight/2) {
+        cameraSprite.moveTowards(mx, my, cameraSpeed*aspectRatio);
+    } else if (cameraSprite.speed >0) {
+        cameraSprite.speed = 0;
+    }
+}
+
+//var for cameraEffect
+let cameraSprite, tx, ty, mx, my;
