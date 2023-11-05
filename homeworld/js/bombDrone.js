@@ -25,6 +25,7 @@ class Missile{
     initializeStatus() {
         this.speed = 1.2;
         this.resetStatusFlags();
+        this.enemy = null;
 
     }
 
@@ -33,7 +34,6 @@ class Missile{
         this.isMining = false;
         this.targeting = false;
         this.targetClicked = false;
-        this.miningTarget = 'none';
     }
 
     update() {
@@ -44,6 +44,11 @@ class Missile{
         if(this.sprite.collides(allSprites))
         {
             console.log('overlaps');
+        }
+        if(this.targeting == true)
+        {
+            this.setTarget(this.enemy);
+            this.explode(this, this.enemy);
         }
         //this.explode(this.sprite, this.target);
     }
@@ -63,6 +68,7 @@ class Missile{
         if (mouse.pressed(RIGHT)) {
             for (let target of selectableSprites) {
                 if (target.sprite.mouse.pressed(RIGHT)) {
+                    this.enemy = target;
                     this.setTarget(target);
                     return;
                 }
@@ -75,7 +81,7 @@ class Missile{
         this.setTargetVector(target.sprite.x, target.sprite.y);
         this.targeting = target;
         this.sprite.move(this.distance, this.direction, this.speed);
-        this.movingToTarget = true;
+        this.targeting = true;
         this.targetClicked = true;
     }
 
@@ -101,7 +107,16 @@ class Missile{
         if (dist(missile.sprite.x, missile.sprite.y, enemy.sprite.x, enemy.sprite.y) <= 1)
         {
             enemy.defaultHealth -= this.damage;
-            missile.remove();
+            this.sprite.remove();
         }
+    }
+
+    die()
+    {
+        if(this.health <= 0)
+        {
+            this.sprite.remove();
+        }
+        
     }
 }
