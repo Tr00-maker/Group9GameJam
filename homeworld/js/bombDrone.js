@@ -104,7 +104,7 @@ class Missile{
 
     explode(missile, enemy) {
         console.log('explode');
-        if (dist(missile.sprite.x, missile.sprite.y, enemy.sprite.x, enemy.sprite.y) <= 1)
+        if (dist(missile.sprite.x, missile.sprite.y, enemy.sprite.x, enemy.sprite.y) <= 5)
         {
             enemy.defaultHealth -= this.damage;
             this.sprite.remove();

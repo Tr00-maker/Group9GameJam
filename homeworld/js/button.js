@@ -66,7 +66,7 @@ class Button {
     {
         if(mothership.resource >= this.cost)
         {
-            mothership.resouce -= this.cost;
+            mothership.resource -= this.cost;
             mothership.spawnMissile();
         }
     }
