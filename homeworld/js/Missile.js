@@ -24,7 +24,7 @@ class Missile{
 
 
     initializeStatus() {
-        this.speed = 1.2;
+        this.speed = 1.4;
         this.resetStatusFlags();
         this.enemy = null;
 
@@ -61,8 +61,8 @@ class Missile{
     handleDestination() {
         if (!this.selected) return;
     
-        if (mouse.pressed(RIGHT)) {
-            for (let target of selectableSprites) {
+        if (mouse.pressed(RIGHT) && this.targeting == false) {
+            for (let target of targetableSprites) {
                 if (target.sprite.mouse.pressed(RIGHT)) {
                     this.enemy = target;
                     this.setTarget(target);
@@ -97,9 +97,14 @@ class Missile{
         this.direction = this.directionVector.heading();
         this.distance = this.directionVector.mag();
     }
+    //apply given damage
+    takeDamage(x, y, damage, radius) {
+        this.health -= damage;
+        this.dies();
+    }
     // damage target
     explode(missile, enemy) {
-        console.log('explode');
+        //console.log('explode');
         if (dist(missile.sprite.x, missile.sprite.y, enemy.sprite.x, enemy.sprite.y) <= 5)
         {
             enemy.takeDamage(missile.sprite.x, missile.sprite.y, this.damage, this.radius);

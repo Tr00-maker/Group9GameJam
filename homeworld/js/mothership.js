@@ -45,7 +45,7 @@ class Mothership extends PlayerShip {
     }
     spawnMissile()
     {
-        missiles.push(new Missile(this.sprite.x + (random() * 300 - 50), this.sprite.y + (random() * 300 - 50), 30, 10));
+        missiles.push(new Missile(this.sprite.x + (random() * 300 - 50), this.sprite.y + (random() * 300 - 50), 10, 10));
     }
 
 
