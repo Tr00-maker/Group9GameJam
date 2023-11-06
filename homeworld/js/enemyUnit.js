@@ -30,8 +30,7 @@ class EnemyUnit {
     }
 
     update() {
-        this.showTarget();
-        this.handleDetectCombat();     
+        this.showTarget();    
 
         if (!this.closestShip) {
             this.state = 'patrol';
@@ -99,29 +98,63 @@ class EnemyUnit {
         }, 100);
     }
 
-    //shoots at the units rotation
-    shoot() {
-        if (this.closestShip) {
-            const currentTime = Date.now();
-            const shotDelay = 1000/this.fireRate;
-
-            if (currentTime - this.lastFired >= shotDelay) {
-                enemyProjectiles.push(new Projectile(
-                    this.sprite.x + this.sprite.d * cos(this.sprite.rotation), 
-                    this.sprite.y + this.sprite.d * sin(this.sprite.rotation), 
-                    this.sprite.rotation, 
-                    this.shotSpeed, 
-                    this.damage, 10, 
-                    redBulletImg, 
-                    enemyProjectiles));
-                this.lastFired = currentTime;
-            }
-        }
-    }
-
     //stops sprite in idle state
     handleIdle() {
         this.sprite.speed = 0;
+    }
+
+    //moves away from player ships when too close
+    handlePlayerShipSpread() {
+        for (let i = selectableSprites.length - 1; i >= 0; i--) {
+            let ship = selectableSprites[i];
+            let dir = createVector(this.sprite.x - ship.sprite.x, this.sprite.y - ship.sprite.y);
+            dir.setMag(0.2);
+            this.sprite.x += dir.x;
+            this.sprite.y += dir.y;
+        }
+    }
+
+    //spread apart from other enemy units when stacked
+    handleEnemyUnitSpread() {
+        for (let i = enemyUnits.length - 1; i >= 0; i--) {
+            let unit = enemyUnits[i];
+            if (this !== unit) {
+
+                const distToUnit = dist(this.sprite.x, this.sprite.y, unit.sprite.x, unit.sprite.y);
+                
+                if ((this.sprite.speed === 0 || this.closestShip) && (distToUnit <= this.sprite.d)) {
+                    let dir = createVector(this.sprite.x - unit.sprite.x, this.sprite.y - unit.sprite.y);
+                    dir.setMag(0.2);
+                    this.sprite.x += dir.x;
+                    this.sprite.y += dir.y;
+                }
+
+            }        
+        }
+    }
+}
+
+class ShootingUnit extends EnemyUnit {
+    constructor(x, y) {
+        const defaultSpeed = 0.3;
+        const defaultHealth = 100;
+        super(x, y, defaultSpeed, defaultHealth);
+        
+        this.name = 'Shooting Unit';
+        
+        this.sprite.addAni('default', shootingUnitImg);
+        this.sprite.addAni('selected', shootingUnitSelectedImg);
+        this.sprite.d = 30;
+    }
+
+    update() {
+        super.update();
+        this.handleDetectCombat(); 
+        this.updateAnimation();
+    }
+
+    updateAnimation() {
+        this.sprite.ani.scale = 1.5;
     }
 
     //moves and shoots while in combat - modify it to whatver you like
@@ -165,48 +198,38 @@ class EnemyUnit {
         }
     }
 
-    //moves away from player ships when too close
-    handlePlayerShipSpread() {
-        for (let i = selectableSprites.length - 1; i >= 0; i--) {
-            let ship = selectableSprites[i];
-            let dir = createVector(this.sprite.x - ship.sprite.x, this.sprite.y - ship.sprite.y);
-            dir.setMag(0.2);
-            this.sprite.x += dir.x;
-            this.sprite.y += dir.y;
-        }
-    }
+    //shoots at the units rotation
+    shoot() {
+        if (this.closestShip) {
+            const currentTime = Date.now();
+            const shotDelay = 1000/this.fireRate;
 
-    //spread apart from other enemy units when stacked
-    handleEnemyUnitSpread() {
-        for (let i = enemyUnits.length - 1; i >= 0; i--) {
-            let unit = enemyUnits[i];
-            if (this !== unit) {
-
-                const distToUnit = dist(this.sprite.x, this.sprite.y, unit.sprite.x, unit.sprite.y);
-                
-                if ((this.sprite.speed === 0 || this.closestShip) && (distToUnit <= this.sprite.d)) {
-                    let dir = createVector(this.sprite.x - unit.sprite.x, this.sprite.y - unit.sprite.y);
-                    dir.setMag(0.2);
-                    this.sprite.x += dir.x;
-                    this.sprite.y += dir.y;
-                }
-
-            }        
+            if (currentTime - this.lastFired >= shotDelay) {
+                enemyProjectiles.push(new Projectile(
+                    this.sprite.x + this.sprite.d * cos(this.sprite.rotation), 
+                    this.sprite.y + this.sprite.d * sin(this.sprite.rotation), 
+                    this.sprite.rotation, 
+                    this.shotSpeed, 
+                    this.damage, 10, 
+                    redBulletImg, 
+                    enemyProjectiles));
+                this.lastFired = currentTime;
+            }
         }
     }
 }
 
-class ShootingUnit extends EnemyUnit {
+class MothershipUnit extends EnemyUnit {
     constructor(x, y) {
-        const defaultSpeed = 0.3;
-        const defaultHealth = 100;
+        const defaultSpeed = 0.2;
+        const defaultHealth = 2000;
         super(x, y, defaultSpeed, defaultHealth);
         
-        this.name = 'Shooting Unit';
+        this.name = 'Mothership Unit';
         
-        this.sprite.addAni('default', shootingUnitImg);
-        this.sprite.addAni('selected', shootingUnitDamagedImg);
-        this.sprite.d = 30;
+        this.sprite.addAni('default', mothershipUnitUnitImg);
+        this.sprite.addAni('selected', shootingUnitSelectedImg);
+        this.sprite.d = 70;
     }
 
     update() {
@@ -215,7 +238,7 @@ class ShootingUnit extends EnemyUnit {
     }
 
     updateAnimation() {
-        this.sprite.ani.scale = 1.5;
+        this.sprite.ani.scale = 3;
     }
 
 }

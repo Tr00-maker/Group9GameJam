@@ -98,21 +98,18 @@ class PlayerShip {
 
     //handle moving to the target
     handleHasTarget() {  
-        switch(this.name) {
+        switch (this.name) {
             case 'Mining Ship':
-                for (let asteroid of asteroids) {
-                    if (this.targetSprite != asteroid) {
+                if (this.targetSprite) {
+                    if (!asteroids.includes(this.targetSprite)) {
                         this.handleMoveToTarget();
-                    } else if (this.targetSprite === asteroid) {
-                        this.handleMiningLogic(asteroid);
-                    } else {
+                    } else if (asteroids.includes(this.targetSprite) && this.targetSprite.active) {
+                        this.handleMiningLogic(this.targetSprite);
+                    } else if (asteroids.includes(this.targetSprite) && !this.targetSprite.active) {
                         this.returnToMothership();
-                        return
+                        return;
                     }
-                    if (!this.targetSprite) {
-                        this.handleMoveToTarget();
-                    }
-                }
+                } 
                 break;
             case 'Battle Ship':
                 this.handleMoveToTarget();
@@ -132,6 +129,7 @@ class PlayerShip {
 
     //continuously move to target until reaching the onTarget distance at which point the ships will spread
     handleMoveToTarget() {
+        console.log('still handling movement')
         if (this.targetSprite) {
             this.setTarget(this.targetSprite.sprite.x, this.targetSprite.sprite.y);
             this.sprite.rotateTo(this.target, this.rotationSpeed);

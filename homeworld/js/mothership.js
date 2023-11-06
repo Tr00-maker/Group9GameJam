@@ -24,10 +24,6 @@ class Mothership extends PlayerShip {
         this.updateAnimation();
     }
 
-    setIdle() {
-        
-    }
-
     setSpawnTarget() {
         if (this.targetSprite) {
             if (this.targetSprite.active) {
@@ -57,7 +53,7 @@ class Mothership extends PlayerShip {
         if (!this.buttonsCreated) {
             this.buttonsCreated = true;
             buttons.push(new UnitButton('Mining Ship', miningShipCost, uiX + uiW/2, uiY + uiH/2, 50, 50, miningShipImg));
-            buttons.push(new UnitButton('Missile', missileCost, uiX + uiW/3, uiY + uiH/2, 50, 50, missileImg));
+            //buttons.push(new UnitButton('Missile', missileCost, uiX + uiW/3, uiY + uiH/2, 50, 50, missileImg));
         }
     }
 

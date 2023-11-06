@@ -18,7 +18,7 @@ class MiningShip extends PlayerShip {
         this.resource = 0;
         this.lastMined = 0;
         this.capacity = 10;
-        this.miningRate = 2;
+        this.miningRate = 1;
         this.sprite.text = this.resource;
         this.sprite.textColor = 'white';
         this.sprite.textSize = 20;
@@ -86,7 +86,7 @@ class MiningShip extends PlayerShip {
     //return miners to mothership
     returnToMothership() {
         let mothershipRange = dist(mothership.sprite.x, mothership.sprite.y, this.sprite.x, this.sprite.y);
-
+        
         if (mothershipRange > this.range) {
             this.setTarget(mothership.sprite.x, mothership.sprite.y);
             this.sprite.rotateTo(this.target, this.rotationSpeed);

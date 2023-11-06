@@ -31,7 +31,8 @@ let shootingUnitImg, shootingUnitDamagedImg;
 
 //asteroids
 let asteroids = [];
-let asteroidImg;
+let asteroidController;
+let startingAsteroids = 20;
 
 //missiles
 let missiles = [];
@@ -60,7 +61,10 @@ function preload() {
     battleShipSelectedImg = loadAnimation('./images/selected.png', { frameSize: [32, 32], frames: 1, row: 1, col: 1 });
 
     shootingUnitImg = loadAnimation('./images/ships.png', { frameSize: [32, 32], frames: 1, row: 1, col: 0 });
-    shootingUnitDamagedImg = loadAnimation('./images/selected.png', { frameSize: [32, 32], frames: 1, row: 1, col: 0 });
+    shootingUnitSelectedImg = loadAnimation('./images/selected.png', { frameSize: [32, 32], frames: 1, row: 1, col: 0 });
+
+    mothershipUnitUnitImg = loadAnimation('./images/ships.png', { frameSize: [32, 32], frames: 1, row: 2, col: 0 });
+    mothershipUnitSelectedImg = loadAnimation('./images/selected.png', { frameSize: [32, 32], frames: 1, row: 2, col: 0 });
 
     redBulletImg = loadImage('./images/redBullet.png');
     tealBulletImg = loadImage('./images/tealBullet.png');
