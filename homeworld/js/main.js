@@ -88,6 +88,7 @@ function initializeCamera() {
     cameraSprite = new Sprite(width/2, height/2, 'n');
     cameraSprite.d = 10;
     cameraSprite.color = color(255, 0);
+    cameraSprite.stroke = color(0,0);
 }
 
 function cameraEffect() {
