@@ -24,6 +24,7 @@ class UnitButton {
         textSize(20);
         text(this.name + ': ' + this.cost, this.x + this.w/2, this.y - 10);
         pop();
+        
         if (this.isHovered(mouseX, mouseY) && mouse.released(LEFT)) {
             this.checkPressed();
         }
@@ -34,6 +35,7 @@ class UnitButton {
         } else {
             this.color = defaultButtonColor;
         }
+        
     }
 
     isHovered(x, y) {
@@ -47,6 +49,7 @@ class UnitButton {
 
     checkPressed() {  
         if (!clickedFlag) {
+            clickedFlag = true;
             switch(this.name) {
                 case 'Mining Ship':
                 this.queueMiningShip();
@@ -62,8 +65,8 @@ class UnitButton {
     }
 
     queueMiningShip() {
-        if (mothership.resource >= 50) {
-            mothership.resource -= 50;
+        if (mothership.resource >= this.cost) {
+            mothership.resource -= this.cost;
             mothership.spawnMiningShip();
         }
     }

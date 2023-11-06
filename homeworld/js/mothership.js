@@ -28,6 +28,18 @@ class Mothership extends PlayerShip {
         
     }
 
+    setSpawnTarget() {
+        if (this.targetSprite) {
+            if (this.targetSprite.active) {
+                this.spawnTarget = this.targetSprite;
+            } else {
+                this.spawnTarget = null;
+            }
+        } else {
+            this.spawnTarget = null;
+        }
+    }
+
     spawnMiningShip() {
         miningShips.push(new MiningShip(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100)));
     }

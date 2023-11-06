@@ -58,7 +58,6 @@ class EnemyUnit {
         let x = random(0, width - 300);
         let y = random(0, height - 300);
     
-        // Await the completion of rotateTo and moveTo
         this.sprite.rotateTo(x, y, this.rotationSpeed);
         await this.sprite.moveTo(x, y, this.speed);
         
@@ -69,6 +68,7 @@ class EnemyUnit {
         }
     }
     
+    // shows this sprite as the target sprite when a selected player ship is targeting it
     showTarget() {
         this.sprite.ani = 'default';
 
@@ -82,7 +82,6 @@ class EnemyUnit {
 
     takeDamage(x, y, damage, radius) {
         this.health -= damage;
-        console.log('damage taken');
         if (this.health <= 0) {
             //explosions.push(new explosion(x, y, damage)) add later
             this.dies();
