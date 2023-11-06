@@ -41,11 +41,6 @@ class Missile{
         this.handleSelection();
         this.handleDestination();
         this.updateAnimation();
-        this.sprite.overlaps(allSprites, this.explode);
-        if(this.sprite.collides(allSprites))
-        {
-            console.log('overlaps');
-        }
         if(this.targeting == true)
         {
             this.setTarget(this.enemy);
@@ -56,7 +51,7 @@ class Missile{
     
     handleSelection() {
         if (this.sprite.mouse.presses(LEFT)) {
-            selectableSprites.forEach(sprite => sprite.selected = false);
+            allSprites.forEach(sprite => sprite.selected = false);
             this.selected = true;
             console.log('missile select');
             setTimeout(() => selectionSquare.selectionFlag = false, 100);
