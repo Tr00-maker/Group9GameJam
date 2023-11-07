@@ -2,7 +2,7 @@ function playStateSetup() {
     spaceBackground.resize(400, 400);
     userInterface = new UserInterface();
     selectionSquare = new SelectionSquare();
-    asteroidController = new AsteroidController(4000, 50);
+    asteroidController = new AsteroidController(3000, 50);
     mothership = new Mothership(width/2, height/2);
     for (let i = 0; i < startingAsteroids; i++) {
         asteroids.push(new Asteroid(width/2 + (random() * width - width/2), height/2 + (random() * height - height/2), random(0, 360)));

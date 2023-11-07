@@ -1,6 +1,6 @@
 class MiningShip extends PlayerShip {
     constructor(x, y) {
-        const defaultSpeed = 0.5;
+        const defaultSpeed = 0.75;
         const defaultHealth = 100;
         const defaultRange = 100;
 
@@ -11,6 +11,7 @@ class MiningShip extends PlayerShip {
         this.sprite.d = 20;
         
         this.name = 'Mining Ship';
+        this.detectionRange = this.range*1.5;
         this.initializeResources();
     }
 
