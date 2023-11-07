@@ -10,31 +10,20 @@ class EnemyUnit {
 
         this.sprite.debug = false;
         targetableSprites.push(this);
+        enemyUnits.push(this);
         this.sprite.overlaps(allSprites);
 
         this.sprite.direction = 0;
         this.sprite.speed = this.speed;
 
         this.active = true;
-
-        this.closestShip = null;
-
         this.inPatrol = false;
 
         this.state = 'idle';
-
-        this.fireRate = 0.5;
-        this.lastFired = 0;
-        this.shotSpeed = 3;
-        this.damage = 5;
     }
 
     update() {
         this.showTarget();    
-
-        if (!this.closestShip) {
-            this.state = 'patrol';
-        }
 
         switch(this.state) {
             case 'idle':
@@ -43,10 +32,29 @@ class EnemyUnit {
             case 'combat':
                 this.handleCombat();
                 break;
+            case 'mining':
+                this.handleMiningLogic(this.targetSprite);
+                break;
             case 'patrol':
                 this.handlePatrol();
                 break;
         }
+    }
+
+    //set the target vector
+    setTarget(x, y) {
+        this.target = createVector(x, y);
+        this.directionVector = p5.Vector.sub(this.target, createVector(this.sprite.x, this.sprite.y));
+        this.direction = this.directionVector.heading();
+        this.distance = this.directionVector.mag(); 
+        this.state = 'hasTarget';
+    }
+
+    //sets a target destination
+    setSpriteTarget(target) {
+        this.setTarget(target.sprite.x, target.sprite.y);
+        this.targetSprite = target;
+        this.autoTarget = false;
     }
 
     //basic patrol method - change this to whatever
@@ -134,9 +142,42 @@ class EnemyUnit {
     }
 }
 
+
+class MothershipUnit extends EnemyUnit {
+    constructor(x, y) {
+        const defaultSpeed = 0.2;
+        const defaultHealth = 2000;
+        super(x, y, defaultSpeed, defaultHealth);
+        
+        this.name = 'Mothership Unit';
+        
+        this.sprite.addAni('default', mothershipUnitUnitImg);
+        this.sprite.addAni('selected', shootingUnitSelectedImg);
+        this.sprite.d = 70;
+
+        this.resource = 0;
+    }
+
+    update() {
+        super.update();
+
+        this.sprite.text = this.resource;
+        if (!this.closestShip) {
+            this.state = 'patrol';
+        }
+
+        this.updateAnimation();
+    }
+
+    updateAnimation() {
+        this.sprite.ani.scale = 3;
+    }
+
+}
+
 class ShootingUnit extends EnemyUnit {
     constructor(x, y) {
-        const defaultSpeed = 0.3;
+        const defaultSpeed = 0.5;
         const defaultHealth = 100;
         super(x, y, defaultSpeed, defaultHealth);
         
@@ -145,10 +186,21 @@ class ShootingUnit extends EnemyUnit {
         this.sprite.addAni('default', shootingUnitImg);
         this.sprite.addAni('selected', shootingUnitSelectedImg);
         this.sprite.d = 30;
+
+        
+        this.fireRate = 0.5;
+        this.lastFired = 0;
+        this.shotSpeed = 3;
+        this.damage = 5;
     }
 
     update() {
         super.update();
+
+        if (!this.closestShip) {
+            this.state = 'patrol';
+        }
+
         this.handleDetectCombat(); 
         this.updateAnimation();
     }
@@ -217,28 +269,4 @@ class ShootingUnit extends EnemyUnit {
             }
         }
     }
-}
-
-class MothershipUnit extends EnemyUnit {
-    constructor(x, y) {
-        const defaultSpeed = 0.2;
-        const defaultHealth = 2000;
-        super(x, y, defaultSpeed, defaultHealth);
-        
-        this.name = 'Mothership Unit';
-        
-        this.sprite.addAni('default', mothershipUnitUnitImg);
-        this.sprite.addAni('selected', shootingUnitSelectedImg);
-        this.sprite.d = 70;
-    }
-
-    update() {
-        super.update();
-        this.updateAnimation();
-    }
-
-    updateAnimation() {
-        this.sprite.ani.scale = 3;
-    }
-
 }

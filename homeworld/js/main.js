@@ -28,6 +28,9 @@ let battleShipImg, battleShipSelectedImg;
 
 //enemy units
 let enemyUnits = [];
+let battleShipUnits = [];
+let miningShipUnits = [];
+let mothershipUnit;
 let shootingUnitImg, shootingUnitDamagedImg;
 
 //asteroids
@@ -66,6 +69,9 @@ function preload() {
 
     mothershipUnitUnitImg = loadAnimation('./images/ships.png', { frameSize: [32, 32], frames: 1, row: 2, col: 0 });
     mothershipUnitSelectedImg = loadAnimation('./images/selected.png', { frameSize: [32, 32], frames: 1, row: 2, col: 0 });
+
+    miningShipUnitImg = loadAnimation('./images/ships.png', { frameSize: [32, 32], frames: 1, row: 0, col: 0 });
+    miningShipUnitSelectedImg = loadAnimation('./images/selected.png', { frameSize: [32, 32], frames: 1, row: 0, col: 0 });
 
     redBulletImg = loadImage('./images/redBullet.png');
     tealBulletImg = loadImage('./images/tealBullet.png');

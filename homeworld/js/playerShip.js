@@ -86,8 +86,6 @@ class PlayerShip {
         this.direction = this.directionVector.heading();
         this.distance = this.directionVector.mag(); 
         this.state = 'hasTarget';
-
-        this.buttonsCreated = false;
     }
 
     //handle moving to the target

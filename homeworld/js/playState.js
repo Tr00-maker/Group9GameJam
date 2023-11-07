@@ -13,7 +13,12 @@ function playStateSetup() {
     battleShips.push(new BattleShip(mothership.sprite.x + (random() * 400 - 200), mothership.sprite.y + (random() * 400 - 200)));
     
     enemyUnits.push(new ShootingUnit(100, 200));
-    enemyUnits.push(new MothershipUnit(300, 200));
+    enemyUnits.push(new MiningShipUnit(100, 200));
+    enemyUnits.push(new MiningShipUnit(200, 200));
+    enemyUnits.push(new MiningShipUnit(300, 200));
+    mothershipUnit = (new MothershipUnit(300, 200));
+
+
 
 
 }
