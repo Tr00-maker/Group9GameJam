@@ -77,29 +77,29 @@ class AsteroidController {
 
     randomSpawnCoords() {
         let spawnX, spawnY, direction;
-        switch (floor(random() * 4)) {
+        switch (floor(random(0, 4))) {
             case 0: // Top quadrant
                 spawnX = random() * width;
-                spawnY = -100; // Always spawn 100 units above the canvas
-                direction = random(-10, 10);
+                spawnY = 0;
+                direction = random(-5, 5);
                 break;
                 
             case 1: // Left quadrant
-                spawnX = -100; // Always spawn 100 units left of the canvas
+                spawnX = 0;
                 spawnY = random() * height;
-                direction = random(260, 280);
+                direction = random(265, 275);
                 break;
                 
             case 2: // Bottom quadrant
                 spawnX = random() * width;
-                spawnY = height + 100; // Always spawn 100 units below the canvas
-                direction = random(80, 100);
+                spawnY = height;
+                direction = random(85, 95);
                 break;
                 
             case 3: // Right quadrant
-                spawnX = width + 100; // Always spawn 100 units right of the canvas
+                spawnX = width; 
                 spawnY = random() * height;
-                direction = random(170, 190);
+                direction = random(175, 185);
                 break;
         }
         
