@@ -2,7 +2,7 @@
 class MiningShipUnit extends EnemyUnit {
     constructor(x, y) {
         const defaultSpeed = 0.75;
-        const defaultHealth = 2000;
+        const defaultHealth = 200;
         const defaultRange = 100;
         super(x, y, defaultSpeed, defaultHealth, defaultRange);
         miningShips.push(this);
@@ -63,7 +63,6 @@ class MiningShipUnit extends EnemyUnit {
             this.targetSprite = null;
             this.state = 'idle';
         }
-        console.log(this.targetSprite);
     }
 
     //minging ship resource gathering logic
@@ -99,6 +98,7 @@ class MiningShipUnit extends EnemyUnit {
                 this.sprite.move(this.distance, this.direction, this.speed);
             } else if (this.onTarget && this.sprite.speed != 0) {
                 this.sprite.speed -=0.1;
+                this.handleEnemyUnitSpread();
             }
     
             if (dist(this.sprite.x, this.sprite.y, this.targetSprite.sprite.x, this.targetSprite.sprite.y) < this.range) {

@@ -4,7 +4,7 @@ function playStateSetup() {
     selectionSquare = new SelectionSquare();
     asteroidController = new AsteroidController(3000, 50);
     mothership = new Mothership(width/2, height/2);
-    mothershipUnit = (new MothershipUnit(500, 500));
+    mothershipUnit = (new MothershipUnit(1000, 1000));
     for (let i = 0; i < startingAsteroids; i++) {
         asteroids.push(new Asteroid(width/2 + (random() * width - width/2), height/2 + (random() * height - height/2), random(0, 360)));
     }

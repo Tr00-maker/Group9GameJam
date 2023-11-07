@@ -130,7 +130,7 @@ class EnemyUnit {
 
                 const distToUnit = dist(this.sprite.x, this.sprite.y, unit.sprite.x, unit.sprite.y);
                 
-                if ((this.sprite.speed === 0 || this.closestShip) && (distToUnit <= this.sprite.d)) {
+                if ((this.sprite.speed === 0 || this.closestShip || this.onTarget) && (distToUnit <= this.sprite.d)) {
                     let dir = createVector(this.sprite.x - unit.sprite.x, this.sprite.y - unit.sprite.y);
                     dir.setMag(0.2);
                     this.sprite.x += dir.x;
@@ -231,9 +231,9 @@ class ShootingUnit extends EnemyUnit {
         let distToClosestShip = dist(this.sprite.x, this.sprite.y, this.closestShip.sprite.x, this.closestShip.sprite.y);
 
         //at max range move toward player ships
-        if (distToClosestShip < this.detetetionRange && distToClosestShip > this.detetetionRange/1.2) {
+        if (distToClosestShip < this.detectionRange && distToClosestShip > this.detectionRange/1.2) {
             this.sprite.moveTo(this.closestShip.sprite, this.speed);
-        } else if (distToClosestShip < this.detetetionRange/1.2 && distToClosestShip > this.range) {
+        } else if (distToClosestShip < this.detectionRange/1.2 && distToClosestShip > this.range) {
             this.sprite.attractTo(this.closestShip.sprite, this.speed/3);
         } else if (distToClosestShip < this.range) {
             this.shoot();
@@ -256,14 +256,17 @@ class ShootingUnit extends EnemyUnit {
 
         let distToClosestUnit = dist(this.sprite.x, this.sprite.y, closestShip.sprite.x, closestShip.sprite.y);
 
-        if (distToClosestUnit < this.detetctionRange) {
+        if (distToClosestUnit < this.detectionRange) {
             this.closestShip = closestShip;
             this.state = 'combat';
         } else {
             this.closestShip = null;
             this.state = 'patrol';
         }
-        console.log('detecting combat ' + this.closestShip)
+        if (this.closestShip) {
+
+            console.log('detecting combat ' + this.closestShip);
+        }
     }
 
     //shoots at the units rotation

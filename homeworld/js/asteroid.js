@@ -8,7 +8,7 @@ class Asteroid {
         this.sprite.overlaps(allSprites);
 
         this.sprite.direction = direction;
-        this.speed = random(0.1, 0.8);
+        this.speed = random(0.1, 0.5);
         this.sprite.speed = this.speed;
 
         this.resource = 500;
