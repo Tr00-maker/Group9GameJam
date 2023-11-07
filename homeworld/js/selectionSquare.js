@@ -29,11 +29,11 @@ class SelectionSquare {
             pop();
         }
 
-        if (mouse.pressing(LEFT) && !this.isInUiBar(mx, my)) {
+        if (mouse.pressing(LEFT)) {
             this.drawing = true;
         }
 
-        if (mouse.released(LEFT) && this.drawing && !this.isInUiBar(mx, my)) {
+        if (mouse.released(LEFT) && this.drawing) {
             this.drawing = false;
             setTimeout(() => this.selectionFlag = false, 200);
         }
@@ -46,7 +46,7 @@ class SelectionSquare {
                 } else if (!this.isInUiBar(mx, my)) {
                     selectableSprites[i].selected = false;
                 }            
-            } else if (!this.drawing && !this.selectionFlag && !this.isInUiBar(mx, my)) {
+            } else if (!this.drawing && !this.selectionFlag) {
                 if (mouse.released(LEFT)) {
                     selectableSprites[i].selected = false;
                 }

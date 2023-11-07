@@ -21,12 +21,6 @@ class PlayerShip {
         if (this.selected && mouse.pressed(RIGHT)) {
             this.handleSetTarget();
         }
-        
-        if (this.selected) {
-            this.showUI();
-        } else {
-            this.removeUI();
-        }
 
         switch(this.state) {
             case 'idle':
@@ -129,7 +123,6 @@ class PlayerShip {
 
     //continuously move to target until reaching the onTarget distance at which point the ships will spread
     handleMoveToTarget() {
-        console.log('still handling movement')
         if (this.targetSprite) {
             this.setTarget(this.targetSprite.sprite.x, this.targetSprite.sprite.y);
             this.sprite.rotateTo(this.target, this.rotationSpeed);

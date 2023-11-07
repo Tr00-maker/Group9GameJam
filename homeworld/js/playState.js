@@ -1,10 +1,8 @@
 function playStateSetup() {
     spaceBackground.resize(400, 400);
-
+    userInterface = new UserInterface();
     selectionSquare = new SelectionSquare();
-
     asteroidController = new AsteroidController(4000, 50);
-
     mothership = new Mothership(width/2, height/2);
     for (let i = 0; i < startingAsteroids; i++) {
         asteroids.push(new Asteroid(width/2 + (random() * width - width/2), height/2 + (random() * height - height/2), random(0, 360)));
@@ -17,12 +15,12 @@ function playStateSetup() {
     enemyUnits.push(new ShootingUnit(100, 200));
     enemyUnits.push(new MothershipUnit(300, 200));
 
+
 }
 
 function playState() {
     drawBackground();
-    setUiSize();
-    resourceDisplay();
+    userInterface.update();
     playStatePause();
     playStateUpdate();    
 }
@@ -32,7 +30,7 @@ function playStatePause() {
         gamePause = !gamePause;
     } 
     world.step(gamePause ? -1 : 0);
-    allSprites.autoUpdate = !gamePause;  
+    //allSprites.autoUpdate = !gamePause;  
 }
 
 function playStateUpdate() {
@@ -40,10 +38,7 @@ function playStateUpdate() {
         selectionSquare.display();
         mothership.update();
         asteroidController.update();
-        
-        for (let i = 0; i < buttons.length; i++) {
-            buttons[i].update();
-        }
+    
 
         for (let i = asteroids.length - 1; i >= 0; i--) {
             asteroids[i].update();
@@ -81,29 +76,3 @@ function drawBackground() {
     }
 }
 
-function setUiSize() {
-    uiW = windowWidth;
-    uiH = windowHeight/6;
-    uiX = cameraSprite.x - windowWidth/2;
-    uiY = cameraSprite.y + windowHeight/2 - uiH;
-    resourceTextX = uiX + 100;
-    resourceTextY = uiY + 25;
-}
-
-function resourceDisplay() {
-    //bottom bar
-    push();
-    stroke(0);
-    strokeWeight(4);
-    fill(255, 100);
-    rect(uiX, uiY, uiW, uiH);
-    pop();
-
-    //resource text
-    push();
-    textSize(20);
-    fill(255);
-    textAlign(LEFT, CENTER);
-    text('Resource: ' + mothership.resource, resourceTextX, resourceTextY);
-    pop();
-}

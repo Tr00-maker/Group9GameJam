@@ -1,11 +1,12 @@
 //game state
-let gamePause = false;
+let gamePause = true;
 
 //mothership
 let mothershipImg, mothership;
 
-//buttons
-let buttons = [];
+//User Interface
+let userInterface;
+let unitButtons = [];
 let miningShipCost = 50;
 let missileCost = 40;
 const defaultButtonColor = [255, 255, 255, 100];
@@ -42,7 +43,7 @@ let missileImg;
 let spaceBackground;
 
 //ui bar
-let uiW, uiH, uiX, uiY, resourceTextX, resourceTextY;
+let uiW, uiH, uiX, uiY;
 
 function preload() {
     spaceBackground = loadImage('./images/gif1.gif');
@@ -99,9 +100,9 @@ function cameraEffect() {
     my = mouseY - ty;
     
     let aspectRatio = windowWidth / windowHeight;
-    let cameraSpeed = 0.0075;
+    let cameraSpeed = 0.01;
 
-    if (mx < cameraSprite.x - windowWidth/2 + 75 && cameraSprite.x > windowWidth/2 ||
+    if (mx < cameraSprite.x - windowWidth/2 + 75 && cameraSprite.x > windowWidth/2 && mx > cameraSprite.x - windowWidth/2 ||
         mx > cameraSprite.x + windowWidth/2 - 75 && cameraSprite.x < width - windowWidth/2) {
             cameraSprite.moveTowards(mx, my, cameraSpeed);
         } else if (my < cameraSprite.y - windowHeight/2 + 75 && cameraSprite.y > windowHeight/2 ||
@@ -110,7 +111,12 @@ function cameraEffect() {
     } else if (cameraSprite.speed >0) {
         cameraSprite.speed = 0;
     }
+
+    if (kb.pressed('x')) {
+        cameraSprite.pos = mothership.sprite.pos;
+    }
 }
 
 //var for cameraEffect
 let cameraSprite, tx, ty, mx, my;
+
