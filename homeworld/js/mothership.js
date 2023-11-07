@@ -9,6 +9,7 @@ class Mothership extends PlayerShip {
         this.sprite.addAni('default', mothershipImg);
         this.sprite.addAni('selected', mothershipSelectedImg);
         this.sprite.d = 70;
+        this.size = 50;
 
         this.name = 'Mothership';
         
@@ -52,7 +53,7 @@ class Mothership extends PlayerShip {
     showUI() {
         if (!this.buttonsCreated) {
             this.buttonsCreated = true;
-            buttons.push(new UnitButton('Mining Ship', miningShipCost, uiX + uiW/2, uiY + uiH/2, 50, 50, miningShipImg));
+            buttons.push(new UnitButton('Mining Ship', miningShipCost, unitButtonCoords.buttonThree.x, unitButtonCoords.buttonThree.y, this.size, this.size, miningShipImg));
             //buttons.push(new UnitButton('Missile', missileCost, uiX + uiW/3, uiY + uiH/2, 50, 50, missileImg));
         }
     }
@@ -64,3 +65,4 @@ class Mothership extends PlayerShip {
         }
     }
 }
+

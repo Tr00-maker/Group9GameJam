@@ -96,3 +96,9 @@ class UnitButton {
     }
 }
 let clickedFlag = false;
+let unitButtonCoords = {
+    buttonOne: {x: uiX + 100, y: uiY + uiH/2}, //outer left
+    buttonTwo: {x: uiX + 200, y: uiY + uiH/2}, //inner left
+    buttonThree: {x: uiX + 300, y: uiY + uiH/2}, //inner right
+    buttonFour: {x: uiX + 400, y: uiY + uiH/2}, //outer right
+}
