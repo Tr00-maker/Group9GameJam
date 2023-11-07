@@ -24,10 +24,6 @@ class Mothership extends PlayerShip {
         this.updateAnimation();
     }
 
-    setIdle() {
-        
-    }
-
     setSpawnTarget() {
         if (this.targetSprite) {
             if (this.targetSprite.active) {
@@ -43,6 +39,11 @@ class Mothership extends PlayerShip {
     spawnMiningShip() {
         miningShips.push(new MiningShip(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100)));
     }
+
+    spawnBattleShip() {
+        battleShips.push(new BattleShip(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100)));
+    }
+
     spawnMissile()
     {
         missiles.push(new Missile(this.sprite.x + (random() * 300 - 50), this.sprite.y + (random() * 300 - 50), 10, 10));
@@ -53,18 +54,5 @@ class Mothership extends PlayerShip {
         this.sprite.ani.scale = 3;
     }
 
-    showUI() {
-        if (!this.buttonsCreated) {
-            this.buttonsCreated = true;
-            buttons.push(new UnitButton('Mining Ship', miningShipCost, uiX + uiW/2, uiY + uiH/2, 50, 50, miningShipImg));
-            buttons.push(new UnitButton('Missile', missileCost, uiX + uiW/3, uiY + uiH/2, 50, 50, missileImg));
-        }
-    }
-
-    removeUI() {
-        this.buttonsCreated = false;
-        for (let i = 0; i < buttons.length; i++) {
-            buttons[i].remove();
-        }
-    }
 }
+

@@ -13,13 +13,13 @@ class SelectionSquare {
     
     display() {
         if (!this.drawing) {
-            this.x = mouseX;
-            this.y = mouseY;
+            this.x = mx;
+            this.y = my;
         } else {
-            this.sprite.x = min(this.x, mouseX);
-            this.sprite.y = min(this.y, mouseY);
-            this.sprite.w = abs(mouseX - this.x);
-            this.sprite.h = abs(mouseY - this.y);
+            this.sprite.x = min(this.x, mx);
+            this.sprite.y = min(this.y, my);
+            this.sprite.w = abs(mx - this.x);
+            this.sprite.h = abs(my - this.y);
     
             push();
             fill(255, 255, 255, 50);
@@ -29,11 +29,11 @@ class SelectionSquare {
             pop();
         }
 
-        if (mouse.pressing(LEFT) && !this.isInUiBar(mouseX, mouseY)) {
+        if (mouse.pressing(LEFT)) {
             this.drawing = true;
         }
 
-        if (mouse.released(LEFT) && this.drawing && !this.isInUiBar(mouseX, mouseY)) {
+        if (mouse.released(LEFT) && this.drawing) {
             this.drawing = false;
             setTimeout(() => this.selectionFlag = false, 200);
         }
@@ -43,10 +43,10 @@ class SelectionSquare {
                 if (this.isInSelectionSquare(selectableSprites[i].sprite)) {
                     selectableSprites[i].selected = true;
                     this.selectionFlag = true;
-                } else if (!this.isInUiBar(mouseX, mouseY)) {
+                } else if (!this.isInUiBar(mx, my)) {
                     selectableSprites[i].selected = false;
                 }            
-            } else if (!this.drawing && !this.selectionFlag && !this.isInUiBar(mouseX, mouseY)) {
+            } else if (!this.drawing && !this.selectionFlag) {
                 if (mouse.released(LEFT)) {
                     selectableSprites[i].selected = false;
                 }

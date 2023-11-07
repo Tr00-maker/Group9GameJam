@@ -1,6 +1,6 @@
 class MiningShip extends PlayerShip {
     constructor(x, y) {
-        const defaultSpeed = 1;
+        const defaultSpeed = 0.75;
         const defaultHealth = 100;
         const defaultRange = 100;
 
@@ -11,6 +11,7 @@ class MiningShip extends PlayerShip {
         this.sprite.d = 20;
         
         this.name = 'Mining Ship';
+        this.detectionRange = this.range*1.5;
         this.initializeResources();
     }
 
@@ -18,7 +19,7 @@ class MiningShip extends PlayerShip {
         this.resource = 0;
         this.lastMined = 0;
         this.capacity = 10;
-        this.miningRate = 2;
+        this.miningRate = 0.5;
         this.sprite.text = this.resource;
         this.sprite.textColor = 'white';
         this.sprite.textSize = 20;
@@ -86,7 +87,7 @@ class MiningShip extends PlayerShip {
     //return miners to mothership
     returnToMothership() {
         let mothershipRange = dist(mothership.sprite.x, mothership.sprite.y, this.sprite.x, this.sprite.y);
-
+        
         if (mothershipRange > this.range) {
             this.setTarget(mothership.sprite.x, mothership.sprite.y);
             this.sprite.rotateTo(this.target, this.rotationSpeed);

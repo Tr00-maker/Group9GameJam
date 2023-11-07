@@ -1,6 +1,6 @@
 class BattleShip extends PlayerShip {
     constructor(x, y) {
-        const defaultSpeed = 0.8;
+        const defaultSpeed = 1;
         const defaultHealth = 200;
         const defaultRange = 200;
 

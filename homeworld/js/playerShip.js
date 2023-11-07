@@ -1,6 +1,7 @@
 class PlayerShip {
     constructor(x, y, speed, health, range) {
         this.sprite = new Sprite(x, y, 'd');
+        this.sprite.layer = 1;
         this.speed = speed;
         this.health = health;
         this.range = range;
@@ -20,12 +21,6 @@ class PlayerShip {
     update() {
         if (this.selected && mouse.pressed(RIGHT)) {
             this.handleSetTarget();
-        }
-        
-        if (this.selected) {
-            this.showUI();
-        } else {
-            this.removeUI();
         }
 
         switch(this.state) {
@@ -60,7 +55,7 @@ class PlayerShip {
     //check if a target is set
     handleSetTarget() {
         for (let targetableSprite of targetableSprites) {
-            if (targetableSprite.sprite.mouse.pressed(RIGHT)) {
+            if (mouse.pressed(RIGHT) && dist(mx, my, targetableSprite.sprite.x, targetableSprite.sprite.y) <= targetableSprite.sprite.d - (targetableSprite.sprite.d/2)) {
                 this.setSpriteTarget(targetableSprite);
                 return;
             }
@@ -78,7 +73,7 @@ class PlayerShip {
 
     //sets a mouse destination
     setMouseTarget() {
-        this.setTarget(mouseX, mouseY);
+        this.setTarget(mx, my);
         this.sprite.rotateTo(this.target, this.rotationSpeed);
         this.sprite.move(this.distance, this.direction, this.speed);
         this.targetSprite = null;
@@ -92,27 +87,22 @@ class PlayerShip {
         this.direction = this.directionVector.heading();
         this.distance = this.directionVector.mag(); 
         this.state = 'hasTarget';
-
-        this.buttonsCreated = false;
     }
 
     //handle moving to the target
     handleHasTarget() {  
-        switch(this.name) {
+        switch (this.name) {
             case 'Mining Ship':
-                for (let asteroid of asteroids) {
-                    if (this.targetSprite != asteroid) {
+                if (this.targetSprite) {
+                    if (!asteroids.includes(this.targetSprite)) {
                         this.handleMoveToTarget();
-                    } else if (this.targetSprite === asteroid) {
-                        this.handleMiningLogic(asteroid);
-                    } else {
+                    } else if (asteroids.includes(this.targetSprite) && this.targetSprite.active) {
+                        this.handleMiningLogic(this.targetSprite);
+                    } else if (asteroids.includes(this.targetSprite) && !this.targetSprite.active) {
                         this.returnToMothership();
-                        return
+                        return;
                     }
-                    if (!this.targetSprite) {
-                        this.handleMoveToTarget();
-                    }
-                }
+                } 
                 break;
             case 'Battle Ship':
                 this.handleMoveToTarget();
