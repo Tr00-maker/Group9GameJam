@@ -1,6 +1,7 @@
 class Asteroid {
     constructor(x, y, direction) {
         this.sprite = new Sprite(x, y, 'd');
+        this.sprite.layer = 0;
         this.sprite.d = 100;
         this.sprite.color = 'grey';
         targetableSprites.push(this);
@@ -35,7 +36,7 @@ class Asteroid {
             let distance = dist(this.sprite.x, this.sprite.y, ship.sprite.x, ship.sprite.y);
             if (distance < ship.detectionRange) {
                 // If within range of a mining ship, slow down and stop checking
-                this.sprite.speed = 0.1;
+                this.sprite.speed = 0.05;
                 break;
             } 
         }

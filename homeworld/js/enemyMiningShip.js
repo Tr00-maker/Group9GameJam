@@ -3,11 +3,12 @@ class MiningShipUnit extends EnemyUnit {
     constructor(x, y) {
         const defaultSpeed = 0.75;
         const defaultHealth = 2000;
-        super(x, y, defaultSpeed, defaultHealth);
+        const defaultRange = 100;
+        super(x, y, defaultSpeed, defaultHealth, defaultRange);
         miningShips.push(this);
-        
         this.name = 'Mining Ship Unit';
         
+        this.detectionRange = this.range*1.5;
         this.sprite.addAni('default', miningShipUnitImg);
         this.sprite.addAni('selected', miningShipUnitSelectedImg);
         this.sprite.d = 30;
@@ -42,6 +43,7 @@ class MiningShipUnit extends EnemyUnit {
         this.sprite.ani.scale = 1.5;
     }
 
+    //constantly searches for the closest asteroid and restes the mingin ships target to that
     findClosestAsteroid() {
         let closestDistance = Number.MAX_VALUE;
         let closestAsteroid = null;
@@ -87,6 +89,7 @@ class MiningShipUnit extends EnemyUnit {
 
     }
 
+    //handle moving the mining ship to and from asteroids logic
     handleMoveToAsteroid() {
         if (this.targetSprite) {
             this.setTarget(this.targetSprite.sprite.x, this.targetSprite.sprite.y);
@@ -125,6 +128,7 @@ class MiningShipUnit extends EnemyUnit {
 
     }
     
+    //mines the asteroid
     mineTarget(target) {
         const currentTime = Date.now();
         const miningDelay = 1000/this.miningRate
@@ -138,6 +142,7 @@ class MiningShipUnit extends EnemyUnit {
         }
     }
 
+    //deposits the mining ships resources to the mothership
     depositResource() {
         mothershipUnit.resource += this.resource;
         this.resource = 0;

@@ -1,11 +1,11 @@
 class EnemyUnit {
     constructor(x, y, speed, health, range) {
         this.sprite = new Sprite(x, y, 'd');
+        this.sprite.layer = 2;
 
         this.speed = speed;
         this.health = health;
-        this.range = 200;
-        this.detetctionRange = this.range*1.5;
+        this.range = range;
         this.rotationSpeed = this.speed*3;
 
         this.sprite.debug = false;
@@ -156,11 +156,16 @@ class MothershipUnit extends EnemyUnit {
         this.sprite.d = 70;
 
         this.resource = 0;
+        this.sprite.text = this.resource;
+        this.sprite.textColor = 'white';
+        this.sprite.textSize = 20;
     }
 
     update() {
         super.update();
 
+        this.spawnUnits();
+        
         this.sprite.text = this.resource;
         if (!this.closestShip) {
             this.state = 'patrol';
@@ -173,21 +178,36 @@ class MothershipUnit extends EnemyUnit {
         this.sprite.ani.scale = 3;
     }
 
+    //spawns a mining ship every 5 enemy units, else it spawn a shooting ship
+    spawnUnits() {
+        if (this.resource >= miningShipCost) {
+            if (enemyUnits.length % 5 === 0) {
+                this.resource -= miningShipCost;  // Deduct the cost for mining ship
+                enemyUnits.push(new MiningShipUnit(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100)));
+            } else {
+                this.resource -= miningShipCost;  // Deduct the cost for shooting unit, assuming it has a different cost
+                enemyUnits.push(new ShootingUnit(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100)));
+            }
+        }
+    }
+    
+
 }
 
 class ShootingUnit extends EnemyUnit {
     constructor(x, y) {
         const defaultSpeed = 0.5;
         const defaultHealth = 100;
-        super(x, y, defaultSpeed, defaultHealth);
+        const defaultRange = 200;
+        super(x, y, defaultSpeed, defaultHealth, defaultRange);
         
         this.name = 'Shooting Unit';
-        
+        this.detectionRange = this.range*1.5;
         this.sprite.addAni('default', shootingUnitImg);
         this.sprite.addAni('selected', shootingUnitSelectedImg);
         this.sprite.d = 30;
 
-        
+        this.closestShip = null;
         this.fireRate = 0.5;
         this.lastFired = 0;
         this.shotSpeed = 3;
@@ -196,11 +216,6 @@ class ShootingUnit extends EnemyUnit {
 
     update() {
         super.update();
-
-        if (!this.closestShip) {
-            this.state = 'patrol';
-        }
-
         this.handleDetectCombat(); 
         this.updateAnimation();
     }
@@ -216,9 +231,9 @@ class ShootingUnit extends EnemyUnit {
         let distToClosestShip = dist(this.sprite.x, this.sprite.y, this.closestShip.sprite.x, this.closestShip.sprite.y);
 
         //at max range move toward player ships
-        if (distToClosestShip < this.detetctionRange && distToClosestShip > this.detetctionRange/1.2) {
+        if (distToClosestShip < this.detetetionRange && distToClosestShip > this.detetetionRange/1.2) {
             this.sprite.moveTo(this.closestShip.sprite, this.speed);
-        } else if (distToClosestShip < this.detetctionRange/1.2 && distToClosestShip > this.range) {
+        } else if (distToClosestShip < this.detetetionRange/1.2 && distToClosestShip > this.range) {
             this.sprite.attractTo(this.closestShip.sprite, this.speed/3);
         } else if (distToClosestShip < this.range) {
             this.shoot();
@@ -248,6 +263,7 @@ class ShootingUnit extends EnemyUnit {
             this.closestShip = null;
             this.state = 'patrol';
         }
+        console.log('detecting combat ' + this.closestShip)
     }
 
     //shoots at the units rotation

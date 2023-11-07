@@ -1,6 +1,7 @@
 class PlayerShip {
     constructor(x, y, speed, health, range) {
         this.sprite = new Sprite(x, y, 'd');
+        this.sprite.layer = 1;
         this.speed = speed;
         this.health = health;
         this.range = range;
