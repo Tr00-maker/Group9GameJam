@@ -58,9 +58,6 @@ let explosionShipAni, explosionBulletAni;
 //background
 let spaceBackground;
 
-//ui bar
-let uiW, uiH, uiX, uiY;
-
 function preload() {
     spaceBackground = loadImage('./images/gif1.gif');
 
