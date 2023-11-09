@@ -1,5 +1,5 @@
 //game state
-let gamePause = true;
+let gamePause = false;
 
 //mothership
 let mothershipImg, mothership;
@@ -108,8 +108,6 @@ function preload() {
     titleFrameImg = loadAnimation('./images/titleFrame.png');
 
     gearImg = loadImage('./images/gear.png');
-
-
 }
 
 function setup() {
@@ -117,13 +115,13 @@ function setup() {
     changeState(state.play);
     allSprites.pixelPerfect;
     initializeCamera();
-}
+    }
 
-function draw() {  
-    clear();
-    cameraEffect(); 
-    loopStates();
-}
+    function draw() {  
+        clear();
+        cameraEffect(); 
+        loopStates();
+    }
 
 function initializeCamera() {
     cameraSprite = new Sprite(width/2, height/2, 'n');

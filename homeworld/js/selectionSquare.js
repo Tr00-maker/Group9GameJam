@@ -3,9 +3,9 @@ class SelectionSquare {
         this.x = 0;
         this.y = 0;
         this.sprite = new Sprite(0, 0, 'd');
-        this.sprite.overlaps(allSprites);
         this.sprite.color = color(0, 0);
         this.sprite.stroke = color(0, 0);
+        this.sprite.overlaps(allSprites);
         this.sprite.w = 0.1;
         this.sprite.h = 0.1;
 
