@@ -1,26 +1,26 @@
 class BattleShip extends PlayerShip {
     constructor(x, y) {
-        const defaultSpeed = 1;
-        const defaultHealth = 200;
-        const defaultRange = 200;
+        const defaultSpeed = playerUpgradeController.battleShipStat.speed;
+        const defaultHealth = playerUpgradeController.battleShipStat.health;
+        const defaultRange = playerUpgradeController.battleShipStat.range;
+        const defaultSize = playerUpgradeController.battleShipStat.size;
 
         super(x, y, defaultSpeed, defaultHealth, defaultRange); 
         
-        this.sprite.d = 25;
         this.sprite.addAni('default', battleShipImg);
         this.sprite.addAni('selected', battleShipSelectedImg);
-
+        this.sprite.d = defaultSize;
+        
         this.name = 'Battle Ship';
 
         this.initializeStats();
     }
 
     initializeStats() {
-        this.fireRate = 1;
+        this.fireRate = playerUpgradeController.battleShipStat.fireRate;
+        this.shotSpeed = playerUpgradeController.battleShipStat.shotSpeed;
+        this.damage = playerUpgradeController.battleShipStat.damage;
         this.lastFired = 0;
-        this.shotSpeed = 5;
-        this.damage = 10;
-        this.detetctionRange = this.range*1.5; // set the distance that the ships can detect enemies
     }
 
     update() {
@@ -30,7 +30,7 @@ class BattleShip extends PlayerShip {
     }
 
     updateAnimation() {
-        this.sprite.ani.scale = 1.5;
+        this.sprite.ani.scale = this.sprite.d / 20;
     }
 
     showUI() {

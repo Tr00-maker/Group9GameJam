@@ -1,27 +1,31 @@
 class MiningShip extends PlayerShip {
     constructor(x, y) {
-        const defaultSpeed = 0.75;
-        const defaultHealth = 100;
-        const defaultRange = 100;
+        const defaultSpeed = playerUpgradeController.miningShipStat.speed;
+        const defaultHealth = playerUpgradeController.miningShipStat.health;
+        const defaultRange = playerUpgradeController.miningShipStat.range;
+        const defaultSize = playerUpgradeController.miningShipStat.size;
 
         super(x, y, defaultSpeed, defaultHealth, defaultRange); 
 
         this.sprite.addAni('default', miningShipImg);
         this.sprite.addAni('selected', miningShipSelectedImg);
-        this.sprite.d = 20;
-        
+        this.sprite.d = defaultSize;
+        miningShips.push(this);
+
         this.name = 'Mining Ship';
-        this.detectionRange = this.range*1.5;
+        this.initializeStats();
         this.initializeResources();
+    }
+
+    initializeStats() {
+        this.capacity = playerUpgradeController.miningShipStat.capacity;
+        this.miningRate = playerUpgradeController.miningShipStat.miningRate;
+        this.lastMined = 0;
     }
 
     initializeResources() {
         this.resource = 0;
-        this.scrap = 0;
-        this.lastMined = 0;
-        this.capacity = 10;
-        this.miningRate = 0.5;
-        this.sprite.text = this.resource + ' ' + this.scrap;
+        this.scrap = 0;    
         this.sprite.textColor = 'white';
         this.sprite.textSize = 10;
     }
@@ -36,7 +40,7 @@ class MiningShip extends PlayerShip {
     }
 
     updateAnimation() {
-        this.sprite.ani.scale = 1.5;
+        this.sprite.ani.scale = this.sprite.d / 20;
         this.sprite.text = this.resource + ' ' + this.scrap;
 
     }

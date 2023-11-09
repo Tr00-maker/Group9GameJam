@@ -1,10 +1,11 @@
 function playStateSetup() {
     spaceBackground.resize(400, 400);
     userInterface = new UserInterface();
+    playerUpgradeController = new PlayerUpgradeController();
     selectionSquare = new SelectionSquare();
     asteroidController = new AsteroidController(3000, 50);
-    
     roamingShipController = new RoamingShipController(10000, 10);
+
     mothership = new Mothership(width/2, height/2);
     mothershipUnit = (new MothershipUnit(1000, 1000));
     
@@ -28,10 +29,6 @@ function playStateSetup() {
     enemyUnits.push(new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100)));
     enemyUnits.push(new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100)));
     enemyUnits.push(new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100)));
-
-
-
-
 }
 
 function playState() {

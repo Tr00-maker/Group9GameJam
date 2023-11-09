@@ -1,14 +1,15 @@
 class Mothership extends PlayerShip {
-    constructor(x, y, dmg) {
-        const defaultSpeed = 0.2;
-        const defaultHealth = 1000;
-        const defaultRange = 200;
+    constructor(x, y) {
+        const defaultSpeed = playerUpgradeController.mothershipStat.speed;
+        const defaultHealth = playerUpgradeController.mothershipStat.health;
+        const defaultRange = playerUpgradeController.mothershipStat.range;
+        const defaultSize = playerUpgradeController.mothershipStat.size;
 
         super(x, y, defaultSpeed, defaultHealth, defaultRange); 
         
         this.sprite.addAni('default', mothershipImg);
         this.sprite.addAni('selected', mothershipSelectedImg);
-        this.sprite.d = 70;
+        this.sprite.d = defaultSize;
 
         this.name = 'Mothership';
         
@@ -52,7 +53,7 @@ class Mothership extends PlayerShip {
 
 
     updateAnimation() {
-        this.sprite.ani.scale = 3;
+        this.sprite.ani.scale = this.sprite.d / 22;
     }
 
 }

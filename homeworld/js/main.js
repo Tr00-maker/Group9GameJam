@@ -17,6 +17,8 @@ const pressedButtonColor = [255, 255, 255, 255];
 let selectionSquare;
 let selectableSprites = [];//holds all player ships
 
+//upgrades
+let playerUpgradeController;
 
 //anything added to the array can be set as a target by all player ships
 let targetableSprites = [];

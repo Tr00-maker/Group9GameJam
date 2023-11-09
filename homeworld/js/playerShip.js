@@ -5,15 +5,17 @@ class PlayerShip {
         this.speed = speed;
         this.health = health;
         this.range = range;
-        this.rotationSpeed = this.speed*5;
+        this.detectionRange = this.range*1.5;
+
+        this.rotationSpeed = this.speed*5;      
         this.sprite.rotationLock = true;
-        this.sprite.bounciness = 0.01;
         
         this.sprite.debug = true;
+
         selectableSprites.push(this);
         this.sprite.overlaps(allSprites);
+        
         this.state = 'spawned';
-
         this.moveTimer = 0;
     } 
 
@@ -210,7 +212,7 @@ class PlayerShip {
         }
 
         //stop rendering and physics
-        this.sprite.remove()
+        this.sprite.remove();
     }
 
 }
