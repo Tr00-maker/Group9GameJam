@@ -152,7 +152,7 @@ class UnitButton {
         if (!clickedFlag) {
             clickedFlag = true;
             switch(this.type) {
-                case 'qMinging':
+                case 'qMining':
                 this.queueMiningShip();
                 break;
                 case 'qBattle':

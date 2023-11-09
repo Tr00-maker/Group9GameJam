@@ -72,7 +72,7 @@ class BattleShip extends PlayerShip {
         }
 
         if ((!this.targetSprite || this.autoTarget) && (this.state === 'idle' || this.state === 'hasTarget' && this.sprite.speed === 0)) {
-            if (closestDistance < this.detetctionRange) { 
+            if (closestDistance < this.detectionRange) { 
                 this.targetSprite = closestShip;
                 this.autoTarget = true; //set to true on setMouseTarget() - right clicking not on a sprite and false when setSpriteTarget() method is run in PlayerShip class
             } else {
