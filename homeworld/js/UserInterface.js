@@ -48,23 +48,6 @@ class UserInterface {
     }
 }
 
-class SquareUi {
-    constructor(x, y) {
-        this.sprite = new Sprite(x, y, 'n');
-        this.sprite.ani = squareUi;
-        this.sprite.ani.scale = 4;
-    }
-
-    update() {
-        this.repositionToCamera();
-    }
-
-    repositionToCamera() {
-        this.sprite.x = cameraSprite.x;
-        this.sprite.y = cameraSprite.y;
-    }
-}
-
 class UnitButton {
     constructor(name, type, cost, x, y, w, h, defaultImage, selectedImage, blackedImage) {
         this.sprite = new Sprite(x, y, 'd');

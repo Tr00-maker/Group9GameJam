@@ -5,7 +5,7 @@ let gamePause = true;
 let mothershipImg, mothership;
 
 //User Interface
-let userInterface;
+let userInterface, bottomBar;
 let unitButtons = [];
 let miningShipCost = 50;
 let missileCost = 40;
@@ -101,7 +101,7 @@ function preload() {
     battleButtonPressed = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 1, col: 0});
     battleButtonBlacked = loadAnimation('./images/unitbuttonsBlack.png', {frameSize: 50, frames:1, row: 1, col: 0});
 
-    squareUi = loadAnimation('./images/squareUi.png');
+    squareUiImg = loadAnimation('./images/squareUi.png');
 
     gearImg = loadImage('./images/gear.png');
 
