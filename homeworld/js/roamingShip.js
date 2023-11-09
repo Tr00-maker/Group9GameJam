@@ -5,6 +5,8 @@ class RoamingShip {
         this.speed = 0.3;
         this.health = 200;
         this.range = 200;
+        this.x = null;
+        this.y = null;
         
         this.sprite.addAni('default', roamingShipImg);
         this.sprite.addAni('selected', roamingShipSelectedImg);
@@ -28,11 +30,9 @@ class RoamingShip {
 
     update() {
         //save the x and y coords for when the ship is destoryed to spawn an explosion and ship scrap
-        let x = this.sprite.x;
-        let y = this.sprite.y;
 
         if (this.health <= 0) {
-            this.dies(x, y);
+            this.dies(this.x, this.y);
         }
         this.handlePatrol();
         this.updateAnimation();
@@ -45,15 +45,17 @@ class RoamingShip {
 
     takeDamage(damage) {
         this.health -= damage;
+        this.x = this.sprite.x;
+        this.y = this.sprite.y;
     }
 
     //when ships die, the drop a random amount of ship scraps (1- 10) and create an explosion
     dies(x, y) {
         this.active = false;
-        let scrapCount = floor(random(1, 10));
+        let scrapCount = floor(random(1, 3));
 
         for (let i = 0; i < scrapCount; i++) {
-            shipScraps.push(new ShipScrap(x + random() * 10 - 5, y + random() * 10 - 5));
+            shipScraps.push(new ShipScrap(x + random() * 20 - 10, y + random() * 20 - 10));
         }
         explosions.push(new Explosion(x, y, explosionShipAni));
 

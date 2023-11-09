@@ -140,6 +140,13 @@ class UserInterface {
         textSize(15);
         text('Resource: ' + mothership.resource, x + 75, y + 15);
         pop();
+
+        push();
+        fill(255);
+        textAlign(CENTER,CENTER);
+        textSize(15);
+        text('Ship Scraps: ' + mothership.scrap, x + 300, y + 15);
+        pop();
     }
 
     displayBottomBar() {

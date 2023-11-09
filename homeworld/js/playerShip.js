@@ -18,11 +18,9 @@ class PlayerShip {
     } 
 
     update() {
-        let x = this.sprite.x;
-        let y = this.sprite.y;
 
         if (this.health <= 0) {
-            this.dies(x, y);
+            this.dies(this.x, this.y);
         }
 
         if (this.selected && mouse.pressed(RIGHT)) {
@@ -190,6 +188,8 @@ class PlayerShip {
 
     takeDamage(damage) {
         this.health -= damage;
+        this.x = this.sprite.x;
+        this.y = this.sprite.y;
     }
 
     dies(x, y) {
@@ -214,8 +214,5 @@ class PlayerShip {
     }
 
 }
-
-//anything added to the array can be set as a target by all player ships
-let targetableSprites = [];
 
 

@@ -66,16 +66,6 @@ class Asteroid {
                 asteroids.splice(this.index, 1);
             }
         }
-        
-        /*
-        setTimeout(() => {
-            this.sprite.remove();
-            this.index = asteroids.indexOf(this)
-            if (this.index != -1) {
-                asteroids.splice(this.index, 1);
-            }
-        }, 100);
-        */
     }
 
     showTarget() {

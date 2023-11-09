@@ -15,8 +15,11 @@ const pressedButtonColor = [255, 255, 255, 255];
 
 //selectionSquare
 let selectionSquare;
-
 let selectableSprites = [];//holds all player ships
+
+
+//anything added to the array can be set as a target by all player ships
+let targetableSprites = [];
 
 //mining ships
 let miningShips = [];

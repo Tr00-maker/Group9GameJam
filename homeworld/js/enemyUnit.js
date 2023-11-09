@@ -24,11 +24,8 @@ class EnemyUnit {
     }
 
     update() {
-        let x = this.sprite.x;
-        let y = this.sprite.y;
-
         if (this.health <= 0) {
-            this.dies(x, y);
+            this.dies(this.x, this.y);
         }
 
         this.showTarget();    
@@ -97,6 +94,8 @@ class EnemyUnit {
 
     takeDamage(damage) {
         this.health -= damage;
+        this.x = this.sprite.x;
+        this.y = this.sprite.y;
     }
 
     //when ships die, the drop a random amount of ship scraps (1-2) and create an explosion
@@ -105,7 +104,7 @@ class EnemyUnit {
         let scrapCount = floor(random(1, 3));
 
         for (let i = 0; i < scrapCount; i++) {
-            shipScraps.push(new ShipScrap(x + random() * 10 - 5, y + random() * 10 - 5));
+            shipScraps.push(new ShipScrap(x + random() * 20 - 10, y + random() * 20 - 10));
         }
         explosions.push(new Explosion(x, y, explosionShipAni));
 
@@ -165,7 +164,7 @@ class MothershipUnit extends EnemyUnit {
         this.sprite.addAni('selected', mothershipUnitSelectedImg);
         this.sprite.d = 70;
 
-        this.resource = 0;
+        this.resource = 100;
         this.sprite.text = this.resource;
         this.sprite.textColor = 'white';
         this.sprite.textSize = 20;

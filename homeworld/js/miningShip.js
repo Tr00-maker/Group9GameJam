@@ -17,12 +17,13 @@ class MiningShip extends PlayerShip {
 
     initializeResources() {
         this.resource = 0;
+        this.scrap = 0;
         this.lastMined = 0;
         this.capacity = 10;
         this.miningRate = 0.5;
-        this.sprite.text = this.resource;
+        this.sprite.text = this.resource + ' ' + this.scrap;
         this.sprite.textColor = 'white';
-        this.sprite.textSize = 20;
+        this.sprite.textSize = 10;
     }
 
     update() {
@@ -36,7 +37,7 @@ class MiningShip extends PlayerShip {
 
     updateAnimation() {
         this.sprite.ani.scale = 1.5;
-        this.sprite.text = this.resource;
+        this.sprite.text = this.resource + ' ' + this.scrap;
 
     }
 
@@ -105,6 +106,8 @@ class MiningShip extends PlayerShip {
     
     depositResource() {
         mothership.resource += this.resource;
+        mothership.scrap += this.scrap;
         this.resource = 0;
+        this.scrap = 0;
     }
 }
