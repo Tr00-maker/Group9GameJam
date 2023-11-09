@@ -42,6 +42,10 @@ let startingAsteroids = 20;
 let missiles = [];
 let missileImg;
 
+//explosions
+let explosions = [];
+let explosionShipAni, explosionBulletAni;
+
 //background
 let spaceBackground;
 
@@ -53,6 +57,7 @@ function preload() {
 
     asteroidImg = loadAnimation('./images/asteroid.png');
     miningTargetImg = loadAnimation('./images/miningTarget.png');
+    asteroidDiesAni = loadAnimation('./images/asteroidDiesAni.png', { frameSize: [96, 96], frames: 7, frameDelay: 6, row: 0});
 
     miningShipImg = loadAnimation('./images/ships.png', { frameSize: [32, 32], frames: 1, row: 0, col: 1 });
     miningShipSelectedImg = loadAnimation('./images/selected.png', { frameSize: [32, 32], frames: 1, row: 0, col: 1 });
@@ -75,6 +80,13 @@ function preload() {
 
     redBulletImg = loadImage('./images/redBullet.png');
     tealBulletImg = loadImage('./images/tealBullet.png');
+
+    explosionShipAni = loadAnimation('./images/explosionShip.png', { frameSize: [48, 48], frames: 8, frameDelay: 0, row: 0});
+    explosionBulletAni = loadAnimation('./images/explosionBullet.png', { frameSize: [16, 16], frames: 7, frameDelay: 0, row: 0});
+
+    gearImg = loadImage('./images/gear.png');
+
+
 }
 
 function setup() {

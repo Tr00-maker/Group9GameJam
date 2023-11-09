@@ -2,7 +2,7 @@ class Asteroid {
     constructor(x, y, direction) {
         this.sprite = new Sprite(x, y, 'd');
         this.sprite.layer = 0;
-        this.sprite.d = 100;
+        this.sprite.d = 125;
         this.sprite.color = 'grey';
         targetableSprites.push(this);
         this.sprite.overlaps(allSprites);
@@ -11,7 +11,7 @@ class Asteroid {
         this.speed = random(0.1, 0.5);
         this.sprite.speed = this.speed;
 
-        this.resource = 500;
+        this.resource = 200;
         this.sprite.textColor = 'white';
         this.sprite.textSize = 20;
         this.sprite.text = this.resource;
@@ -20,9 +20,15 @@ class Asteroid {
 
         this.sprite.addAni('default', asteroidImg);
         this.sprite.addAni('selected', miningTargetImg);
+        this.sprite.addAni('dies', asteroidDiesAni);
+        this.sprite.changeAni('default');
+        this.sprite.ani.frame = 0;
+
+        this.sprite.debug = false;
     }
 
     update() {
+        this.sprite.ani.scale = 3;
         this.sprite.rotation += 0.5 * this.sprite.speed;
         this.sprite.text = this.resource;
         this.showTarget();
@@ -52,6 +58,16 @@ class Asteroid {
     
     dies() {
         this.active = false;
+        this.sprite.changeAni('dies');
+        if (this.sprite.ani.frame === 6) {
+            this.sprite.remove();
+            this.index = asteroids.indexOf(this)
+            if (this.index != -1) {
+                asteroids.splice(this.index, 1);
+            }
+        }
+        
+        /*
         setTimeout(() => {
             this.sprite.remove();
             this.index = asteroids.indexOf(this)
@@ -59,6 +75,7 @@ class Asteroid {
                 asteroids.splice(this.index, 1);
             }
         }, 100);
+        */
     }
 
     showTarget() {

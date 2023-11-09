@@ -6,9 +6,9 @@ class BattleShip extends PlayerShip {
 
         super(x, y, defaultSpeed, defaultHealth, defaultRange); 
         
+        this.sprite.d = 25;
         this.sprite.addAni('default', battleShipImg);
         this.sprite.addAni('selected', battleShipSelectedImg);
-        this.sprite.d = 30;
 
         this.name = 'Battle Ship';
 
@@ -25,6 +25,7 @@ class BattleShip extends PlayerShip {
 
     update() {
         super.update();
+        this.updateAnimation();
         this.findClosestUnit();
     }
 

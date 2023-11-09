@@ -18,11 +18,16 @@ class EnemyUnit {
 
         this.active = true;
         this.inPatrol = false;
+        this.sprite.debug = true;
 
         this.state = 'idle';
     }
 
     update() {
+        if (this.health <= 0) {
+            this.dies();
+        }
+
         this.showTarget();    
 
         switch(this.state) {
@@ -87,23 +92,18 @@ class EnemyUnit {
         }
     }
 
-    takeDamage(x, y, damage, radius) {
+    takeDamage(damage) {
         this.health -= damage;
-        if (this.health <= 0) {
-            //explosions.push(new explosion(x, y, damage)) add later
-            this.dies();
-        }
     }
 
     dies() {
         this.active = false;
-        setTimeout(() => {
-            this.sprite.remove();
-            this.index = enemyUnits.indexOf(this)
-            if (this.index != -1) {
-                enemyUnits.splice(this.index, 1);
-            }
-        }, 100);
+        explosions.push(new Explosion(this.sprite.x, this.sprite.y, explosionShipAni));
+        this.index = enemyUnits.indexOf(this);
+        if (this.index != -1) {
+            enemyUnits.splice(this.index, 1);
+        }
+        this.sprite.remove();
     }
 
     //stops sprite in idle state
@@ -181,7 +181,7 @@ class MothershipUnit extends EnemyUnit {
     //spawns a mining ship every 5 enemy units, else it spawn a shooting ship
     spawnUnits() {
         if (this.resource >= miningShipCost) {
-            if (enemyUnits.length % 5 === 0) {
+            if (enemyUnits.length % 3 === 0) {
                 this.resource -= miningShipCost;  // Deduct the cost for mining ship
                 enemyUnits.push(new MiningShipUnit(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100)));
             } else {

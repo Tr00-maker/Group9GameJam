@@ -9,16 +9,20 @@ class PlayerShip {
         this.sprite.rotationLock = true;
         this.sprite.bounciness = 0.01;
         
-        this.sprite.debug = false;
+        this.sprite.debug = true;
         selectableSprites.push(this);
         this.sprite.overlaps(allSprites);
-        
+        this.index = selectableSprites.indexOf(this);
         this.state = 'spawned';
 
         this.moveTimer = 0;
     } 
 
     update() {
+        if (this.health <= 0) {
+            this.dies();
+        }
+
         if (this.selected && mouse.pressed(RIGHT)) {
             this.handleSetTarget();
         }
@@ -182,19 +186,12 @@ class PlayerShip {
         this.sprite.ani = this.selected ? 'selected' : 'default';
     }
 
-    takeDamage(x, y, damage, radius) {
+    takeDamage(damage) {
         this.health -= damage;
-        if (this.health <= 0) {
-            //explosions.push(new explosion(x, y, damage)) add later
-            this.dies();
-        }
     }
 
     dies() {
-        this.index = selectableSprites.indexOf(this);
-        if (this.index != -1) {
-            selectableSprites.splice(this.index, 1);
-        }
+        selectableSprites.splice(this.index, 1);
         this.sprite.remove()
     }
 
