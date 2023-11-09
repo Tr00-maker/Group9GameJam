@@ -78,6 +78,7 @@ class UnitButton {
         this.cost = cost;
         this.sprite.addAni('default', this.defaultImage);
         this.sprite.addAni('pressed', this.selectedImage);
+        this.sprite.addAni('blacked', this.blackedImage);
         this.sprite.debug = true;
 
         this.sprite.d = w;
@@ -88,33 +89,18 @@ class UnitButton {
                 this.checkPressed();
             }
             if (this.isHovered(mx, my) && mouse.pressing(LEFT)) {
-                this.sprite.changeAni(this.selectedImage);
+                this.sprite.changeAni('pressed');
                 this.sprite.ani.scale = 1.5;
             } else if (this.isHovered(mx, my)) {
-                this.sprite.changeAni(this.selectedImage);
+                this.sprite.changeAni('pressed');
                 this.sprite.ani.scale = 1.2;
             } else {
-                this.sprite.changeAni(this.defaultImage);
+                this.sprite.changeAni('default');
                 this.sprite.ani.scale = 1;
             }
         } else {
-            this.sprite.changeAni(this.blackedImage)
+            this.sprite.changeAni('blacked')
         }
-        /*
-        if (this.isHovered(mx, my) && mouse.released(LEFT)) {
-            this.checkPressed();
-        }
-        if (this.isHovered(mx, my) && mouse.pressing(LEFT)) {
-            this.sprite.changeAni(this.selectedImage);
-            this.sprite.ani.scale = 1.5;
-        } else if (this.isHovered(mx, my)) {
-            this.sprite.changeAni(this.selectedImage);
-            this.sprite.ani.scale = 1.2;
-        } else {
-            this.sprite.changeAni(this.defaultImage);
-            this.sprite.ani.scale = 1;
-        }
-        */
         
     }
     isHovered(x, y) {

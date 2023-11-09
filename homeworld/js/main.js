@@ -96,12 +96,12 @@ function preload() {
     roamingShipImg = loadAnimation('./images/roaming.png');
     roamingShipSelectedImg = loadAnimation('./images/roamingSelected.png');
 
-    miningButton = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 0, col: 0});
-    miningButtonPressed = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 0, col: 1});
+    miningButton = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 0, col: 1});
+    miningButtonPressed = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 0, col: 0});
     miningButtonBlacked = loadAnimation('./images/unitbuttonsBlack.png', {frameSize: 50, frames:1, row: 0, col: 0});
 
-    battleButton = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 1, col: 0});
-    battleButtonPressed = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 1, col: 1});
+    battleButton = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 1, col: 1});
+    battleButtonPressed = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 1, col: 0});
     battleButtonBlacked = loadAnimation('./images/unitbuttonsBlack.png', {frameSize: 50, frames:1, row: 1, col: 0});
 
     squareUi = loadAnimation('./images/squareUi.png');
