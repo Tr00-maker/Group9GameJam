@@ -108,11 +108,20 @@ class EnemyUnit {
         }
         explosions.push(new Explosion(x, y, explosionShipAni));
 
-        this.index = enemyUnits.indexOf(this);
-        if (this.index != -1) {
-            enemyUnits.splice(this.index, 1);
+        //remove from selectableSprites array
+        this.index = selectableSprites.indexOf(this);
+        if (this.index !== -1) {
+            selectableSprites.splice(this.index, 1);
         }
-        this.sprite.remove();
+        
+        //if its a mining ship, remove it from miningShips array
+        if (this.name = 'Mining Ship Unit') {
+            this.miningIndex = miningShips.indexOf(this);
+            if (this.miningIndex != -1) {
+                miningShips.splice(this.miningIndex, 1);
+            }
+        }
+        
     }
 
     //stops sprite in idle state

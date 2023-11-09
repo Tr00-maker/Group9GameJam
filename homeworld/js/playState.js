@@ -7,11 +7,14 @@ function playStateSetup() {
     roamingShipController = new RoamingShipController(10000, 10);
     mothership = new Mothership(width/2, height/2);
     mothershipUnit = (new MothershipUnit(1000, 1000));
+    
     for (let i = 0; i < startingAsteroids; i++) {
         asteroids.push(new Asteroid(width/2 + (random() * width - width/2), height/2 + (random() * height - height/2), random(0, 360)));
+        asteroidController.enemyCurrent++;
     }
     for (let i = 0; i < startingRoamingShips; i++) {
         enemyUnits.push(new RoamingShip(width/2 + (random() * width - width/2), height/2 + (random() * height - height/2), random(0, 360)));
+        roamingShipController.enemyCurrent++;
     }
     
     miningShips.push(new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100)));

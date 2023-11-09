@@ -1,106 +1,3 @@
-class UnitButton {
-    constructor(name, cost, x, y, w, h, image) {
-        this.w = w;
-        this.h = h;
-        this.x = x;
-        this.y = y;
-        this.sprite = new Sprite(this.x + this.w/2, this.y + this.h/2, 'd');
-        this.sprite.addAni('default', image);
-        this.sprite.d = w;
-        this.name = name;
-        this.cost = cost;
-        this.color = defaultButtonColor;
-    }
-
-    update() {
-
-        push();
-        fill(this.color);
-        rect(this.x, this.y, this.w, this.h);
-        pop();
-
-        push();
-        fill(255);
-        textAlign(CENTER, CENTER);
-        textSize(20);
-        text(this.name + ': ' + this.cost, this.x + this.w/2, this.y - 10);
-        pop();
-        
-        if (this.isHovered(mx, my) && mouse.released(LEFT)) {
-            this.checkPressed();
-        }
-        if (this.isHovered(mx, my) && mouse.pressing(LEFT)) {
-            this.color = pressedButtonColor;
-        } else if (this.isHovered(mx, my)) {
-            this.color = hoveredButtonColor;
-        } else {
-            this.color = defaultButtonColor;
-        }
-        
-    }
-
-    isHovered(x, y) {
-        return (
-            x >= this.x && 
-            x <= this.x + this.w && 
-            y >= this.y && 
-            y <= this.y + this.h
-        );
-    }
-
-    checkPressed() {  
-        if (!clickedFlag) {
-            clickedFlag = true;
-            switch(this.name) {
-                case 'Mining Ship':
-                this.queueMiningShip();
-                break;
-                case 'Battle Ship':
-                this.queueBattleShip();
-                break;
-                case 'Missile':
-                this.queueMissile();
-                break;
-            } 
-        }
-        if (clickedFlag) {
-            setTimeout(() => clickedFlag = false, 200);
-        }
-    }
-
-    queueMiningShip() {
-        if (mothership.resource >= this.cost) {
-            mothership.resource -= this.cost;
-            mothership.spawnMiningShip();
-        }
-    }
-
-    queueBattleShip() {
-        if (mothership.resource >= this.cost) {
-            mothership.resource -= this.cost;
-            mothership.spawnBattleShip();
-        }
-    }
-
-    queueMissile()
-    {
-        if(mothership.resource >= this.cost)
-        {
-            mothership.resource -= this.cost;
-            mothership.spawnMissile();
-        }
-    }
-
-    remove() {
-        this.index = unitButtons.indexOf(this);
-        if (this.index != -1) {
-            unitButtons.splice(this.index, 1);
-        }
-        this.sprite.remove();
-    }
-}
-let clickedFlag = false;
-
 class UserInterface {
     constructor(x, y) {
         this.x = x;
@@ -169,8 +66,8 @@ class UserInterface {
     displayButtons() {
         if (!this.unitButtonsCreated) {
             this.unitButtonsCreated = true;
-            this.miningShipButton = new UnitButton('Mining Ship', miningShipCost, this.button1X, this.button1Y, 50, 50, miningShipImg);
-            this.battleShipButton = new UnitButton('Battle Ship', miningShipCost, this.button2X, this.button2Y, 50, 50, battleShipImg);
+            this.miningShipButton = new UnitButton('Mining Ship', 'qMining', miningShipCost, this.button1X, this.button1Y, 50, 50, miningShipImg);
+            this.battleShipButton = new UnitButton('Battle Ship', 'qBattle', miningShipCost, this.button2X, this.button2Y, 50, 50, battleShipImg);
         }
         this.miningShipButton.update();
         this.battleShipButton.update();
@@ -199,3 +96,105 @@ class UserInterface {
         this.battleShipButton.y = this.button2Y;
     }
 }
+
+class UnitButton {
+    constructor(name, type, cost, x, y, w, h, image) {
+        this.w = w;
+        this.h = h;
+        this.x = x;
+        this.y = y;
+        this.sprite = new Sprite(this.x + this.w/2, this.y + this.h/2, 'd');
+        this.sprite.addAni('default', image);
+        this.sprite.d = w;
+        this.name = name;
+        this.type = type;
+        this.cost = cost;
+        this.color = defaultButtonColor;
+    }
+
+    update() {
+
+        push();
+        fill(this.color);
+        rect(this.x, this.y, this.w, this.h);
+        pop();
+
+        push();
+        fill(255);
+        textAlign(CENTER, CENTER);
+        textSize(20);
+        text(this.name + ': ' + this.cost, this.x + this.w/2, this.y - 10);
+        pop();
+        
+        if (this.isHovered(mx, my) && mouse.released(LEFT)) {
+            this.checkPressed();
+        }
+        if (this.isHovered(mx, my) && mouse.pressing(LEFT)) {
+            this.color = pressedButtonColor;
+        } else if (this.isHovered(mx, my)) {
+            this.color = hoveredButtonColor;
+        } else {
+            this.color = defaultButtonColor;
+        }
+        
+    }
+
+    isHovered(x, y) {
+        return (
+            x >= this.x && 
+            x <= this.x + this.w && 
+            y >= this.y && 
+            y <= this.y + this.h
+        );
+    }
+
+    checkPressed() {  
+        if (!clickedFlag) {
+            clickedFlag = true;
+            switch(this.type) {
+                case 'qMinging':
+                this.queueMiningShip();
+                break;
+                case 'qBattle':
+                this.queueBattleShip();
+                break;
+            } 
+        }
+        if (clickedFlag) {
+            setTimeout(() => clickedFlag = false, 200);
+        }
+    }
+
+    queueMiningShip() {
+        if (mothership.resource >= this.cost) {
+            mothership.resource -= this.cost;
+            mothership.spawnMiningShip();
+        }
+    }
+
+    queueBattleShip() {
+        if (mothership.resource >= this.cost) {
+            mothership.resource -= this.cost;
+            mothership.spawnBattleShip();
+        }
+    }
+
+    queueMissile()
+    {
+        if(mothership.resource >= this.cost)
+        {
+            mothership.resource -= this.cost;
+            mothership.spawnMissile();
+        }
+    }
+
+    remove() {
+        this.index = unitButtons.indexOf(this);
+        if (this.index != -1) {
+            unitButtons.splice(this.index, 1);
+        }
+        this.sprite.remove();
+    }
+}
+
+let clickedFlag = false;

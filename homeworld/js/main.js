@@ -43,7 +43,7 @@ let startingAsteroids = 20;
 
 let roamingShips = [];
 let roamingShipController;
-let startingRoamingShips = 10;
+let startingRoamingShips = 5;
 
 //missiles
 let missiles = [];

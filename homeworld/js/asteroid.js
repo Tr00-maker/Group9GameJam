@@ -61,6 +61,7 @@ class Asteroid {
         this.sprite.changeAni('dies');
         if (this.sprite.ani.frame === 6) {
             this.sprite.remove();
+            asteroidController.enemyCurrent--;
             this.index = asteroids.indexOf(this)
             if (this.index != -1) {
                 asteroids.splice(this.index, 1);
@@ -91,7 +92,9 @@ class AsteroidController {
     }
 
     update() {
-        this.spawnAsteroid();
+        if (this.enemyCurrent< this.enemymax) {
+            this.spawnAsteroid();
+        }
     }
 
     randomSpawnCoords() {
@@ -155,6 +158,7 @@ class AsteroidController {
         if (currentTime - this.lastEnemy >= this.enemyTimer) {
             const { spawnX, spawnY, direction } = this.randomSpawnCoords();
             asteroids.push(new Asteroid(spawnX, spawnY, direction));
+            this.enemyCurrent++;
             this.lastEnemy = Date.now();
         }
     }

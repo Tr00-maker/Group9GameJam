@@ -24,11 +24,15 @@ class RoamingShip {
     }
 
     initializeStats() {
-        this.inPatrol = false
-        
+        this.inPatrol = false;
+        this.active = true;
+   
     }
 
     update() {
+        if (mothership.targetSprite === this) {
+            console.log('targeted');
+        }
         //save the x and y coords for when the ship is destoryed to spawn an explosion and ship scrap
 
         if (this.health <= 0) {
@@ -36,11 +40,22 @@ class RoamingShip {
         }
         this.handlePatrol();
         this.updateAnimation();
+        this.showTarget();
     }
 
     updateAnimation() {
         this.sprite.ani.scale = 2.2;
-        this.sprite.ani = this.selected ? 'selected' : 'default';
+    }
+
+    showTarget() {
+        this.sprite.ani = 'default';
+
+        for (let i = 0; i < selectableSprites.length; i++) {
+            if (selectableSprites[i].selected && selectableSprites[i].targetSprite === this) {
+                this.sprite.ani = 'selected';
+                break;
+            }
+        }
     }
 
     takeDamage(damage) {
@@ -59,6 +74,7 @@ class RoamingShip {
         }
         explosions.push(new Explosion(x, y, explosionShipAni));
 
+        roamingShipController.enemyCurrent--;
         this.index = enemyUnits.indexOf(this);
         if (this.index != -1) {
             enemyUnits.splice(this.index, 1);
@@ -95,7 +111,9 @@ class RoamingShipController {
     }
 
     update() {
-        this.spawnRoamingShip();
+        if (this.enemyCurrent < this.eenmyMax) {
+            this.spawnRoamingShip();
+        }
     }
 
     //set spawning location
@@ -152,6 +170,7 @@ class RoamingShipController {
         if (currentTime - this.lastEnemy >= this.enemyTimer) {
             const { spawnX, spawnY} = this.randomSpawnCoords();
             enemyUnits.push(new RoamingShip(spawnX, spawnY));
+            this.enemyCurrent++
             this.lastEnemy = Date.now();
         }
     }
