@@ -1,6 +1,5 @@
 function playStateSetup() {
     spaceBackground.resize(400, 400);
-    userInterface = new UserInterface();
     bottomUi = new BottomUi();
     playerUpgradeController = new PlayerUpgradeController();
     selectionSquare = new SelectionSquare();
@@ -35,7 +34,6 @@ function playStateSetup() {
 
 function playState() {
     drawBackground();
-    userInterface.update();
     bottomUi.update();
     playStatePause();
     playStateUpdate();    
