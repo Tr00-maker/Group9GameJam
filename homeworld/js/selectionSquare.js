@@ -3,9 +3,11 @@ class SelectionSquare {
         this.x = 0;
         this.y = 0;
         this.sprite = new Sprite(0, 0, 'd');
+        this.sprite.color = color(0, 0);
+        this.sprite.stroke = color(0, 0);
         this.sprite.overlaps(allSprites);
-        this.sprite.w = 0;
-        this.sprite.h = 0;
+        this.sprite.w = 0.1;
+        this.sprite.h = 0.1;
 
         this.drawing = false;
         this.selectionFlag = false;
@@ -18,8 +20,8 @@ class SelectionSquare {
         } else {
             this.sprite.x = min(this.x, mx);
             this.sprite.y = min(this.y, my);
-            this.sprite.w = abs(mx - this.x);
-            this.sprite.h = abs(my - this.y);
+            this.sprite.w = 1 + abs(mx - this.x);
+            this.sprite.h = 1 + abs(my - this.y);
     
             push();
             fill(255, 255, 255, 50);

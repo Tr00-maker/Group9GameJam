@@ -66,7 +66,7 @@ class UserInterface {
     displayButtons() {
         if (!this.unitButtonsCreated) {
             this.unitButtonsCreated = true;
-            this.miningShipButton = new UnitButton('Mining Ship', 'qMining', miningShipCost, this.button1X, this.button1Y, 50, 50, miningShipImg);
+            this.miningShipButton = new UnitButton('Mining Ship', 'qMining', miningShipCost, 0, 0, 50, 50, miningShipImg);
             this.battleShipButton = new UnitButton('Battle Ship', 'qBattle', miningShipCost, this.button2X, this.button2Y, 50, 50, battleShipImg);
         }
         this.miningShipButton.update();
@@ -98,7 +98,8 @@ class UserInterface {
 }
 
 class UnitButton {
-    constructor(name, type, cost, x, y, w, h, image) {
+    constructor(name, type, cost, x = 0, y = 0, w, h, image) {
+        console.log(x + " " + y);
         this.w = w;
         this.h = h;
         this.x = x;

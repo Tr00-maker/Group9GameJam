@@ -2,7 +2,6 @@ const state = {
     current: '',
     start: 'start',
     play: 'play',
-    menu: 'menu',
 }
 
 function loopStates() {
@@ -12,12 +11,6 @@ function loopStates() {
             break;
         case state.play:
             playState();
-            break;
-        case state.menu:
-            menuState();
-            break;
-        case state.gameOver:
-            gameOverState();
             break;
     }
 }
@@ -32,14 +25,5 @@ function changeState(nextState) {
             playStateSetup();       
             state.current = 'play';
             break;
-        case state.menu:
-            menuStateSetup();
-            state.current = 'menu';
-            break;
     }
-}
-
-function clearScreen() {
-    allSprites.remove();
-    clear();
 }

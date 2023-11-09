@@ -43,7 +43,7 @@ function playStatePause() {
         gamePause = !gamePause;
     } 
     world.step(gamePause ? -1 : 0);
-    //allSprites.autoUpdate = !gamePause;  
+    allSprites.autoUpdate = !gamePause;  
 }
 
 function playStateUpdate() {

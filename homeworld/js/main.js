@@ -1,5 +1,5 @@
 //game state
-let gamePause = true;
+let gamePause = false;
 
 //mothership
 let mothershipImg, mothership;
@@ -97,23 +97,21 @@ function preload() {
     roamingShipSelectedImg = loadAnimation('./images/roamingSelected.png');
 
     gearImg = loadImage('./images/gear.png');
-
-
 }
 
 function setup() {
     new Canvas(5000, 5000, 'pixelated x1');
+    background(100);
     changeState(state.play);
 
-    //test pan cam ini
     initializeCamera();
-}
+    }
 
-function draw() {  
-    clear();
-    cameraEffect(); 
-    loopStates();
-}
+    function draw() {  
+        clear();
+        cameraEffect(); 
+        loopStates();
+    }
 
 function initializeCamera() {
     cameraSprite = new Sprite(width/2, height/2, 'n');
