@@ -21,7 +21,7 @@ class PlayerUpgradeController {
         this.battleShipStat = {
             speed: 1,
             health: 150,
-            range: 100,
+            range: 225,
             size: 25,
             fireRate: 0.75,
             shotSpeed: 7,

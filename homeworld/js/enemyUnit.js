@@ -109,9 +109,9 @@ class EnemyUnit {
         explosions.push(new Explosion(x, y, explosionShipAni));
 
         //remove from selectableSprites array
-        this.index = selectableSprites.indexOf(this);
+        this.index = enemyUnits.indexOf(this);
         if (this.index !== -1) {
-            selectableSprites.splice(this.index, 1);
+            enemyUnits.splice(this.index, 1);
         }
         
         //if its a mining ship, remove it from miningShips array
@@ -121,6 +121,8 @@ class EnemyUnit {
                 miningShips.splice(this.miningIndex, 1);
             }
         }
+
+        this.sprite.remove();
         
     }
 
