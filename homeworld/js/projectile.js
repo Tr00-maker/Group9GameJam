@@ -34,6 +34,7 @@ class Projectile {
                     console.log(this.array);
                     this.dies();
                     ship.takeDamage(this.damage);
+                    //create a new instance of an explosion
                     explosions.push(new Explosion(x, y, explosionBulletAni));
                 }
             }
@@ -45,6 +46,7 @@ class Projectile {
                     console.log('overlap Detected');
                     ship.takeDamage(this.damage);
                     this.dies();
+                    //create a new instance of an explosion
                     explosions.push(new Explosion(x, y, explosionBulletAni));
                 }
             }

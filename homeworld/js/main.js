@@ -33,10 +33,14 @@ let miningShipUnits = [];
 let mothershipUnit;
 let shootingUnitImg, shootingUnitDamagedImg;
 
-//asteroids
+//asteroids and roaming ships
 let asteroids = [];
 let asteroidController;
 let startingAsteroids = 20;
+
+let roamingShips = [];
+let roamingShipController;
+let startingRoamingShips = 10;
 
 //missiles
 let missiles = [];
@@ -83,6 +87,9 @@ function preload() {
 
     explosionShipAni = loadAnimation('./images/explosionShip.png', { frameSize: [48, 48], frames: 8, frameDelay: 0, row: 0});
     explosionBulletAni = loadAnimation('./images/explosionBullet.png', { frameSize: [16, 16], frames: 7, frameDelay: 0, row: 0});
+
+    roamingShipImg = loadAnimation('./images/roaming.png');
+    roamingShipSelectedImg = loadAnimation('./images/roamingSelected.png');
 
     gearImg = loadImage('./images/gear.png');
 

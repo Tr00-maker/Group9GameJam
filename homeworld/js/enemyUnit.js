@@ -99,6 +99,7 @@ class EnemyUnit {
     dies() {
         this.active = false;
         explosions.push(new Explosion(this.sprite.x, this.sprite.y, explosionShipAni));
+        shipscraps.push(new ShipScrap(this.sprite.x, this.sprite.y));
         this.index = enemyUnits.indexOf(this);
         if (this.index != -1) {
             enemyUnits.splice(this.index, 1);
@@ -152,7 +153,7 @@ class MothershipUnit extends EnemyUnit {
         this.name = 'Mothership Unit';
         
         this.sprite.addAni('default', mothershipUnitUnitImg);
-        this.sprite.addAni('selected', shootingUnitSelectedImg);
+        this.sprite.addAni('selected', mothershipUnitSelectedImg);
         this.sprite.d = 70;
 
         this.resource = 0;

@@ -3,10 +3,15 @@ function playStateSetup() {
     userInterface = new UserInterface();
     selectionSquare = new SelectionSquare();
     asteroidController = new AsteroidController(3000, 50);
+    
+    roamingShipController = new RoamingShipController(10000, 30);
     mothership = new Mothership(width/2, height/2);
     mothershipUnit = (new MothershipUnit(1000, 1000));
     for (let i = 0; i < startingAsteroids; i++) {
         asteroids.push(new Asteroid(width/2 + (random() * width - width/2), height/2 + (random() * height - height/2), random(0, 360)));
+    }
+    for (let i = 0; i < startingRoamingShips; i++) {
+        roamingShips.push(new RoamingShip(width/2 + (random() * width - width/2), height/2 + (random() * height - height/2), random(0, 360)));
     }
     
     miningShips.push(new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100)));
@@ -46,6 +51,7 @@ function playStateUpdate() {
         selectionSquare.display();
         mothership.update();
         asteroidController.update();
+        roamingShipController.update();
     
 
         for (let i = asteroids.length - 1; i >= 0; i--) {
@@ -70,6 +76,10 @@ function playStateUpdate() {
 
         for (let i = explosions.length - 1; i >= 0; i--) {
             explosions[i].update();
+        }
+
+        for (let i = shipScraps.length - 1; i >= 0; i--) {
+            shipScraps[i].update();
         }
 
         //missiles

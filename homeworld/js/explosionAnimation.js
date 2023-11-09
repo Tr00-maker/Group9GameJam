@@ -11,6 +11,7 @@ class Explosion {
     }
 
     update() {
+        //check if the explosions animation has reached its last frame - then remove
         switch(this.ani) {
             case explosionShipAni:
                 if (this.sprite.ani.frame === 7) {
@@ -26,7 +27,6 @@ class Explosion {
     }
 
     dies() {
-        console.log('exp dies');
         this.index = explosions.indexOf(this);
         if (this.index != -1) {
             explosions.splice(this.index, 1);
