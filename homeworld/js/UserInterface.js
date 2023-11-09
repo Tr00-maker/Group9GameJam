@@ -20,7 +20,7 @@ class UserInterface {
     displayButtons() {
         if (!this.unitButtonsCreated) {
             this.unitButtonsCreated = true;
-            this.miningShipButton = new UnitButton('Mining Ship', 'qMining', miningShipCost, this.button1X, this.button1Y, 50, 50, miningButton, miningButtonPressed, miningButtonBlacked);
+            this.miningShipButton = new UnitButton('Mining Ship', 'qMining', miningShipCost, 0, 0, 50, 50, miningButton, miningButtonPressed, miningButtonBlacked);
         }
 
         this.miningShipButton.update();
@@ -137,9 +137,16 @@ class UnitButton {
     remove() {
         this.index = unitButtons.indexOf(this);
         if (this.index != -1) {
-            unitButtons.splice(this.index, 1);
+            unitButtons.splice(this.index, 1)
         }
         this.sprite.remove();
     }
 }
 let clickedFlag = false;
+
+class BottomUi {
+    constructor() {
+        this.sprite = new Sprite(0, 0,);
+
+    }
+}
