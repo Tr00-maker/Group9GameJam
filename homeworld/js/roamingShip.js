@@ -1,20 +1,21 @@
 //neutral ship that roams freely - can be destroyed to obtain ship scraps
 class RoamingShip {
     constructor(x, y) {
-        const defaultSpeed = 0.3;
-        const defaultHealth = 200;
-        const defaultRange = 200;
-
-        super(x, y, defaultSpeed, defaultHealth, defaultRange); 
+        this.sprite = new Sprite(x, y, 'd');
+        this.speed = 0.3;
+        this.health = 200;
+        this.range = 200;
         
         this.sprite.addAni('default', roamingShipImg);
         this.sprite.addAni('selected', roamingShipSelectedImg);
-        this.sprite.d = 30;
+        this.sprite.d = 50;
 
-        targetableSprites.add(this);
+        targetableSprites.push(this);
+        enemyUnits.push(this);
         this.sprite.overlaps(allSprites);
         this.sprite.layer = 1;
 
+        this.sprite.debug = true;
         this.name = 'Roaming Ship';
 
         this.initializeStats();
@@ -26,24 +27,39 @@ class RoamingShip {
     }
 
     update() {
+        //save the x and y coords for when the ship is destoryed to spawn an explosion and ship scrap
+        let x = this.sprite.x;
+        let y = this.sprite.y;
+
         if (this.health <= 0) {
-            this.dies();
+            this.dies(x, y);
         }
-        super.update();
         this.handlePatrol();
+        this.updateAnimation();
     }
 
     updateAnimation() {
         this.sprite.ani.scale = 2.2;
+        this.sprite.ani = this.selected ? 'selected' : 'default';
     }
 
-    dies() {
+    takeDamage(damage) {
+        this.health -= damage;
+    }
+
+    //when ships die, the drop a random amount of ship scraps (1- 10) and create an explosion
+    dies(x, y) {
         this.active = false;
-        explosions.push(new Explosion(this.sprite.x, this.sprite.y, explosionShipAni));
-        shipscraps.push(new ShipScrap(this.sprite.x, this.sprite.y));
-        this.index = roamingShips.indexOf(this);
+        let scrapCount = floor(random(1, 10));
+
+        for (let i = 0; i < scrapCount; i++) {
+            shipScraps.push(new ShipScrap(x + random() * 10 - 5, y + random() * 10 - 5));
+        }
+        explosions.push(new Explosion(x, y, explosionShipAni));
+
+        this.index = enemyUnits.indexOf(this);
         if (this.index != -1) {
-            roamingShips.splice(this.index, 1);
+            enemyUnits.splice(this.index, 1);
         }
         this.sprite.remove();
     }
@@ -132,7 +148,8 @@ class RoamingShipController {
         const currentTime = Date.now();
 
         if (currentTime - this.lastEnemy >= this.enemyTimer) {
-            roamingShips.push(new RoamingShip(spawnX, spawnY));
+            const { spawnX, spawnY} = this.randomSpawnCoords();
+            enemyUnits.push(new RoamingShip(spawnX, spawnY));
             this.lastEnemy = Date.now();
         }
     }

@@ -12,15 +12,17 @@ class PlayerShip {
         this.sprite.debug = true;
         selectableSprites.push(this);
         this.sprite.overlaps(allSprites);
-        this.index = selectableSprites.indexOf(this);
         this.state = 'spawned';
 
         this.moveTimer = 0;
     } 
 
     update() {
+        let x = this.sprite.x;
+        let y = this.sprite.y;
+
         if (this.health <= 0) {
-            this.dies();
+            this.dies(x, y);
         }
 
         if (this.selected && mouse.pressed(RIGHT)) {
@@ -190,8 +192,24 @@ class PlayerShip {
         this.health -= damage;
     }
 
-    dies() {
-        selectableSprites.splice(this.index, 1);
+    dies(x, y) {
+        explosions.push(new Explosion(x, y, explosionShipAni));
+
+        //remove from selectableSprites array
+        this.index = selectableSprites.indexOf(this);
+        if (this.index !== -1) {
+            selectableSprites.splice(this.index, 1);
+        }
+        
+        //if its a mining ship, remove it from miningShips array
+        if (this.name = 'Mining Ship') {
+            this.miningIndex = miningShips.indexOf(this);
+            if (this.miningIndex != -1) {
+                miningShips.splice(this.miningIndex, 1);
+            }
+        }
+
+        //stop rendering and physics
         this.sprite.remove()
     }
 
