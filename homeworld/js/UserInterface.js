@@ -24,7 +24,6 @@ class UserInterface {
         }
 
         this.miningShipButton.update();
-
     }
 
     positionButtons() {
@@ -44,7 +43,7 @@ class UserInterface {
         this.button4Y = y + 30;
 
         this.miningShipButton.sprite.x = this.button1X;
-        this.miningShipButton.sprite.y = this.button1Y;
+        this.miningShipButton.sprite.y = this.button1Y; 
     }
 }
 
