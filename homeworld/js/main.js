@@ -96,6 +96,16 @@ function preload() {
     roamingShipImg = loadAnimation('./images/roaming.png');
     roamingShipSelectedImg = loadAnimation('./images/roamingSelected.png');
 
+    miningButton = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 0, col: 0});
+    miningButtonPressed = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 0, col: 1});
+    miningButtonBlacked = loadAnimation('./images/unitbuttonsBlack.png', {frameSize: 50, frames:1, row: 0, col: 0});
+
+    battleButton = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 1, col: 0});
+    battleButtonPressed = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 1, col: 1});
+    battleButtonBlacked = loadAnimation('./images/unitbuttonsBlack.png', {frameSize: 50, frames:1, row: 1, col: 0});
+
+    squareUi = loadAnimation('./images/squareUi.png');
+
     gearImg = loadImage('./images/gear.png');
 
 
@@ -104,7 +114,7 @@ function preload() {
 function setup() {
     new Canvas(5000, 5000, 'pixelated x1');
     changeState(state.play);
-
+    allSprites.pixelPerfect;
     //test pan cam ini
     initializeCamera();
 }
