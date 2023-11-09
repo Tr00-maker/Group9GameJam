@@ -6,7 +6,6 @@ let mothershipImg, mothership;
 
 //User Interface
 let userInterface, bottomUi;
-let unitButtons = [];
 let miningShipCost = 50;
 let missileCost = 40;
 const defaultButtonColor = [255, 255, 255, 100];
@@ -101,7 +100,12 @@ function preload() {
     battleButtonPressed = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 1, col: 0});
     battleButtonBlacked = loadAnimation('./images/unitbuttonsBlack.png', {frameSize: 50, frames:1, row: 1, col: 0});
 
+    turretButton = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 2, col: 1});
+    turretButtonPressed = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 2, col: 0});
+    turretButtonBlacked = loadAnimation('./images/unitbuttonsBlack.png', {frameSize: 50, frames:1, row: 2, col: 0});
+
     squareUiImg = loadAnimation('./images/squareUi.png');
+    titleFrameImg = loadAnimation('./images/titleFrame.png');
 
     gearImg = loadImage('./images/gear.png');
 

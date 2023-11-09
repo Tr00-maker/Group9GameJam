@@ -8,8 +8,8 @@ class UserInterface {
 
     update() {
         this.repositionToCamera();
-        this.displayButtons();
-        this.positionButtons();
+        //this.displayButtons();
+        //.positionButtons();
     }
 
     repositionToCamera() {
@@ -50,6 +50,7 @@ class UserInterface {
 class UnitButton {
     constructor(name, type, cost, x, y, w, h, defaultImage, selectedImage, blackedImage) {
         this.sprite = new Sprite(x, y, 'd');
+        this.sprite.overlaps(allSprites);
         this.defaultImage = defaultImage;
         this.selectedImage = selectedImage;
         this.blackedImage = blackedImage;
@@ -145,13 +146,64 @@ let clickedFlag = false;
 
 class BottomUi {
     constructor(x, y) {
-        this.sprite = new Sprite(x, y);
+        this.sprite = new Sprite(x, y, 'd');
+        this.sprite.layer = 3;
         this.sprite.ani = squareUiImg;
         this.sprite.ani.scale = 3.5
+        this.sprite.overlaps(allSprites);
+        this.title = false;
+        this.buttons = false;
+        this.state = 'Build Ship';
     }
 
-    update() {
-        this.sprite.x = cameraSprite.x - windowWidth/3 - 45;
-        this.sprite.y = cameraSprite.y + windowHeight/3 - 10;
+    initializeTitle() {
+        if (!this.title) {
+            switch(this.state) {
+                case 'Build Ship':
+                qMining = new UnitButton('Mining Ship', 'qMining', miningShipCost, 0, 0, 50, 50, miningButton, miningButtonPressed, miningButtonBlacked);
+                qBattle = new UnitButton('Battle Ship', 'qBattle', miningShipCost, 0, 0, 50, 50, battleButton, battleButtonPressed, battleButtonBlacked);
+                qTurret = new UnitButton('Mining Ship', 'qMining', miningShipCost, 0, 0, 50, 50, turretButton, turretButtonPressed, turretButtonBlacked);
+            }
+            title = new Sprite(this.sprite.x, this.sprite.y - 100, 120, 30);
+            title.overlaps(allSprites);
+            title.ani = titleFrameImg;
+            title.ani.scale = 2.5;
+            title.textSize = 30;
+            title.textStroke = 'black';
+            title.textStrokeWeight  = 5;
+            title.textColor = color(0);
+            title.text = this.state;
+            title.pixelPerfect;
+        }
+        this.title = true;
+        title.x = this.sprite.x;
+        title.y = this.sprite.y - 100;
+        
+        switch(this.state) {
+            case 'Build Ship':
+            qMining.sprite.x = this.sprite.x - 75;
+            qMining.sprite.y = this.sprite.y - 35;
+            qMining.update();
+
+            qBattle.sprite.x = qMining.sprite.x;
+            qBattle.sprite.y = qMining.sprite.y + 75;
+            qBattle.update();
+
+            qTurret.sprite.x = qMining.sprite.x;
+            qTurret.sprite.y = qMining.sprite.y + 150;
+            qTurret.update();
+        }
     }
+    update() {
+        this.sprite.x = cameraSprite.x - windowWidth/2 + 230;
+        this.sprite.y = cameraSprite.y + windowHeight/3 - 10;
+
+        this.initializeTitle();
+
+    }
+
+
 }
+let title, nextButton, prevButton, qMining, qBattle, qTurret;
+
+let unitButtons = [qMining, qBattle];
