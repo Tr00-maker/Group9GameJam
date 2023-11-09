@@ -5,8 +5,7 @@ let gamePause = false;
 let mothershipImg, mothership;
 
 //User Interface
-let userInterface;
-let unitButtons = [];
+let userInterface, bottomUi;
 let miningShipCost = 50;
 let missileCost = 40;
 const defaultButtonColor = [255, 255, 255, 100];
@@ -58,9 +57,6 @@ let explosionShipAni, explosionBulletAni;
 //background
 let spaceBackground;
 
-//ui bar
-let uiW, uiH, uiX, uiY;
-
 function preload() {
     spaceBackground = loadImage('./images/gif1.gif');
 
@@ -96,14 +92,28 @@ function preload() {
     roamingShipImg = loadAnimation('./images/roaming.png');
     roamingShipSelectedImg = loadAnimation('./images/roamingSelected.png');
 
+    miningButton = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 0, col: 1});
+    miningButtonPressed = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 0, col: 0});
+    miningButtonBlacked = loadAnimation('./images/unitbuttonsBlack.png', {frameSize: 50, frames:1, row: 0, col: 0});
+
+    battleButton = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 1, col: 1});
+    battleButtonPressed = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 1, col: 0});
+    battleButtonBlacked = loadAnimation('./images/unitbuttonsBlack.png', {frameSize: 50, frames:1, row: 1, col: 0});
+
+    turretButton = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 2, col: 1});
+    turretButtonPressed = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 2, col: 0});
+    turretButtonBlacked = loadAnimation('./images/unitbuttonsBlack.png', {frameSize: 50, frames:1, row: 2, col: 0});
+
+    squareUiImg = loadAnimation('./images/squareUi.png');
+    titleFrameImg = loadAnimation('./images/titleFrame.png');
+
     gearImg = loadImage('./images/gear.png');
 }
 
 function setup() {
     new Canvas(5000, 5000, 'pixelated x1');
-    background(100);
     changeState(state.play);
-
+    allSprites.pixelPerfect;
     initializeCamera();
     }
 

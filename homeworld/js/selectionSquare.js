@@ -20,8 +20,8 @@ class SelectionSquare {
         } else {
             this.sprite.x = min(this.x, mx);
             this.sprite.y = min(this.y, my);
-            this.sprite.w = 1 + abs(mx - this.x);
-            this.sprite.h = 1 + abs(my - this.y);
+            this.sprite.w = 1 +abs(mx - this.x);
+            this.sprite.h = 1 +abs(my - this.y);
     
             push();
             fill(255, 255, 255, 50);
@@ -45,7 +45,7 @@ class SelectionSquare {
                 if (this.isInSelectionSquare(selectableSprites[i].sprite)) {
                     selectableSprites[i].selected = true;
                     this.selectionFlag = true;
-                } else if (!this.isInUiBar(mx, my)) {
+                } else {
                     selectableSprites[i].selected = false;
                 }            
             } else if (!this.drawing && !this.selectionFlag) {
@@ -64,14 +64,5 @@ class SelectionSquare {
             otherSprite.y + otherSprite.h / 2 > this.sprite.y &&
             otherSprite.y - otherSprite.h / 2 < this.sprite.y + this.sprite.h
         );
-    }
-
-    isInUiBar(x, y) {
-        return (
-            x >= uiX && 
-            x <= uiX + uiW && 
-            y >= uiY && 
-            y <= uiY + uiH
-        );
-    }     
+    }  
 }
