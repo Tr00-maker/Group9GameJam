@@ -31,6 +31,7 @@ function playStateSetup() {
     enemyUnits.push(new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100)));
 }
 
+
 function playState() {
     drawBackground();
     userInterface.update();
@@ -43,7 +44,7 @@ function playStatePause() {
         gamePause = !gamePause;
     } 
     world.step(gamePause ? -1 : 0);
-    //allSprites.autoUpdate = !gamePause;  
+    allSprites.autoUpdate = !gamePause;  
 }
 
 function playStateUpdate() {
@@ -52,7 +53,6 @@ function playStateUpdate() {
         mothership.update();
         asteroidController.update();
         roamingShipController.update();
-    
 
         for (let i = asteroids.length - 1; i >= 0; i--) {
             asteroids[i].update();
