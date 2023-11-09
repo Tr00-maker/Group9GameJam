@@ -1,6 +1,7 @@
 function playStateSetup() {
     spaceBackground.resize(400, 400);
     userInterface = new UserInterface();
+    bottomUi = new BottomUi();
     playerUpgradeController = new PlayerUpgradeController();
     selectionSquare = new SelectionSquare();
     asteroidController = new AsteroidController(3000, 50);
@@ -35,6 +36,7 @@ function playStateSetup() {
 function playState() {
     drawBackground();
     userInterface.update();
+    bottomUi.update();
     playStatePause();
     playStateUpdate();    
 }

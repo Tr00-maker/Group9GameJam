@@ -61,7 +61,6 @@ class UnitButton {
         this.sprite.addAni('default', this.defaultImage);
         this.sprite.addAni('pressed', this.selectedImage);
         this.sprite.addAni('blacked', this.blackedImage);
-        this.sprite.debug = true;
 
         this.sprite.d = w;
     }
@@ -145,8 +144,14 @@ class UnitButton {
 let clickedFlag = false;
 
 class BottomUi {
-    constructor() {
-        this.sprite = new Sprite(0, 0,);
+    constructor(x, y) {
+        this.sprite = new Sprite(x, y);
+        this.sprite.ani = squareUiImg;
+        this.sprite.ani.scale = 3.5
+    }
 
+    update() {
+        this.sprite.x = cameraSprite.x - windowWidth/3 - 45;
+        this.sprite.y = cameraSprite.y + windowHeight/3 - 10;
     }
 }
