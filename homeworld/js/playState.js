@@ -1,12 +1,21 @@
 function playStateSetup() {
     spaceBackground.resize(400, 400);
     userInterface = new UserInterface();
+    playerUpgradeController = new PlayerUpgradeController();
     selectionSquare = new SelectionSquare();
     asteroidController = new AsteroidController(3000, 50);
+    roamingShipController = new RoamingShipController(10000, 10);
+
     mothership = new Mothership(width/2, height/2);
     mothershipUnit = (new MothershipUnit(1000, 1000));
+    
     for (let i = 0; i < startingAsteroids; i++) {
         asteroids.push(new Asteroid(width/2 + (random() * width - width/2), height/2 + (random() * height - height/2), random(0, 360)));
+        asteroidController.enemyCurrent++;
+    }
+    for (let i = 0; i < startingRoamingShips; i++) {
+        enemyUnits.push(new RoamingShip(width/2 + (random() * width - width/2), height/2 + (random() * height - height/2), random(0, 360)));
+        roamingShipController.enemyCurrent++;
     }
     
     miningShips.push(new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100)));
@@ -19,10 +28,7 @@ function playStateSetup() {
     enemyUnits.push(new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100)));
     enemyUnits.push(new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100)));
     enemyUnits.push(new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100)));
-
-
-
-
+    enemyUnits.push(new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100)));
 }
 
 function playState() {
@@ -45,6 +51,7 @@ function playStateUpdate() {
         selectionSquare.display();
         mothership.update();
         asteroidController.update();
+        roamingShipController.update();
     
 
         for (let i = asteroids.length - 1; i >= 0; i--) {
@@ -67,6 +74,17 @@ function playStateUpdate() {
             enemyProjectiles[i].update();
         }
 
+        for (let i = explosions.length - 1; i >= 0; i--) {
+            explosions[i].update();
+        }
+
+        for (let i = roamingShips.length - 1; i >= 0; i--) {
+            roamingShips[i].update();
+        }
+
+        for (let i = shipScraps.length - 1; i >= 0; i--) {
+            shipScraps[i].update();
+        }
 
         //missiles
         for (let i = missiles.length - 1; i >= 0; i--) {

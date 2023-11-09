@@ -1,35 +1,36 @@
 class BattleShip extends PlayerShip {
     constructor(x, y) {
-        const defaultSpeed = 1;
-        const defaultHealth = 200;
-        const defaultRange = 200;
+        const defaultSpeed = playerUpgradeController.battleShipStat.speed;
+        const defaultHealth = playerUpgradeController.battleShipStat.health;
+        const defaultRange = playerUpgradeController.battleShipStat.range;
+        const defaultSize = playerUpgradeController.battleShipStat.size;
 
         super(x, y, defaultSpeed, defaultHealth, defaultRange); 
         
         this.sprite.addAni('default', battleShipImg);
         this.sprite.addAni('selected', battleShipSelectedImg);
-        this.sprite.d = 30;
-
+        this.sprite.d = defaultSize;
+        
         this.name = 'Battle Ship';
 
         this.initializeStats();
     }
 
     initializeStats() {
-        this.fireRate = 1;
+        this.fireRate = playerUpgradeController.battleShipStat.fireRate;
+        this.shotSpeed = playerUpgradeController.battleShipStat.shotSpeed;
+        this.damage = playerUpgradeController.battleShipStat.damage;
         this.lastFired = 0;
-        this.shotSpeed = 5;
-        this.damage = 10;
-        this.detetctionRange = this.range*1.5; // set the distance that the ships can detect enemies
     }
 
     update() {
         super.update();
+        this.updateAnimation();
         this.findClosestUnit();
     }
 
     updateAnimation() {
-        this.sprite.ani.scale = 1.5;
+        this.sprite.ani.scale = this.sprite.d / 20;
     }
 
     showUI() {
@@ -71,7 +72,7 @@ class BattleShip extends PlayerShip {
         }
 
         if ((!this.targetSprite || this.autoTarget) && (this.state === 'idle' || this.state === 'hasTarget' && this.sprite.speed === 0)) {
-            if (closestDistance < this.detetctionRange) { 
+            if (closestDistance < this.detectionRange) { 
                 this.targetSprite = closestShip;
                 this.autoTarget = true; //set to true on setMouseTarget() - right clicking not on a sprite and false when setSpriteTarget() method is run in PlayerShip class
             } else {

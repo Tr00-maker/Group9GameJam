@@ -27,12 +27,4 @@ class BaseShip extends PlayerShip {
         this.sprite.ani.scale = 1.5;
     }
 
-    showUI() {
-        
-    }
-
-    removeUI() {
-        
-    }
-
 }

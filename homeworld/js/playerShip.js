@@ -5,20 +5,26 @@ class PlayerShip {
         this.speed = speed;
         this.health = health;
         this.range = range;
-        this.rotationSpeed = this.speed*5;
+        this.detectionRange = this.range*1.5;
+
+        this.rotationSpeed = this.speed*5;      
         this.sprite.rotationLock = true;
-        this.sprite.bounciness = 0.01;
         
-        this.sprite.debug = false;
+        this.sprite.debug = true;
+
         selectableSprites.push(this);
         this.sprite.overlaps(allSprites);
         
         this.state = 'spawned';
-
         this.moveTimer = 0;
     } 
 
     update() {
+
+        if (this.health <= 0) {
+            this.dies(this.x, this.y);
+        }
+
         if (this.selected && mouse.pressed(RIGHT)) {
             this.handleSetTarget();
         }
@@ -182,25 +188,33 @@ class PlayerShip {
         this.sprite.ani = this.selected ? 'selected' : 'default';
     }
 
-    takeDamage(x, y, damage, radius) {
+    takeDamage(damage) {
         this.health -= damage;
-        if (this.health <= 0) {
-            //explosions.push(new explosion(x, y, damage)) add later
-            this.dies();
-        }
+        this.x = this.sprite.x;
+        this.y = this.sprite.y;
     }
 
-    dies() {
+    dies(x, y) {
+        explosions.push(new Explosion(x, y, explosionShipAni));
+
+        //remove from selectableSprites array
         this.index = selectableSprites.indexOf(this);
-        if (this.index != -1) {
+        if (this.index !== -1) {
             selectableSprites.splice(this.index, 1);
         }
-        this.sprite.remove()
+        
+        //if its a mining ship, remove it from miningShips array
+        if (this.name = 'Mining Ship') {
+            this.miningIndex = miningShips.indexOf(this);
+            if (this.miningIndex != -1) {
+                miningShips.splice(this.miningIndex, 1);
+            }
+        }
+
+        //stop rendering and physics
+        this.sprite.remove();
     }
 
 }
-
-//anything added to the array can be set as a target by all player ships
-let targetableSprites = [];
 
 

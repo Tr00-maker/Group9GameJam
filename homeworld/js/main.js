@@ -15,8 +15,13 @@ const pressedButtonColor = [255, 255, 255, 255];
 
 //selectionSquare
 let selectionSquare;
-
 let selectableSprites = [];//holds all player ships
+
+//upgrades
+let playerUpgradeController;
+
+//anything added to the array can be set as a target by all player ships
+let targetableSprites = [];
 
 //mining ships
 let miningShips = [];
@@ -33,14 +38,22 @@ let miningShipUnits = [];
 let mothershipUnit;
 let shootingUnitImg, shootingUnitDamagedImg;
 
-//asteroids
+//asteroids and roaming ships
 let asteroids = [];
 let asteroidController;
 let startingAsteroids = 20;
 
+let roamingShips = [];
+let roamingShipController;
+let startingRoamingShips = 5;
+
 //missiles
 let missiles = [];
 let missileImg;
+
+//explosions
+let explosions = [];
+let explosionShipAni, explosionBulletAni;
 
 //background
 let spaceBackground;
@@ -53,6 +66,7 @@ function preload() {
 
     asteroidImg = loadAnimation('./images/asteroid.png');
     miningTargetImg = loadAnimation('./images/miningTarget.png');
+    asteroidDiesAni = loadAnimation('./images/asteroidDiesAni.png', { frameSize: [96, 96], frames: 7, frameDelay: 6, row: 0});
 
     miningShipImg = loadAnimation('./images/ships.png', { frameSize: [32, 32], frames: 1, row: 0, col: 1 });
     miningShipSelectedImg = loadAnimation('./images/selected.png', { frameSize: [32, 32], frames: 1, row: 0, col: 1 });
@@ -75,6 +89,16 @@ function preload() {
 
     redBulletImg = loadImage('./images/redBullet.png');
     tealBulletImg = loadImage('./images/tealBullet.png');
+
+    explosionShipAni = loadAnimation('./images/explosionShip.png', { frameSize: [48, 48], frames: 8, frameDelay: 0, row: 0});
+    explosionBulletAni = loadAnimation('./images/explosionBullet.png', { frameSize: [16, 16], frames: 7, frameDelay: 0, row: 0});
+
+    roamingShipImg = loadAnimation('./images/roaming.png');
+    roamingShipSelectedImg = loadAnimation('./images/roamingSelected.png');
+
+    gearImg = loadImage('./images/gear.png');
+
+
 }
 
 function setup() {

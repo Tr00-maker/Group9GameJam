@@ -18,11 +18,16 @@ class EnemyUnit {
 
         this.active = true;
         this.inPatrol = false;
+        this.sprite.debug = true;
 
         this.state = 'idle';
     }
 
     update() {
+        if (this.health <= 0) {
+            this.dies(this.x, this.y);
+        }
+
         this.showTarget();    
 
         switch(this.state) {
@@ -87,23 +92,36 @@ class EnemyUnit {
         }
     }
 
-    takeDamage(x, y, damage, radius) {
+    takeDamage(damage) {
         this.health -= damage;
-        if (this.health <= 0) {
-            //explosions.push(new explosion(x, y, damage)) add later
-            this.dies();
-        }
+        this.x = this.sprite.x;
+        this.y = this.sprite.y;
     }
 
-    dies() {
+    //when ships die, the drop a random amount of ship scraps (1-2) and create an explosion
+    dies(x, y) {
         this.active = false;
-        setTimeout(() => {
-            this.sprite.remove();
-            this.index = enemyUnits.indexOf(this)
-            if (this.index != -1) {
-                enemyUnits.splice(this.index, 1);
+        let scrapCount = floor(random(1, 3));
+
+        for (let i = 0; i < scrapCount; i++) {
+            shipScraps.push(new ShipScrap(x + random() * 20 - 10, y + random() * 20 - 10));
+        }
+        explosions.push(new Explosion(x, y, explosionShipAni));
+
+        //remove from selectableSprites array
+        this.index = selectableSprites.indexOf(this);
+        if (this.index !== -1) {
+            selectableSprites.splice(this.index, 1);
+        }
+        
+        //if its a mining ship, remove it from miningShips array
+        if (this.name = 'Mining Ship Unit') {
+            this.miningIndex = miningShips.indexOf(this);
+            if (this.miningIndex != -1) {
+                miningShips.splice(this.miningIndex, 1);
             }
-        }, 100);
+        }
+        
     }
 
     //stops sprite in idle state
@@ -152,10 +170,10 @@ class MothershipUnit extends EnemyUnit {
         this.name = 'Mothership Unit';
         
         this.sprite.addAni('default', mothershipUnitUnitImg);
-        this.sprite.addAni('selected', shootingUnitSelectedImg);
+        this.sprite.addAni('selected', mothershipUnitSelectedImg);
         this.sprite.d = 70;
 
-        this.resource = 0;
+        this.resource = 100;
         this.sprite.text = this.resource;
         this.sprite.textColor = 'white';
         this.sprite.textSize = 20;
@@ -181,7 +199,7 @@ class MothershipUnit extends EnemyUnit {
     //spawns a mining ship every 5 enemy units, else it spawn a shooting ship
     spawnUnits() {
         if (this.resource >= miningShipCost) {
-            if (enemyUnits.length % 5 === 0) {
+            if (enemyUnits.length % 3 === 0) {
                 this.resource -= miningShipCost;  // Deduct the cost for mining ship
                 enemyUnits.push(new MiningShipUnit(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100)));
             } else {
