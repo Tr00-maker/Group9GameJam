@@ -161,10 +161,48 @@ function cameraEffect() {
     }
 
     if (kb.pressed('x')) {
+        for (let i = 0; i < selectableSprites.length; i++) {
+            selectableSprites[i].selected = false;
+        }
+
+        mothership.selected = true;
+
         cameraSprite.pos = mothership.sprite.pos;
     }
+
+    if (kb.pressed('e')) {
+        for (let i = 0; i < selectableSprites.length; i++) {
+            selectableSprites[i].selected = false;
+        }
+    
+        cameraSprite.pos = battleShips[currentBattleShipIndex].sprite.pos;
+        battleShips[currentBattleShipIndex].selected = true;
+    
+        currentBattleShipIndex++;
+        if (currentBattleShipIndex >= battleShips.length) {
+            currentBattleShipIndex = 0;
+        }
+    }
+    
+
+    if (kb.pressed('q')) {
+        for (let i = 0; i < selectableSprites.length; i++) {
+            selectableSprites[i].selected = false;
+        }
+    
+        cameraSprite.pos = miningShips[currentMiningShipIndex].sprite.pos;
+        miningShips[currentMiningShipIndex].selected = true;
+
+        currentMiningShipIndex++;
+        if (currentMiningShipIndex >= miningShips.length) {
+            currentMiningShipIndex = 0;
+        }
+    }
+    
 }
 
 //var for cameraEffect
 let cameraSprite, tx, ty, mx, my;
+let currentBattleShipIndex = 0;
+let currentMiningShipIndex = 0;
 

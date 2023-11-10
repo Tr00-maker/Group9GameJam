@@ -198,6 +198,8 @@ class Button {
         this.name = name;
         this.type = type;
         this.cost = cost;
+
+        this.sprite.debug = true;
     }
     update() {
         if (this.isWaiting) {
@@ -221,14 +223,15 @@ class Button {
         }
         
     }
+
     isHovered(x, y) {
         return (
-            x >= this.sprite.x - this.sprite.w/2 && 
-            x <= this.sprite.x - this.sprite.w/2 + this.sprite.w && 
-            y >= this.sprite.y - this.sprite.h/2 && 
-            y <= this.sprite.y - this.sprite.h/2 + this.sprite.h
+            x >= this.sprite.x - this.w / 2 &&
+            x <= this.sprite.x + this.w / 2 &&
+            y >= this.sprite.y - this.h / 2 &&
+            y <= this.sprite.y + this.h / 2
         );
-    }
+    }  
 
     checkPressed(type) {
         const currentTime = Date.now();

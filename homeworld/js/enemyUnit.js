@@ -238,13 +238,13 @@ class ShootingUnit extends EnemyUnit {
         this.detectionRange = this.range*1.5;
         this.sprite.addAni('default', shootingUnitImg);
         this.sprite.addAni('selected', shootingUnitSelectedImg);
-        this.sprite.d = 30;
+        this.sprite.d = 37;
 
         this.closestShip = null;
-        this.fireRate = 0.5;
+        this.fireRate = 0.75;
         this.lastFired = 0;
-        this.shotSpeed = 3;
-        this.damage = 5;
+        this.shotSpeed = 5;
+        this.damage = 10;
     }
 
     update() {
@@ -266,8 +266,8 @@ class ShootingUnit extends EnemyUnit {
         //at max range move toward player ships
         if (distToClosestShip < this.detectionRange && distToClosestShip > this.detectionRange/1.2) {
             this.sprite.moveTo(this.closestShip.sprite, this.speed);
-        } else if (distToClosestShip < this.detectionRange/1.2 && distToClosestShip > this.range) {
-            this.sprite.attractTo(this.closestShip.sprite, this.speed/3);
+        } else if (distToClosestShip < this.detectionRange && distToClosestShip > this.range) {
+            this.sprite.attractTo(this.closestShip.sprite, 0.3*(this.speed/3));
         } else if (distToClosestShip < this.range) {
             this.shoot();
             this.handlePlayerShipSpread();

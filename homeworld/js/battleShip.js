@@ -83,12 +83,14 @@ class BattleShip extends PlayerShip {
             }
         }
 
-        if (this.targetSprite && this.targetSprite === closestShip) {
-            this.state = 'hasTarget';
-            this.checkOnTarget();
-            //if target is set to a non enemy eg. asteroid wait unti the sprite reaches the target, then set autoTarget to true 
-        } else if(this.targetSprite && this.targetSprite !== closestShip && (this.state === 'idle' || this.state === 'hasTarget' && this.sprite.speed === 0)) {
-            this.autoTarget = true;
+        for (let enemy of enemyUnits) {
+            if (this.targetSprite && this.targetSprite === closestShip) {
+                this.state = 'hasTarget';
+                this.checkOnTarget();
+                //if target is set to a non enemy eg. asteroid wait unti the sprite reaches the target, then set autoTarget to true 
+            } else if(this.targetSprite && this.targetSprite !== enemy && (this.state === 'idle' || this.state === 'hasTarget' && this.sprite.speed === 0)) {
+                this.autoTarget = true;
+            }
         }
     }
 
