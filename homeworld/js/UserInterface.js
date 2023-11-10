@@ -100,6 +100,8 @@ class BottomUi {
         this.sprite = new Sprite(x, y, 'd');
         this.sprite.overlaps(allSprites);
         this.sprite.layer = 3;
+        this.x = x;
+        this.y = y;
 
         this.sprite.draw = () => {
             push();
@@ -116,58 +118,44 @@ class BottomUi {
             textFont('Pixelify Sans');
             text('Resource:' +'\n' + mothership.resource, -80, -530);
             text('Ship Scraps:' +'\n' + mothership.scrap, -80, -460);
-            text('Mining Ships:' +'\n' + miningShips.length, -80, -390);
-            text('Battle Ships:' +'\n' + battleShips.length, -80, -320);
+            text('Ships:' +'\n' + selectableSprites.length, -80, -390);
+            text('Mining Ships:' +'\n' + miningShips.length, -80, -320);
+            text('Battle Ships:' +'\n' + battleShips.length, -80, -250);
             pop();
         }
 
-        this.title = false;
+        this.initializeButtons();
+
         this.buttons = false;
     }
 
-    initializeTitle() {
+    initializeButtons() {
+        qMining = new Button('Mining Ship', 'qMining', miningShipCost, this.x, this.y - 160, 175, 30);
+        qBattle = new Button('Battle Ship', 'qBattle', miningShipCost, this.x, this.y - 110, 175, 30);
+    }
 
+    updateButtons() {
+        qMining.sprite.x = this.sprite.x;
+        qMining.sprite.y = this.sprite.y - 160;
+        qBattle.sprite.x = this.sprite.x;
+        qBattle.sprite.y = this.sprite.y - 110;
+        qMining.update();
+        qBattle.update();
     }
     
     update() {
         this.sprite.x = cameraSprite.x - windowWidth/2 + 100;
         this.sprite.y = cameraSprite.y;
 
-        this.initializeTitle();
+        this.updateButtons();
 
     }
 
 
 }
-let title, nextButton, prevButton, qMining, qBattle, qTurret;
+let qMining, qBattle, qTurret;
 
-// let unitButtons = [qMining, qBattle];
-
-let buttonsDrawn = false;
-function drawUi() {
-    // push();
-    // fill(0);
-    // stroke('#39FF14');
-    // strokeWeight(2);
-    // rect(cameraSprite.x - windowWidth/2 + 5, cameraSprite.y + windowHeight/2 - 305, 300, 300);
-    // pop();
-
-    // push();
-    // fill('#39FF14');
-    // strokeWeight(0);
-    // textSize(20);
-    // textFont('Pixelify Sans');
-    // text('Build Ships: ', cameraSprite.x - windowWidth/2 + 25, cameraSprite.y + windowHeight/2 - 275);
-    // pop();
-
-    // if (!buttonsDrawn) {
-    //     buttonsDrawn = true;
-    //     qMining = new Button('Mining Ship', qMining, miningShipCost, cameraSprite.x, cameraSprite.y, 30, 25);
-    // }
-    // qMining.update();
-}
-
-let unitButtons = [qMining];
+let unitButtons = [qMining, qBattle];
 
 class Button {
     constructor(name, type, cost, x, y, w, h) {
@@ -176,6 +164,10 @@ class Button {
         this.y = y;
         this.w = w;
         this.h = h;
+        
+        this.timer = 0;
+        this.isWaiting = false; // Track if the button is in a waiting state
+        this.fillProgress = 0; // Progress of the fill bar (0 to 1)
 
         this.sprite.draw = () => {
             push();
@@ -183,6 +175,22 @@ class Button {
             stroke('#39FF14');
             strokeWeight(2);
             rect(0, 0, this.w, this.h);
+            pop();
+
+            push();
+            fill('#39FF14');
+            strokeWeight(0);
+            textSize(20);
+            textFont('Pixelify Sans');
+            textAlign(CENTER);
+            text('Build:' +' ' + this.name, 0, 5);
+            pop();
+
+            push();
+            fill('#39FF14');
+            noStroke();
+            rectMode(CORNER);
+            rect(-this.w/2, -this.h/2, this.fillProgress * this.w, this.h);
             pop();
         };
 
@@ -192,9 +200,14 @@ class Button {
         this.cost = cost;
     }
     update() {
-        if (this.cost <= mothership.resource) {
+        if (this.isWaiting) {
+            const currentTime = Date.now();
+            this.fillProgress = Math.min((currentTime - this.timer) / 3000, 1);
+        }
+
+        if (this.cost <= mothership.resource && !this.isWaiting) {
             if (this.isHovered(mx, my) && mouse.released(LEFT)) {
-                this.checkPressed();
+                this.checkPressed(this.type);
             }
             if (this.isHovered(mx, my) && mouse.pressing(LEFT)) {
 
@@ -217,43 +230,33 @@ class Button {
         );
     }
 
-    checkPressed() {  
-        if (!clickedFlag) {
+    checkPressed(type) {
+        const currentTime = Date.now();
+        
+        if (!this.isWaiting && !clickedFlag) {
             clickedFlag = true;
-            switch(this.type) {
-                case 'qMining':
-                this.queueMiningShip();
-                break;
-                case 'qBattle':
-                this.queueBattleShip();
-                break;
-            } 
-        }
-        if (clickedFlag) {
-            setTimeout(() => clickedFlag = false, 200);
-        }
-    }
-
-    queueMiningShip() {
-        if (mothership.resource >= this.cost) {
-            mothership.resource -= this.cost;
-            mothership.spawnMiningShip();
-        }
-    }
-
-    queueBattleShip() {
-        if (mothership.resource >= this.cost) {
-            mothership.resource -= this.cost;
-            mothership.spawnBattleShip();
-        }
-    }
-
-    queueMissile()
-    {
-        if(mothership.resource >= this.cost)
-        {
-            mothership.resource -= this.cost;
-            mothership.spawnMissile();
+            this.isWaiting = true;
+            this.timer = currentTime;
+            this.fillProgress = 0;
+            
+            if (mothership.resource >= this.cost) {
+                mothership.resource -= this.cost;  
+                setTimeout(() => {
+                    this.isWaiting = false;
+                    clickedFlag = false;
+                    this.fillProgress = 0;
+        
+                    switch(type) {
+                        case 'qMining':
+                            mothership.spawnMiningShip();
+                            break;
+                        case 'qBattle':
+                            mothership.spawnBattleShip();
+                            break;
+                    }
+                    
+                }, 3000);
+            }
         }
     }
 
