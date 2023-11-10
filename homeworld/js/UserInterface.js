@@ -1,20 +1,195 @@
-class UnitButton {
-    constructor(name, type, cost, x, y, w, h, defaultImage, selectedImage, blackedImage) {
+// class UnitButton {
+//     constructor(name, type, cost, x, y, w, h, defaultImage, selectedImage, blackedImage) {
+//         this.sprite = new Sprite(x, y, 'd');
+//         this.sprite.overlaps(allSprites);
+//         this.defaultImage = defaultImage;
+//         this.selectedImage = selectedImage;
+//         this.blackedImage = blackedImage;
+//         this.sprite.w = w;
+//         this.sprite.h = h;
+//         this.name = name;
+//         this.type = type;
+//         this.cost = cost;
+//         this.sprite.addAni('default', this.defaultImage);
+//         this.sprite.addAni('pressed', this.selectedImage);
+//         this.sprite.addAni('blacked', this.blackedImage);
+
+//         this.sprite.d = w;
+//     }
+//     update() {
+//         if (this.cost <= mothership.resource) {
+//             if (this.isHovered(mx, my) && mouse.released(LEFT)) {
+//                 this.checkPressed();
+//             }
+//             if (this.isHovered(mx, my) && mouse.pressing(LEFT)) {
+//                 this.sprite.changeAni('pressed');
+//                 this.sprite.ani.scale = 1.5;
+//             } else if (this.isHovered(mx, my)) {
+//                 this.sprite.changeAni('pressed');
+//                 this.sprite.ani.scale = 1.2;
+//             } else {
+//                 this.sprite.changeAni('default');
+//                 this.sprite.ani.scale = 1;
+//             }
+//         } else {
+//             this.sprite.changeAni('blacked')
+//         }
+        
+//     }
+//     isHovered(x, y) {
+//         return (
+//             x >= this.sprite.x - this.sprite.w/2 && 
+//             x <= this.sprite.x - this.sprite.w/2 + this.sprite.w && 
+//             y >= this.sprite.y - this.sprite.h/2 && 
+//             y <= this.sprite.y - this.sprite.h/2 + this.sprite.h
+//         );
+//     }
+
+//     checkPressed() {  
+//         if (!clickedFlag) {
+//             clickedFlag = true;
+//             switch(this.type) {
+//                 case 'qMining':
+//                 this.queueMiningShip();
+//                 break;
+//                 case 'qBattle':
+//                 this.queueBattleShip();
+//                 break;
+//             } 
+//         }
+//         if (clickedFlag) {
+//             setTimeout(() => clickedFlag = false, 200);
+//         }
+//     }
+
+//     queueMiningShip() {
+//         if (mothership.resource >= this.cost) {
+//             mothership.resource -= this.cost;
+//             mothership.spawnMiningShip();
+//         }
+//     }
+
+//     queueBattleShip() {
+//         if (mothership.resource >= this.cost) {
+//             mothership.resource -= this.cost;
+//             mothership.spawnBattleShip();
+//         }
+//     }
+
+//     queueMissile()
+//     {
+//         if(mothership.resource >= this.cost)
+//         {
+//             mothership.resource -= this.cost;
+//             mothership.spawnMissile();
+//         }
+//     }
+
+//     remove() {
+//         this.index = unitButtons.indexOf(this);
+//         if (this.index != -1) {
+//             unitButtons.splice(this.index, 1)
+//         }
+//         this.sprite.remove();
+//     }
+// }
+// let clickedFlag = false;
+
+class BottomUi {
+    constructor(x, y) {
         this.sprite = new Sprite(x, y, 'd');
         this.sprite.overlaps(allSprites);
-        this.defaultImage = defaultImage;
-        this.selectedImage = selectedImage;
-        this.blackedImage = blackedImage;
-        this.sprite.w = w;
-        this.sprite.h = h;
+        this.sprite.layer = 3;
+
+        this.sprite.draw = () => {
+            push();
+            fill(0);
+            stroke('#39FF14');
+            strokeWeight(2);
+            rect(0, 0, 200, windowHeight - 1);
+            pop();
+
+            push();
+            fill('#39FF14');
+            strokeWeight(0);
+            textSize(20);
+            textFont('Pixelify Sans');
+            text('Resource:' +'\n' + mothership.resource, -80, -530);
+            text('Ship Scraps:' +'\n' + mothership.scrap, -80, -460);
+            text('Mining Ships:' +'\n' + miningShips.length, -80, -390);
+            text('Battle Ships:' +'\n' + battleShips.length, -80, -320);
+            pop();
+        }
+
+        this.title = false;
+        this.buttons = false;
+    }
+
+    initializeTitle() {
+
+    }
+    
+    update() {
+        this.sprite.x = cameraSprite.x - windowWidth/2 + 100;
+        this.sprite.y = cameraSprite.y;
+
+        this.initializeTitle();
+
+    }
+
+
+}
+let title, nextButton, prevButton, qMining, qBattle, qTurret;
+
+// let unitButtons = [qMining, qBattle];
+
+let buttonsDrawn = false;
+function drawUi() {
+    // push();
+    // fill(0);
+    // stroke('#39FF14');
+    // strokeWeight(2);
+    // rect(cameraSprite.x - windowWidth/2 + 5, cameraSprite.y + windowHeight/2 - 305, 300, 300);
+    // pop();
+
+    // push();
+    // fill('#39FF14');
+    // strokeWeight(0);
+    // textSize(20);
+    // textFont('Pixelify Sans');
+    // text('Build Ships: ', cameraSprite.x - windowWidth/2 + 25, cameraSprite.y + windowHeight/2 - 275);
+    // pop();
+
+    // if (!buttonsDrawn) {
+    //     buttonsDrawn = true;
+    //     qMining = new Button('Mining Ship', qMining, miningShipCost, cameraSprite.x, cameraSprite.y, 30, 25);
+    // }
+    // qMining.update();
+}
+
+let unitButtons = [qMining];
+
+class Button {
+    constructor(name, type, cost, x, y, w, h) {
+        this.sprite = new Sprite(x, y, 'd');
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+
+        this.sprite.draw = () => {
+            push();
+            fill(0);
+            stroke('#39FF14');
+            strokeWeight(2);
+            rect(0, 0, this.w, this.h);
+            pop();
+        };
+
+        this.sprite.overlaps(allSprites);
         this.name = name;
         this.type = type;
         this.cost = cost;
-        this.sprite.addAni('default', this.defaultImage);
-        this.sprite.addAni('pressed', this.selectedImage);
-        this.sprite.addAni('blacked', this.blackedImage);
-
-        this.sprite.d = w;
     }
     update() {
         if (this.cost <= mothership.resource) {
@@ -22,17 +197,14 @@ class UnitButton {
                 this.checkPressed();
             }
             if (this.isHovered(mx, my) && mouse.pressing(LEFT)) {
-                this.sprite.changeAni('pressed');
-                this.sprite.ani.scale = 1.5;
+
             } else if (this.isHovered(mx, my)) {
-                this.sprite.changeAni('pressed');
-                this.sprite.ani.scale = 1.2;
+
             } else {
-                this.sprite.changeAni('default');
-                this.sprite.ani.scale = 1;
+
             }
         } else {
-            this.sprite.changeAni('blacked')
+
         }
         
     }
@@ -94,67 +266,3 @@ class UnitButton {
     }
 }
 let clickedFlag = false;
-
-class BottomUi {
-    constructor(x, y) {
-        this.sprite = new Sprite(x, y, 'd');
-        this.sprite.layer = 3;
-        this.sprite.ani = squareUiImg;
-        this.sprite.ani.scale = 3.5
-        this.sprite.overlaps(allSprites);
-        this.title = false;
-        this.buttons = false;
-        this.state = 'Build Ship';
-    }
-
-    initializeTitle() {
-        if (!this.title) {
-            switch(this.state) {
-                case 'Build Ship':
-                qMining = new UnitButton('Mining Ship', 'qMining', miningShipCost, 0, 0, 50, 50, miningButton, miningButtonPressed, miningButtonBlacked);
-                qBattle = new UnitButton('Battle Ship', 'qBattle', miningShipCost, 0, 0, 50, 50, battleButton, battleButtonPressed, battleButtonBlacked);
-                qTurret = new UnitButton('Mining Ship', 'qMining', miningShipCost, 0, 0, 50, 50, turretButton, turretButtonPressed, turretButtonBlacked);
-            }
-            title = new Sprite(this.sprite.x, this.sprite.y - 100, 120, 30);
-            title.overlaps(allSprites);
-            title.ani = titleFrameImg;
-            title.ani.scale = 2.5;
-            title.textSize = 30;
-            title.textStroke = 'black';
-            title.textStrokeWeight  = 5;
-            title.textColor = color(0);
-            title.text = this.state;
-            title.pixelPerfect;
-        }
-        this.title = true;
-        title.x = this.sprite.x;
-        title.y = this.sprite.y - 100;
-        
-        switch(this.state) {
-            case 'Build Ship':
-            qMining.sprite.x = this.sprite.x - 75;
-            qMining.sprite.y = this.sprite.y - 35;
-            qMining.update();
-
-            qBattle.sprite.x = qMining.sprite.x;
-            qBattle.sprite.y = qMining.sprite.y + 75;
-            qBattle.update();
-
-            qTurret.sprite.x = qMining.sprite.x;
-            qTurret.sprite.y = qMining.sprite.y + 150;
-            qTurret.update();
-        }
-    }
-    update() {
-        this.sprite.x = cameraSprite.x - windowWidth/2 + 230;
-        this.sprite.y = cameraSprite.y + windowHeight/3 - 10;
-
-        this.initializeTitle();
-
-    }
-
-
-}
-let title, nextButton, prevButton, qMining, qBattle, qTurret;
-
-let unitButtons = [qMining, qBattle];

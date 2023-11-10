@@ -10,6 +10,8 @@ class BattleShip extends PlayerShip {
         this.sprite.addAni('default', battleShipImg);
         this.sprite.addAni('selected', battleShipSelectedImg);
         this.sprite.d = defaultSize;
+
+        battleShips.push(this);
         
         this.name = 'Battle Ship';
 

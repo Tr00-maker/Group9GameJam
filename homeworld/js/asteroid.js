@@ -5,13 +5,26 @@ class Asteroid {
         this.sprite.d = 125;
         this.sprite.color = 'grey';
         targetableSprites.push(this);
-        this.sprite.overlaps(allSprites);
+
+        for (let s of selectableSprites){
+            for (let e of enemyUnits) {
+                for (let a of asteroids) {
+                    this.sprite.overlaps(s.sprite);
+                    this.sprite.overlaps(e.sprite);
+                    this.sprite.overlaps(a.sprite);
+                }
+            }
+        }
+        this.sprite.overlaps(bCT);
+        this.sprite.overlaps(bCL);
+        this.sprite.overlaps(bCB);
+        this.sprite.overlaps(bCR);
 
         this.sprite.direction = direction;
         this.speed = random(0.1, 0.5);
         this.sprite.speed = this.speed;
 
-        this.resource = 200;
+        this.resource = 100;
         this.sprite.textColor = 'white';
         this.sprite.textSize = 20;
         this.sprite.text = this.resource;
@@ -32,6 +45,15 @@ class Asteroid {
         this.sprite.rotation += 0.5 * this.sprite.speed;
         this.sprite.text = this.resource;
         this.showTarget();
+        
+        if (this.sprite.collides(bT) || this.sprite.collides(bL) || this.sprite.collides(bB) || this.sprite.collides(bR)) {
+            this.sprite.remove();
+            asteroidController.enemyCurrent--;
+            this.index = asteroids.indexOf(this)
+            if (this.index != -1) {
+                asteroids.splice(this.index, 1);
+            }
+        }
         if (this.resource <= 0) {
             this.dies();                    
         }
@@ -39,6 +61,15 @@ class Asteroid {
         this.sprite.speed = this.speed;
 
         for (let ship of miningShips) {
+            let distance = dist(this.sprite.x, this.sprite.y, ship.sprite.x, ship.sprite.y);
+            if (distance < ship.detectionRange) {
+                // If within range of a mining ship, slow down and stop checking
+                this.sprite.speed = 0.05;
+                break;
+            } 
+        }
+
+        for (let ship of miningShipUnits) {
             let distance = dist(this.sprite.x, this.sprite.y, ship.sprite.x, ship.sprite.y);
             if (distance < ship.detectionRange) {
                 // If within range of a mining ship, slow down and stop checking
@@ -57,6 +88,7 @@ class Asteroid {
     }
     
     dies() {
+        console.log('ast col b and dies');
         this.active = false;
         this.sprite.changeAni('dies');
         if (this.sprite.ani.frame === 6) {
@@ -92,7 +124,7 @@ class AsteroidController {
     }
 
     update() {
-        if (this.enemyCurrent< this.enemymax) {
+        if (this.enemyCurrent < this.enemyMax) {
             this.spawnAsteroid();
         }
     }
@@ -101,51 +133,51 @@ class AsteroidController {
         let spawnX, spawnY, direction;
         switch (floor(random(0, 8))) {
             case 0: // Top left
-                spawnX = random(0, width/2);
-                spawnY = 0;
-                direction = random(-10, -80);
+                spawnX = random(100, width/2);
+                spawnY = 100;
+                direction = random(20, 70);
                 break;
                 
             case 1: // Left top
-                spawnX = 0;
-                spawnY = random(0, height/2);
-                direction = random(-365, -355);
+                spawnX = 100;
+                spawnY = random(100, height/2);
+                direction = random(20, 70);
                 break;
                 
             case 2: // Bottom left
-                spawnX = random(0, width/2);
+                spawnX = random(100, width/2);
                 spawnY = height;
-                direction = random(5, 10);
+                direction = random(290, 340);
                 break;
                 
             case 3: // left bottom
                 spawnX = width; 
-                spawnY = random(0, height/2);
-                direction = random(255, 265);
+                spawnY = random(100, height/2);
+                direction = random(290, 340);
                 break;
 
-            case 4: // Top quadrant
-                spawnX = random(width/2, width);
-                spawnY = 0;
-                direction = random(-4, -8);
+            case 4: // Top right
+                spawnX = random(width/2, width - 100);
+                spawnY = 100;
+                direction = random(110, 160);
                 break;
                 
-            case 5: // Left quadrant
-                spawnX = 0;
-                spawnY = random(height/2, height);
-                direction = random(265, 275);
+            case 5: // right top
+                spawnX = width;
+                spawnY = random(100, height/2);
+                direction = random(110, 160);
                 break;
                 
-            case 6: // Bottom quadrant
-                spawnX = random(width/2, width);
+            case 6: // Bottom right
+                spawnX = random(width/2, width - 100);
                 spawnY = height;
-                direction = random(85, 95);
+                direction = random(200, 250);
                 break;
                 
-            case 7: // Right quadrant
+            case 7: // Right bottom
                 spawnX = width; 
-                spawnY = random(height/2, height);
-                direction = random(175, 185);
+                spawnY = random(height/2, height - 100);
+                direction = random(200, 250);
                 break;
         }
         
@@ -160,6 +192,8 @@ class AsteroidController {
             asteroids.push(new Asteroid(spawnX, spawnY, direction));
             this.enemyCurrent++;
             this.lastEnemy = Date.now();
+            console.log('new asteroid' + ' ' + this.enemyCurrent);
         }
+
     }
 }

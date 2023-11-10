@@ -1,34 +1,36 @@
 function playStateSetup() {
-    spaceBackground.resize(400, 400);
+    canvasBarrierSprites();
     bottomUi = new BottomUi();
+    spaceBackground.resize(400, 400);
     playerUpgradeController = new PlayerUpgradeController();
     selectionSquare = new SelectionSquare();
-    asteroidController = new AsteroidController(3000, 50);
-    roamingShipController = new RoamingShipController(10000, 10);
+    asteroidController = new AsteroidController(10000, 50);
+    roamingShipController = new RoamingShipController(20000, 10);
 
     mothership = new Mothership(width/2, height/2);
     mothershipUnit = (new MothershipUnit(1000, 1000));
     
     for (let i = 0; i < startingAsteroids; i++) {
-        asteroids.push(new Asteroid(width/2 + (random() * width - width/2), height/2 + (random() * height - height/2), random(0, 360)));
+        asteroids.push(new Asteroid(width/2 + (random() * (width - 100) - width/2), height/2 + (random() * (height - 100) - height/2), random(0, 360)));
         asteroidController.enemyCurrent++;
     }
     for (let i = 0; i < startingRoamingShips; i++) {
-        enemyUnits.push(new RoamingShip(width/2 + (random() * width - width/2), height/2 + (random() * height - height/2), random(0, 360)));
+        enemyUnits.push(new RoamingShip(width/2 + (random() * (width - 100) - width/2), height/2 + (random() * (height - 100) - height/2), random(0, 360)));
         roamingShipController.enemyCurrent++;
     }
     
-    miningShips.push(new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100)));
-    miningShips.push(new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100)));
-    miningShips.push(new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100)));
+    new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100));
+    new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100));
+    new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100));
     
-    battleShips.push(new BattleShip(mothership.sprite.x + (random() * 400 - 200), mothership.sprite.y + (random() * 400 - 200)));
+    new BattleShip(mothership.sprite.x + (random() * 400 - 200), mothership.sprite.y + (random() * 400 - 200));
     
-    enemyUnits.push(new ShootingUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100)));
-    enemyUnits.push(new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100)));
-    enemyUnits.push(new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100)));
-    enemyUnits.push(new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100)));
-    enemyUnits.push(new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100)));
+    new ShootingUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100));
+    new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100));
+    new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100));
+    new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100));
+    new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100));
+
 }
 
 

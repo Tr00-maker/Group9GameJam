@@ -5,7 +5,7 @@ class MiningShipUnit extends EnemyUnit {
         const defaultHealth = 200;
         const defaultRange = 100;
         super(x, y, defaultSpeed, defaultHealth, defaultRange);
-        miningShips.push(this);
+        miningShipUnits.push(this);
         this.name = 'Mining Ship Unit';
         
         this.detectionRange = this.range*1.5;

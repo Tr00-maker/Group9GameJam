@@ -11,14 +11,27 @@ class EnemyUnit {
         this.sprite.debug = false;
         targetableSprites.push(this);
         enemyUnits.push(this);
-        this.sprite.overlaps(allSprites);
+        
+        for (let s of selectableSprites){
+            for (let e of enemyUnits) {
+                for (let a of asteroids) {
+                    this.sprite.overlaps(s.sprite);
+                    this.sprite.overlaps(e.sprite);
+                    this.sprite.overlaps(a.sprite);
+                }
+            }
+        }
+        this.sprite.overlaps(bCT);
+        this.sprite.overlaps(bCL);
+        this.sprite.overlaps(bCB);
+        this.sprite.overlaps(bCR);
 
         this.sprite.direction = 0;
         this.sprite.speed = this.speed;
 
         this.active = true;
         this.inPatrol = false;
-        this.sprite.debug = true;
+        this.sprite.debug = false;
 
         this.state = 'idle';
     }

@@ -1,11 +1,11 @@
 //game state
-let gamePause = false;
+let gamePause = true;
 
 //mothership
 let mothershipImg, mothership;
 
 //User Interface
-let userInterface, bottomUi;
+let squareUiImg, bottomUi;
 let miningShipCost = 50;
 let missileCost = 40;
 const defaultButtonColor = [255, 255, 255, 100];
@@ -124,10 +124,20 @@ function setup() {
     }
 
 function initializeCamera() {
-    cameraSprite = new Sprite(width/2, height/2, 'n');
+    cameraSprite = new Sprite(width/2, height/2, 'd');
     cameraSprite.d = 10;
     cameraSprite.color = color(255, 0);
     cameraSprite.stroke = color(0,0);
+
+    for (let s of selectableSprites){
+        for (let e of enemyUnits) {
+            for (let a of asteroids) {
+                cameraSprite.overlaps(s.sprite);
+                cameraSprite.overlaps(e.sprite);
+                cameraSprite.overlaps(a.sprite);
+            }
+        }
+    }
 }
 
 function cameraEffect() {

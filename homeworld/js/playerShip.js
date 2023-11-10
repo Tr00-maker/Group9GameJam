@@ -1,3 +1,5 @@
+let selSprite;
+
 class PlayerShip {
     constructor(x, y, speed, health, range) {
         this.sprite = new Sprite(x, y, 'd');
@@ -9,17 +11,39 @@ class PlayerShip {
 
         this.rotationSpeed = this.speed*5;      
         this.sprite.rotationLock = true;
-        
-        this.sprite.debug = true;
+
+        this.sel = false;
 
         selectableSprites.push(this);
-        this.sprite.overlaps(allSprites);
+
+        for (let s of selectableSprites){
+            for (let e of enemyUnits) {
+                for (let a of asteroids) {
+                    this.sprite.overlaps(s.sprite);
+                    this.sprite.overlaps(e.sprite);
+                    this.sprite.overlaps(a.sprite);
+                }
+            }
+        }
+        this.sprite.overlaps(bCT);
+        this.sprite.overlaps(bCL);
+        this.sprite.overlaps(bCB);
+        this.sprite.overlaps(bCR);
         
         this.state = 'spawned';
         this.moveTimer = 0;
     } 
 
     update() {
+        if(this.selected) {
+            push();
+            fill(0, 0);
+            stroke('#39FF14');
+            strokeWeight(1);
+            rectMode(CENTER);
+            rect(this.sprite.x, this.sprite.y, this.sprite.d * 2, this.sprite.d * 2);
+            pop();
+        }
 
         if (this.health <= 0) {
             this.dies(this.x, this.y);

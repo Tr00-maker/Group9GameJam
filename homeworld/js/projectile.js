@@ -16,7 +16,7 @@ class Projectile {
         this.damage = damage;
         this.radius = radius; //use for explosions?
         
-        this.sprite.debug = true;
+        this.sprite.debug = false;
     }
 
     update() {
@@ -50,6 +50,13 @@ class Projectile {
                     explosions.push(new Explosion(x, y, explosionBulletAni));
                 }
             }
+        }
+        if (this.sprite.collides(bT) || this.sprite.collides(bL) || this.sprite.collides(bB) || this.sprite.collides(bR)) {
+            this.index = this.array.indexOf(this);
+            if (this.index !== -1) {
+                this.array.splice(this.index, 1);
+            }
+            this.sprite.remove();
         }
     }
 
