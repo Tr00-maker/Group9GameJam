@@ -4,6 +4,7 @@ class UserInterface {
         this.y = y;
 
         this.unitButtonsCreated = false;
+        this.commandButtonsCreated = false;
         this.unitButtons = [];
     }
 
@@ -69,6 +70,13 @@ class UserInterface {
             this.miningShipButton = new UnitButton('Mining Ship', 'qMining', miningShipCost, 0, 0, 50, 50, miningShipImg);
             this.battleShipButton = new UnitButton('Battle Ship', 'qBattle', miningShipCost, this.button2X, this.button2Y, 50, 50, battleShipImg);
         }
+
+        if (!this.commandButtonsCreated) {
+            this.commandButtonsCreated = true;
+            this.recallButton = new Button('Recall', 'recall', this.button3X, this.button3Y, 50, 50);
+            this.harvestButton = new Button('Harvest', 'harvest', this.button4X, this.button4Y, )
+
+        }
         this.miningShipButton.update();
         this.battleShipButton.update();
     }
@@ -94,6 +102,12 @@ class UserInterface {
 
         this.battleShipButton.x = this.button2X;
         this.battleShipButton.y = this.button2Y;
+
+        this.recallButton.x = this.button3X;
+        this.recallButton.y = this.button3Y;
+
+        this.harvestButton.x = this.button4X;
+        this.harvestButton.y = this.button4Y;
     }
 }
 
@@ -186,6 +200,80 @@ class UnitButton {
         {
             mothership.resource -= this.cost;
             mothership.spawnMissile();
+        }
+    }
+
+    remove() {
+        this.index = unitButtons.indexOf(this);
+        if (this.index != -1) {
+            unitButtons.splice(this.index, 1);
+        }
+        this.sprite.remove();
+    }
+}
+
+class Button {
+    constructor(name, type,  x = 0, y = 0, w, h) {
+        console.log(x + " " + y);
+        this.w = w;
+        this.h = h;
+        this.x = x;
+        this.y = y;
+        this.name = name;
+        this.type = type;
+        this.color = defaultButtonColor;
+    }
+
+    update() {
+
+        push();
+        fill(this.color);
+        rect(this.x, this.y, this.w, this.h);
+        pop();
+
+        push();
+        fill(255);
+        textAlign(CENTER, CENTER);
+        textSize(20);
+        text(this.name + ': ' + this.cost, this.x + this.w/2, this.y - 10);
+        pop();
+        
+        if (this.isHovered(mx, my) && mouse.released(LEFT)) {
+            this.checkPressed();
+        }
+        if (this.isHovered(mx, my) && mouse.pressing(LEFT)) {
+            this.color = pressedButtonColor;
+        } else if (this.isHovered(mx, my)) {
+            this.color = hoveredButtonColor;
+        } else {
+            this.color = defaultButtonColor;
+        }
+        
+    }
+
+    isHovered(x, y) {
+        return (
+            x >= this.x && 
+            x <= this.x + this.w && 
+            y >= this.y && 
+            y <= this.y + this.h
+        );
+    }
+
+    checkPressed() {  
+        if (!clickedFlag) {
+            clickedFlag = true;
+            switch(this.type) {
+                case 'qMining':
+                this.queueMiningShip();
+                break;
+                case 'qBattle':
+                this.queueBattleShip();
+                break;
+            } 
+        }
+        if (clickedFlag) {
+            setTimeout(() => clickedFlag = false, 200);
         }
     }
 
