@@ -130,15 +130,15 @@ class BottomUi {
     }
 
     initializeButtons() {
-        qMining = new Button('Mining Ship', 'qMining', miningShipCost, this.x, this.y - 160, 175, 30);
-        qBattle = new Button('Battle Ship', 'qBattle', miningShipCost, this.x, this.y - 110, 175, 30);
+        qMining = new Button('Mining Ship', 'qMining', miningShipCost, this.x, this.y - 160, 175, 60);
+        qBattle = new Button('Battle Ship', 'qBattle', miningShipCost, this.x, this.y + 60, 175, 60);
     }
 
     updateButtons() {
         qMining.sprite.x = this.sprite.x;
         qMining.sprite.y = this.sprite.y - 160;
         qBattle.sprite.x = this.sprite.x;
-        qBattle.sprite.y = this.sprite.y - 110;
+        qBattle.sprite.y = this.sprite.y - 60;
         qMining.update();
         qBattle.update();
     }
@@ -182,8 +182,8 @@ class Button {
             strokeWeight(0);
             textSize(20);
             textFont('Pixelify Sans');
-            textAlign(CENTER);
-            text('Build:' +' ' + this.name, 0, 5);
+            textAlign(CENTER, CENTER);
+            text('Build:' +' ' + this.name + '\nResource: ' + this.cost, 0, 0);
             pop();
 
             push();
