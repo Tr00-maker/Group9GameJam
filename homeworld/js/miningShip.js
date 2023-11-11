@@ -45,14 +45,6 @@ class MiningShip extends PlayerShip {
 
     }
 
-    showUI() {
-
-    }
-
-    removeUI() {
-
-    }
-
     mineTarget(target) {
         const currentTime = Date.now();
         const miningDelay = 1000/this.miningRate

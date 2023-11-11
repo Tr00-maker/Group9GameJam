@@ -6,6 +6,7 @@ let mothershipImg, mothership;
 
 //User Interface
 let squareUiImg, bottomUi;
+let UiSprite;
 let miningShipCost = 50;
 let missileCost = 40;
 const defaultButtonColor = [255, 255, 255, 100];

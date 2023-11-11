@@ -18,7 +18,7 @@ class Mothership extends PlayerShip {
 
     initializeResources() {
         this.resource = 100;
-        this.scrap = 0;
+        this.scrap = 1;
     }
 
     update() {

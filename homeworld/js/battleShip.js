@@ -99,4 +99,5 @@ class BattleShip extends PlayerShip {
             this.shoot();
         }
     }
+
 }

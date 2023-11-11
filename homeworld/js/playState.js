@@ -1,6 +1,6 @@
 function playStateSetup() {
     canvasBarrierSprites();
-    bottomUi = new BottomUi();
+    bottomUi = new BottomUi(0, 0);
     spaceBackground.resize(400, 400);
     playerUpgradeController = new PlayerUpgradeController();
     selectionSquare = new SelectionSquare();

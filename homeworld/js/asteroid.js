@@ -24,7 +24,7 @@ class Asteroid {
         this.speed = random(0.1, 0.5);
         this.sprite.speed = this.speed;
 
-        this.resource = 100;
+        this.resource = 200;
         this.sprite.textColor = 'white';
         this.sprite.textSize = 20;
         this.sprite.text = this.resource;

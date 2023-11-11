@@ -8,6 +8,7 @@ class PlayerShip {
         this.health = health;
         this.range = range;
         this.detectionRange = this.range*1.5;
+        this.Lv = 1;
 
         this.rotationSpeed = this.speed*5;      
         this.sprite.rotationLock = true;
@@ -43,7 +44,7 @@ class PlayerShip {
             rectMode(CENTER);
             rect(this.sprite.x, this.sprite.y, this.sprite.d * 2, this.sprite.d * 2);
             pop();
-        }
+        } 
 
         if (this.health <= 0) {
             this.dies(this.x, this.y);
@@ -68,6 +69,7 @@ class PlayerShip {
         this.updateSelection();
         this.handleSpread();
         this.handleStateReset();
+        
     }
 
     //resets the state to idle if the target has not moved or has no target
