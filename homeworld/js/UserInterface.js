@@ -1,4 +1,4 @@
-class BottomUi {
+class UserInterface {
     constructor(x, y) {
         this.sprite = new Sprite(x, y, 'd');
         this.sprite.overlaps(allSprites);

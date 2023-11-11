@@ -5,7 +5,7 @@ let gamePause = false;
 let mothershipImg, mothership;
 
 //User Interface
-let squareUiImg, bottomUi;
+let squareUiImg, bottomUi, userInterface;
 let miningShipCost = 50;
 let missileCost = 40;
 const defaultButtonColor = [255, 255, 255, 100];
@@ -117,14 +117,13 @@ function preload() {
 
 function setup() {
     new Canvas(5000, 5000, 'pixelated x1');
-    fullscreen();
+    fullscreen(1);
     changeState(state.play);
     initializeCamera();
     }
 
     function draw() {  
         clear();
-        fullscreen(1);
         cameraEffect(); 
         loopStates();
     }
