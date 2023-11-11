@@ -1,3 +1,5 @@
+let selSprite;
+
 class PlayerShip {
     constructor(x, y, speed, health, range) {
         this.sprite = new Sprite(x, y, 'd');
@@ -6,20 +8,80 @@ class PlayerShip {
         this.health = health;
         this.range = range;
         this.detectionRange = this.range*1.5;
+        this.Lv = 1;
 
         this.rotationSpeed = this.speed*5;      
         this.sprite.rotationLock = true;
-        
-        this.sprite.debug = true;
+
+        this.sel = false;
 
         selectableSprites.push(this);
-        this.sprite.overlaps(allSprites);
+
+        for (let s of selectableSprites){
+            for (let e of enemyUnits) {
+                for (let a of asteroids) {
+                    this.sprite.overlaps(s.sprite);
+                    this.sprite.overlaps(e.sprite);
+                    this.sprite.overlaps(a.sprite);
+                }
+            }
+        }
+        this.sprite.overlaps(bCT);
+        this.sprite.overlaps(bCL);
+        this.sprite.overlaps(bCB);
+        this.sprite.overlaps(bCR);
         
         this.state = 'spawned';
         this.moveTimer = 0;
     } 
 
     update() {
+        if(this.selected) {
+            push();
+            fill(0, 0);
+            stroke('#39FF14');
+            strokeWeight(1);
+            rectMode(CENTER);
+            rect(this.sprite.x, this.sprite.y, this.sprite.d * 2, this.sprite.d * 2);
+            pop();
+            
+
+            switch(this.name) {
+                case 'Mining Ship':
+                    push();
+                    fill('#39FF14');
+                    strokeWeight(0);
+                    textAlign(CENTER, CENTER);
+                    text('HP ' + this.health + '/' + playerUpgradeController.miningShipStat.health, this.sprite.x, this.sprite.y + this.sprite.d + 20);
+                    text('Re ' + this.resource + '\n' + 'Sc ' + this.scrap, this.sprite.x, this.sprite.y + this.sprite.d + 40);
+                    pop();
+                    break;
+                case 'Battle Ship':
+                    push();
+                    fill('#39FF14');
+                    strokeWeight(0);
+                    textAlign(CENTER, CENTER);
+                    text('HP ' + this.health + '/' + playerUpgradeController.battleShipStat.health, this.sprite.x, this.sprite.y + this.sprite.d + 20);
+                    pop();
+                    break;
+                case 'Mothership':
+                    push();
+                    fill('#39FF14');
+                    strokeWeight(0);
+                    textAlign(CENTER, CENTER);
+                    text('HP ' + this.health + '/' + 2000, this.sprite.x, this.sprite.y + this.sprite.d + 20);
+                    pop();
+                    break;
+                case 'Dreadnought':
+                    push();
+                    fill('#39FF14');
+                    strokeWeight(0);
+                    textAlign(CENTER, CENTER);
+                    text('HP ' + this.health + '/' + playerUpgradeController.dreadnoughtStat.health, this.sprite.x, this.sprite.y + this.sprite.d + 20);
+                    pop();
+                    break;
+            }
+        } 
 
         if (this.health <= 0) {
             this.dies(this.x, this.y);
@@ -44,6 +106,7 @@ class PlayerShip {
         this.updateSelection();
         this.handleSpread();
         this.handleStateReset();
+        
     }
 
     //resets the state to idle if the target has not moved or has no target
@@ -115,6 +178,9 @@ class PlayerShip {
                 break;
             case 'Mothership':
                 this.setSpawnTarget();
+                break;
+            case 'Dreadnought':
+                this.handleMoveToTarget();
                 break;
         }
 

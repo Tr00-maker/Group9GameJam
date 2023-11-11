@@ -8,17 +8,30 @@ class EnemyUnit {
         this.range = range;
         this.rotationSpeed = this.speed*3;
 
-        this.sprite.debug = false;
+        this.sprite.debug = true;
         targetableSprites.push(this);
         enemyUnits.push(this);
-        this.sprite.overlaps(allSprites);
+        
+        for (let s of selectableSprites){
+            for (let e of enemyUnits) {
+                for (let a of asteroids) {
+                    this.sprite.overlaps(s.sprite);
+                    this.sprite.overlaps(e.sprite);
+                    this.sprite.overlaps(a.sprite);
+                }
+            }
+        }
+        this.sprite.overlaps(bCT);
+        this.sprite.overlaps(bCL);
+        this.sprite.overlaps(bCB);
+        this.sprite.overlaps(bCR);
 
         this.sprite.direction = 0;
         this.sprite.speed = this.speed;
 
         this.active = true;
         this.inPatrol = false;
-        this.sprite.debug = true;
+        this.sprite.debug = false;
 
         this.state = 'idle';
     }
@@ -44,6 +57,44 @@ class EnemyUnit {
                 this.handlePatrol();
                 break;
         }
+        
+        for (let s of selectableSprites) {
+            if (s.targetSprite === this) {
+                this.displayHP();
+            }
+        }
+    }
+
+    displayHP() {
+        switch(this.name) {
+            case 'Mining Ship Unit':
+                push();
+                fill('#FF3131');
+                strokeWeight(0);
+                textAlign(CENTER, CENTER);
+                text('HP ' + this.health + '/' + 100, this.sprite.x, this.sprite.y + this.sprite.d + 20);
+                pop();
+                break;
+            case 'Shooting Unit':
+                push();
+                fill('#FF3131');
+                strokeWeight(0);
+                textAlign(CENTER, CENTER);
+                text('HP ' + this.health + '/' + 200, this.sprite.x, this.sprite.y + this.sprite.d + 20);
+                pop();
+                break;
+            case 'Mothership Unit':
+                push();
+                fill('#FF3131');
+                strokeWeight(0);
+                textAlign(CENTER, CENTER);
+                text('HP ' + this.health + '/' + 2000, this.sprite.x, this.sprite.y + this.sprite.d + 20);
+                pop();
+                break;
+            case 'Roaming Ship':
+                
+                break;
+        }
     }
 
     //set the target vector
@@ -67,8 +118,9 @@ class EnemyUnit {
         if (this.inPatrol) return;
         this.inPatrol = true;
 
-        let x = random(0, width - 300);
-        let y = random(0, height - 300);
+        let x = mothershipUnit.sprite.x + random() * 500 - 250;
+        let y = mothershipUnit.sprite.y + random() * 500 - 250;
+        
     
         this.sprite.rotateTo(x, y, this.rotationSpeed);
         await this.sprite.moveTo(x, y, this.speed);
@@ -109,9 +161,9 @@ class EnemyUnit {
         explosions.push(new Explosion(x, y, explosionShipAni));
 
         //remove from selectableSprites array
-        this.index = selectableSprites.indexOf(this);
+        this.index = enemyUnits.indexOf(this);
         if (this.index !== -1) {
-            selectableSprites.splice(this.index, 1);
+            enemyUnits.splice(this.index, 1);
         }
         
         //if its a mining ship, remove it from miningShips array
@@ -121,6 +173,8 @@ class EnemyUnit {
                 miningShips.splice(this.miningIndex, 1);
             }
         }
+
+        this.sprite.remove();
         
     }
 
@@ -196,14 +250,19 @@ class MothershipUnit extends EnemyUnit {
         this.sprite.ani.scale = 3;
     }
 
-    //spawns a mining ship every 5 enemy units, else it spawn a shooting ship
+    //spawns a mining ship every 4 enemy units, else it spawn a shooting ship. Spawn a dreadnought if it can afford it
     spawnUnits() {
-        if (this.resource >= miningShipCost) {
-            if (enemyUnits.length % 3 === 0) {
-                this.resource -= miningShipCost;  // Deduct the cost for mining ship
+        if(this.resource >= 80 && enemyUnits.length % 9 == 0)
+        {
+            this.resource -= 80;
+            enemyUnits.push(new EnemyDread(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100)));
+        }
+        if (this.resource >= 30) {
+            if (enemyUnits.length % 4 === 0) {
+                this.resource -= 30;  
                 enemyUnits.push(new MiningShipUnit(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100)));
-            } else {
-                this.resource -= miningShipCost;  // Deduct the cost for shooting unit, assuming it has a different cost
+            } else if (enemyUnits.length % 5 === 0){
+                this.resource -= 40;
                 enemyUnits.push(new ShootingUnit(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100)));
             }
         }
@@ -215,7 +274,7 @@ class MothershipUnit extends EnemyUnit {
 class ShootingUnit extends EnemyUnit {
     constructor(x, y) {
         const defaultSpeed = 0.5;
-        const defaultHealth = 100;
+        const defaultHealth = 150;
         const defaultRange = 200;
         super(x, y, defaultSpeed, defaultHealth, defaultRange);
         
@@ -223,13 +282,13 @@ class ShootingUnit extends EnemyUnit {
         this.detectionRange = this.range*1.5;
         this.sprite.addAni('default', shootingUnitImg);
         this.sprite.addAni('selected', shootingUnitSelectedImg);
-        this.sprite.d = 30;
+        this.sprite.d = 40;
 
         this.closestShip = null;
-        this.fireRate = 0.5;
+        this.fireRate = 0.75;
         this.lastFired = 0;
         this.shotSpeed = 3;
-        this.damage = 5;
+        this.damage = 10;
     }
 
     update() {
@@ -251,8 +310,8 @@ class ShootingUnit extends EnemyUnit {
         //at max range move toward player ships
         if (distToClosestShip < this.detectionRange && distToClosestShip > this.detectionRange/1.2) {
             this.sprite.moveTo(this.closestShip.sprite, this.speed);
-        } else if (distToClosestShip < this.detectionRange/1.2 && distToClosestShip > this.range) {
-            this.sprite.attractTo(this.closestShip.sprite, this.speed/3);
+        } else if (distToClosestShip < this.detectionRange && distToClosestShip > this.range) {
+            this.sprite.attractTo(this.closestShip.sprite, 0.3*(this.speed/3));
         } else if (distToClosestShip < this.range) {
             this.shoot();
             this.handlePlayerShipSpread();
@@ -271,20 +330,23 @@ class ShootingUnit extends EnemyUnit {
                 closestShip = ship;
             }
         }
+        if(closestShip != null)
+        {
+            let distToClosestUnit = dist(this.sprite.x, this.sprite.y, closestShip.sprite.x, closestShip.sprite.y);
 
-        let distToClosestUnit = dist(this.sprite.x, this.sprite.y, closestShip.sprite.x, closestShip.sprite.y);
+            if (distToClosestUnit < this.detectionRange) {
+                this.closestShip = closestShip;
+                this.state = 'combat';
+            } else {
+                this.closestShip = null;
+                this.state = 'patrol';
+            }
+            if (this.closestShip) {
 
-        if (distToClosestUnit < this.detectionRange) {
-            this.closestShip = closestShip;
-            this.state = 'combat';
-        } else {
-            this.closestShip = null;
-            this.state = 'patrol';
+                console.log('detecting combat ' + this.closestShip);
+            }
         }
-        if (this.closestShip) {
-
-            console.log('detecting combat ' + this.closestShip);
-        }
+        
     }
 
     //shoots at the units rotation
@@ -301,7 +363,8 @@ class ShootingUnit extends EnemyUnit {
                     this.shotSpeed, 
                     this.damage, 10, 
                     redBulletImg, 
-                    enemyProjectiles));
+                    enemyProjectiles,
+                    10));
                 this.lastFired = currentTime;
             }
         }

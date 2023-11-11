@@ -44,16 +44,16 @@ class Mothership extends PlayerShip {
     }
 
     spawnMiningShip() {
-        miningShips.push(new MiningShip(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100)));
+        new MiningShip(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100));
     }
 
     spawnBattleShip() {
-        battleShips.push(new BattleShip(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100)));
+        new BattleShip(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100));
     }
 
-    spawnMissile()
+    spawnDread()
     {
-        missiles.push(new Missile(this.sprite.x + (random() * 300 - 50), this.sprite.y + (random() * 300 - 50), 10, 10));
+        new Dreadnought(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100));
     }
 
     recallUnits() {

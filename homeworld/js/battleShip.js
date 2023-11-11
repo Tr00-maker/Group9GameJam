@@ -10,6 +10,8 @@ class BattleShip extends PlayerShip {
         this.sprite.addAni('default', battleShipImg);
         this.sprite.addAni('selected', battleShipSelectedImg);
         this.sprite.d = defaultSize;
+
+        battleShips.push(this);
         
         this.name = 'Battle Ship';
 
@@ -71,7 +73,8 @@ class BattleShip extends PlayerShip {
                 this.shotSpeed, 
                 this.damage, 10/* radius*/, 
                 tealBulletImg, 
-                playerProjectiles));
+                playerProjectiles,
+                10));
             this.lastFired = currentTime;
         }
     }
@@ -99,12 +102,14 @@ class BattleShip extends PlayerShip {
             }
         }
 
-        if (this.targetSprite && this.targetSprite === closestShip) {
-            this.state = 'hasTarget';
-            this.checkOnTarget();
-            //if target is set to a non enemy eg. asteroid wait unti the sprite reaches the target, then set autoTarget to true 
-        } else if(this.targetSprite && this.targetSprite !== closestShip && (this.state === 'idle' || this.state === 'hasTarget' && this.sprite.speed === 0)) {
-            this.autoTarget = true;
+        for (let enemy of enemyUnits) {
+            if (this.targetSprite && this.targetSprite === closestShip) {
+                this.state = 'hasTarget';
+                this.checkOnTarget();
+                //if target is set to a non enemy eg. asteroid wait unti the sprite reaches the target, then set autoTarget to true 
+            } else if(this.targetSprite && this.targetSprite !== enemy && (this.state === 'idle' || this.state === 'hasTarget' && this.sprite.speed === 0)) {
+                this.autoTarget = true;
+            }
         }
     }
 
@@ -113,4 +118,5 @@ class BattleShip extends PlayerShip {
             this.shoot();
         }
     }
+
 }

@@ -1,35 +1,38 @@
 function playStateSetup() {
+    canvasBarrierSprites();
+    userInterface = new UserInterface(0, 0);
     spaceBackground.resize(400, 400);
-    userInterface = new UserInterface();
     playerUpgradeController = new PlayerUpgradeController();
     selectionSquare = new SelectionSquare();
-    asteroidController = new AsteroidController(3000, 50);
-    roamingShipController = new RoamingShipController(10000, 10);
+    asteroidController = new AsteroidController(5000, 40);
+    roamingShipController = new RoamingShipController(1000, 10);
 
-    mothership = new Mothership(width/2, height/2);
+    mothership = new Mothership(width/1.5, height/1.5);
     mothershipUnit = (new MothershipUnit(1000, 1000));
     
     for (let i = 0; i < startingAsteroids; i++) {
-        asteroids.push(new Asteroid(width/2 + (random() * width - width/2), height/2 + (random() * height - height/2), random(0, 360)));
+        asteroids.push(new Asteroid(width/2 + (random() * (width - 100) - width/2), height/2 + (random() * (height - 100) - height/2), random(0, 360)));
         asteroidController.enemyCurrent++;
     }
     for (let i = 0; i < startingRoamingShips; i++) {
-        enemyUnits.push(new RoamingShip(width/2 + (random() * width - width/2), height/2 + (random() * height - height/2), random(0, 360)));
+        enemyUnits.push(new RoamingShip(width/2 + (random() * (width - 100) - width/2), height/2 + (random() * (height - 100) - height/2), random(0, 360)));
         roamingShipController.enemyCurrent++;
     }
     
-    miningShips.push(new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100)));
-    miningShips.push(new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100)));
-    miningShips.push(new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100)));
+    new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100));
+    new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100));
+    new MiningShip(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100));
     
-    battleShips.push(new BattleShip(mothership.sprite.x + (random() * 400 - 200), mothership.sprite.y + (random() * 400 - 200)));
+    new BattleShip(mothership.sprite.x + (random() * 400 - 200), mothership.sprite.y + (random() * 400 - 200));
     
-    enemyUnits.push(new ShootingUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100)));
-    enemyUnits.push(new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100)));
-    enemyUnits.push(new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100)));
-    enemyUnits.push(new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100)));
-    enemyUnits.push(new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100)));
+    new ShootingUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100));
+    new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100));
+    new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100));
+    new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100));
+    new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100));
+
 }
+
 
 function playState() {
     drawBackground();
@@ -52,7 +55,6 @@ function playStateUpdate() {
         mothership.update();
         asteroidController.update();
         roamingShipController.update();
-    
 
         for (let i = asteroids.length - 1; i >= 0; i--) {
             asteroids[i].update();
@@ -87,8 +89,8 @@ function playStateUpdate() {
         }
 
         //missiles
-        for (let i = missiles.length - 1; i >= 0; i--) {
-            missiles[i].update();
+        for (let i = dreadnoughts.length - 1; i >= 0; i--) {
+            dreadnoughts[i].update();
         } 
     }
 }

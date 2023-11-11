@@ -10,14 +10,28 @@ class RoamingShip {
         
         this.sprite.addAni('default', roamingShipImg);
         this.sprite.addAni('selected', roamingShipSelectedImg);
-        this.sprite.d = 50;
+        this.sprite.d = 75;
 
         targetableSprites.push(this);
         enemyUnits.push(this);
-        this.sprite.overlaps(allSprites);
+
+        for (let s of selectableSprites){
+            for (let e of enemyUnits) {
+                for (let a of asteroids) {
+                    this.sprite.overlaps(s.sprite);
+                    this.sprite.overlaps(e.sprite);
+                    this.sprite.overlaps(a.sprite);
+                }
+            }
+        }
+        this.sprite.overlaps(bCT);
+        this.sprite.overlaps(bCL);
+        this.sprite.overlaps(bCB);
+        this.sprite.overlaps(bCR);
+        
         this.sprite.layer = 1;
 
-        this.sprite.debug = true;
+        this.sprite.debug = false;
         this.name = 'Roaming Ship';
 
         this.initializeStats();
@@ -41,6 +55,17 @@ class RoamingShip {
         this.handlePatrol();
         this.updateAnimation();
         this.showTarget();
+
+        for (let s of selectableSprites) {
+            if (s.targetSprite === this) {
+                push();
+                fill('##FFFF00');
+                strokeWeight(0);
+                textAlign(CENTER, CENTER);
+                text('HP ' + this.health + '/' + 200, this.sprite.x, this.sprite.y + this.sprite.d + 20);
+                pop();
+            }
+        }
     }
 
     updateAnimation() {
@@ -111,7 +136,7 @@ class RoamingShipController {
     }
 
     update() {
-        if (this.enemyCurrent < this.eenmyMax) {
+        if (this.enemyCurrent < this.enemyMax) {
             this.spawnRoamingShip();
         }
     }
@@ -121,43 +146,43 @@ class RoamingShipController {
         let spawnX, spawnY;
         switch (floor(random(0, 8))) {
             case 0: // Top left
-                spawnX = random(0, width/2);
-                spawnY = 0;
+                spawnX = random(100, width/2);
+                spawnY = 100;
                 break;
                 
             case 1: // Left top
-                spawnX = 0;
-                spawnY = random(0, height/2);
+                spawnX = 100;
+                spawnY = random(100, height/2);
                 break;
                 
             case 2: // Bottom left
-                spawnX = random(0, width/2);
+                spawnX = random(100, width/2);
                 spawnY = height;
                 break;
                 
             case 3: // left bottom
                 spawnX = width; 
-                spawnY = random(0, height/2);
+                spawnY = random(100, height/2);
                 break;
 
-            case 4: // Top Right
-                spawnX = random(width/2, width);
-                spawnY = 0;
+            case 4: // Top right
+                spawnX = random(width/2, width - 100);
+                spawnY = 100;
                 break;
                 
-            case 5: // Right Top
-                spawnX = 0;
-                spawnY = random(height/2, height);
+            case 5: // right top
+                spawnX = width;
+                spawnY = random(100, height/2);
                 break;
                 
-            case 6: // Bottom Right
-                spawnX = random(width/2, width);
+            case 6: // Bottom right
+                spawnX = random(width/2, width - 100);
                 spawnY = height;
                 break;
                 
-            case 7: // Right Bottom
+            case 7: // Right bottom
                 spawnX = width; 
-                spawnY = random(height/2, height);
+                spawnY = random(height/2, height - 100);
                 break;
         }
         

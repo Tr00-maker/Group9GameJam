@@ -1,90 +1,62 @@
 class UserInterface {
     constructor(x, y) {
+        this.sprite = new Sprite(x, y, 'd');
+        this.sprite.overlaps(allSprites);
+        this.sprite.layer = 3;
         this.x = x;
         this.y = y;
 
-        this.unitButtonsCreated = false;
-        this.commandButtonsCreated = false;
-        this.unitButtons = [];
-    }
+        this.sprite.draw = () => {
+            push();
+            fill(0);
+            stroke('#39FF14');
+            strokeWeight(2);
+            rect(0, 0, 200, windowHeight - 1);
+            pop();
 
-    update() {
-        this.repositionToCamera();
-        this.displayTopBar();
-        this.displayBottomBar();
-        this.displayButtons();
-        this.positionButtons();
-    }
+            push();
+            fill('#39FF14');
+            strokeWeight(0);
+            textSize(20);
+            textFont('Pixelify Sans');
+            text('Resource:' +'\n' + mothership.resource, -80, -530);
+            text('Ship Scraps:' +'\n' + mothership.scrap, -80, -460);
+            text('Ships:' +'\n' + selectableSprites.length, -80, -390);
+            text('Mining Ships:' +'\n' + miningShips.length, -80, -320);
+            text('Battle Ships:' +'\n' + battleShips.length, -80, -250);
+            pop();
 
-    repositionToCamera() {
-        this.x = cameraSprite.x;
-        this.y = cameraSprite.y;
-    }
-
-    displayTopBar() {
-        let x = this.x - windowWidth/2;
-        let y = this.y - windowHeight/2;
-
-        push();
-        fill(255, 100);
-        stroke(0);
-        strokeWeight(3);
-        rect(x, y, windowWidth, 30);
-        pop();
-
-        push();
-        fill(255);
-        textAlign(CENTER,CENTER);
-        textSize(15);
-        text('Resource: ' + mothership.resource, x + 75, y + 15);
-        pop();
-
-        push();
-        fill(255);
-        textAlign(CENTER,CENTER);
-        textSize(15);
-        text('Ship Scraps: ' + mothership.scrap, x + 300, y + 15);
-        pop();
-    }
-
-    displayBottomBar() {
-        let x = this.x - windowWidth/2;
-        let y = this.y + windowHeight/2 - 100;
-
-        push();
-        fill(255, 100);
-        stroke(0);
-        strokeWeight(3);
-        rect(x, y, windowWidth, 100);
-        pop();
-
-        uiX = x;
-        uiY = y;
-        uiW = windowWidth;
-        uiH = 100;
-    }
-
-    displayButtons() {
-        if (!this.unitButtonsCreated) {
-            this.unitButtonsCreated = true;
-            this.miningShipButton = new UnitButton('Mining Ship', 'qMining', miningShipCost, 0, 0, 50, 50, miningShipImg);
-            this.battleShipButton = new UnitButton('Battle Ship', 'qBattle', miningShipCost, this.button2X, this.button2Y, 50, 50, battleShipImg);
+            push();
+            fill('#39FF14');
+            strokeWeight(0);
+            textSize(25);
+            textAlign(CENTER, CENTER);
+            textFont('Pixelify Sans');
+            text('Keyboard Inputs:' +'\n' + '( Q ) - Go to next Mining Ship  ( E ) - Go to next Battle Ship  ( X ) - Go to MotherShip   ( Space ) - Toggle Pause', 1000, -530);
+            pop();
         }
 
-        if (!this.commandButtonsCreated) {
-            this.commandButtonsCreated = true;
-            this.recallButton = new Button('Recall', 'recall', this.button3X, this.button3Y, 50, 50);
-            this.harvestButton = new Button('Harvest', 'harvest', this.button4X, this.button4Y, 50, 50);
-            this.huntButton = new Button('Hunt', 'hunt', this.button5X, this.button5Y, 50, 50);
+        this.initializeButtons();
 
-        }
-        this.miningShipButton.update();
-        this.battleShipButton.update();
-        this.recallButton.update();
-        this.harvestButton.update();
-        this.huntButton.update();
+        this.buttons = false;
     }
 
+    initializeButtons() {
+        //queue buttons
+        qMining = new Button('Build: Mining', 'qMining', 40, this.x, this.y - 160, 175, 60, 'Resource');
+        qBattle = new Button('Build: Battle', 'qBattle', 50, this.x, this.y + 60, 175, 60, 'Resource');
+        qDread = new Button('Build: Dreadnought', 'qDread', 80, this.x, this.y + 60, 175, 80, 'Resource');
+
+        //upgrade buttons
+        uMining1 = new Button('Upgrade: Mining Lv1', 'uMining1', 15, this.x, this.y - 160, 175, 60, 'Ship Scraps');
+        uBattle1 = new Button('Upgrade: Battle Lv1', 'uBattle1', 20, this.x, this.y - 160, 175, 60, 'Ship Scraps');
+      
+        //command buttons
+        recallButton = new Button('Recall', 'recall', this.x, this.y + 300, 50, 50);
+        harvestButton = new Button('Harvest', 'harvest', this.x, this.y + 350, 50, 50);
+        huntButton = new Button('Hunt', 'hunt', this.x, this.y + 400, 50, 50);
+    }
+    
     getVisibleEnemiesInArea(area) {
         return enemyUnits.filter(enemy => enemy.isVisible() && this.isShipInArea(enemy, area));
     }
@@ -126,217 +98,278 @@ class UserInterface {
         return groups;
     }
 
-    positionButtons() {
-        let x = this.x - windowWidth/2;
-        let y = this.y + windowHeight/2 - 100;
+    updateButtons() {
+        qMining.sprite.x = this.sprite.x;
+        qMining.sprite.y = this.sprite.y - 160;
 
-        this.button1X = x + 100;
-        this.button1Y = y + 30;
+        qBattle.sprite.x = this.sprite.x;
+        qBattle.sprite.y = this.sprite.y - 60;
 
-        this.button2X = x + 300;
-        this.button2Y = y + 30;
+        qDread.sprite.x = this.sprite.x;
+        qDread.sprite.y = this.sprite.y + 40;
+      
+            
+        qMining.update();
+        qBattle.update();
+        qDread.update();
+      
+        if (recallButton) {
+          recallButton.sprite.x = this.sprite.x;
+          recallButton.sprite.y = this.sprite.y + 300;
+          recallButton.update()
+        }
+      
+        if (harvestButton) {
+          harvestButton.sprite.x = this.sprite.x;
+          harvestButton.sprite.y = this.sprite.y + 300;
+          harvestButton.update()
+        }
+      
+        if (huntButton) {   
+          huntButton.sprite.x = this.sprite.x;
+          huntButton.sprite.y = this.sprite.y + 300;
+          huntButton.update()
+        }
 
-        this.button3X = x + 800;
-        this.button3Y = y + 30;
+        if(uMining1) {
+            uMining1.sprite.x = this.sprite.x;
+            uMining1.sprite.y = this.sprite.y + 140;
+            uMining1.update();
+        }
 
-        this.button4X = x + 1000;
-        this.button4Y = y + 30;
+        if(uMining2) {
+            uMining2.sprite.x = this.sprite.x;
+            uMining2.sprite.y = this.sprite.y + 140;
+            uMining2.update();
+        }
 
-        this.button5X = x + 1200;
-        this.button5Y = y + 30;
+        if (uBattle1) {
+            uBattle1.sprite.x = this.sprite.x;
+            uBattle1.sprite.y = this.sprite.y + 240;
+            uBattle1.update();
+        }
 
-        this.miningShipButton.x = this.button1X;
-        this.miningShipButton.y = this.button1Y;
+        if (uBattle2) {
+            uBattle2.sprite.x = this.sprite.x;
+            uBattle2.sprite.y = this.sprite.y + 240;
+            uBattle2.update();
+        }
 
-        this.battleShipButton.x = this.button2X;
-        this.battleShipButton.y = this.button2Y;
+        if(uDread) {
+            uDread.sprite.x = this.sprite.x;
+            uDread.sprite.y = this.sprite.y + 140;
+            uDread.update();
+        }
 
-        this.recallButton.x = this.button3X;
-        this.recallButton.y = this.button3Y;
-
-        this.harvestButton.x = this.button4X;
-        this.harvestButton.y = this.button4Y;
-
-        this.huntButton.x = this.button5X;
-        this.huntButton.y = this.button5Y;
     }
-}
+    
+    update() {
+        this.sprite.x = cameraSprite.x - windowWidth/2 + 100;
+        this.sprite.y = cameraSprite.y;
 
-class UnitButton {
-    constructor(name, type, cost, x = 0, y = 0, w, h, image) {
-        console.log(x + " " + y);
-        this.w = w;
-        this.h = h;
+        this.updateButtons();
+    }
+
+
+}
+let qMining, qBattle, qDread;
+let uMining1, uBattle1, uDread, uMining2, uBattle2;
+let recallButton, harvestButton, huntButton;
+
+let unitButtons = [qMining, qBattle, qDread];
+
+class Button {
+    constructor(name, type, cost, x, y, w, h, resource) {
+        this.sprite = new Sprite(x, y, 'd');
         this.x = x;
         this.y = y;
-        this.sprite = new Sprite(this.x + this.w/2, this.y + this.h/2, 'd');
-        this.sprite.addAni('default', image);
-        this.sprite.d = w;
+        this.w = w;
+        this.h = h;
+        this.resource = resource;
+
+        this.color = color(57,255,20);
+        
+        this.timer = 0;
+        this.isWaiting = false; // Track if the button is in a waiting state
+        this.fillProgress = 0; // Progress of the fill bar (0 to 1)
+
+        this.sprite.draw = () => {
+            push();
+            fill(0);
+            stroke(this.color);
+            strokeWeight(2);
+            rect(0, 0, this.w, this.h);
+            pop();
+
+            push();
+            fill(this.color);
+            strokeWeight(0);
+            textSize(18);
+            textFont('Pixelify Sans');
+            textAlign(CENTER, CENTER);
+            text(this.name + '\n' + this.resource + ': '+ this.cost, 0, 0);
+            pop();
+
+            push();
+            fill(57,255,20, 100);
+            noStroke();
+            rectMode(CORNER);
+            rect(-this.w/2, -this.h/2, this.fillProgress * this.w, this.h);
+            pop();
+        };
+
+        this.sprite.overlaps(allSprites);
         this.name = name;
         this.type = type;
         this.cost = cost;
-        this.color = defaultButtonColor;
+
+        this.sprite.debug = true;
     }
-
     update() {
-
-        push();
-        fill(this.color);
-        rect(this.x, this.y, this.w, this.h);
-        pop();
-
-        push();
-        fill(255);
-        textAlign(CENTER, CENTER);
-        textSize(20);
-        text(this.name + ': ' + this.cost, this.x + this.w/2, this.y - 10);
-        pop();
-        
-        if (this.isHovered(mx, my) && mouse.released(LEFT)) {
-            this.checkPressed();
+        if (this.isWaiting) {
+            const currentTime = Date.now();
+            this.fillProgress = Math.min((currentTime - this.timer) / 3000, 1);
         }
-        if (this.isHovered(mx, my) && mouse.pressing(LEFT)) {
-            this.color = pressedButtonColor;
-        } else if (this.isHovered(mx, my)) {
-            this.color = hoveredButtonColor;
-        } else {
-            this.color = defaultButtonColor;
+
+        if (this.type === 'qMining' || this.type === 'qBattle' || this.type === 'qDread') {
+            if (this.cost <= mothership.resource && !this.isWaiting) {
+                if (this.isHovered(mx, my) && mouse.released(LEFT)) {
+                    this.checkPressed(this.type);
+                }
+                if (this.isHovered(mx, my) && mouse.pressing(LEFT)) {
+                    this.color = color(57,255,20, 200);
+                } else if (this.isHovered(mx, my)) {
+                    this.color = color(57,255,20, 100);
+                } else {
+                    this.color = color(57,255,20);
+                }
+            } else {
+                this.color = color(57,255,20, 100);
+            }
+        }
+
+        if (this.type === 'uMining1' || this.type === 'uBattle1' || this.type === 'uMining2' || this.type === 'uBattle2') {
+            if (this.cost <= mothership.scrap && !this.isWaiting) {
+                if (this.isHovered(mx, my) && mouse.released(LEFT)) {
+                    this.checkPressed(this.type);
+                }
+                if (this.isHovered(mx, my) && mouse.pressing(LEFT)) {
+                    this.color = color(57,255,20, 200);
+                } else if (this.isHovered(mx, my)) {
+                    this.color = color(57,255,20, 100);
+                } else {
+                    this.color = color(57,255,20);
+                }
+            } else {
+                this.color = color(57,255,20, 100);
+            }
         }
         
     }
 
     isHovered(x, y) {
         return (
-            x >= this.x && 
-            x <= this.x + this.w && 
-            y >= this.y && 
-            y <= this.y + this.h
+            x >= this.sprite.x - this.w / 2 &&
+            x <= this.sprite.x + this.w / 2 &&
+            y >= this.sprite.y - this.h / 2 &&
+            y <= this.sprite.y + this.h / 2
         );
-    }
+    }  
 
-    checkPressed() {  
-        if (!clickedFlag) {
+    checkPressed(type) {
+        const currentTime = Date.now();
+        
+        if (!this.isWaiting && !clickedFlag) {
             clickedFlag = true;
-            switch(this.type) {
-                case 'qMining':
-                this.queueMiningShip();
-                break;
-                case 'qBattle':
-                this.queueBattleShip();
-                break;
-            } 
-        }
-        if (clickedFlag) {
-            setTimeout(() => clickedFlag = false, 200);
-        }
-    }
+            this.isWaiting = true;
+            this.timer = currentTime;
+            this.fillProgress = 0;
+            
+            if (type === 'qMining' || type === 'qBattle' || type === 'qDread') {
+                if (mothership.resource >= this.cost) {
+                    mothership.resource -= this.cost;  
+                    setTimeout(() => {
+                        this.isWaiting = false;
+                        clickedFlag = false;
+                        this.fillProgress = 0;
+            
+                        switch(type) {
+                            case 'qMining':
+                                mothership.spawnMiningShip();
+                                break;
+                            case 'qBattle':
+                                mothership.spawnBattleShip();
+                                break;
+                            case 'qDread':
+                                mothership.spawnDread();
+                                break;
+                        }
+                        
+                    }, 3000);
+                }
+            }
 
-    queueMiningShip() {
-        if (mothership.resource >= this.cost) {
-            mothership.resource -= this.cost;
-            mothership.spawnMiningShip();
-        }
-    }
+            if (type === 'uMining1' || type === 'uBattle1'|| type === 'uMining2' || type === 'uBattle2') {
+                if (mothership.scrap >= this.cost) {
+                    mothership.scrap -= this.cost;  
+                    setTimeout(() => {
+                        this.isWaiting = false;
+                        clickedFlag = false;
+                        this.fillProgress = 0;
+            
+                        switch(type) {
+                            case 'uMining1':
+                                playerUpgradeController.upgradeMiningLv1();
+                                uMining1.sprite.remove();
+                                uMining2 = new Button('Upgrade: Mining Lv2', 'uMining2', 25, this.x, this.y - 160, 175, 60, 'Ship Scraps');
+                                break;
+                            case 'uBattle1':
+                                playerUpgradeController.upgradeBattleLv1();
+                                uBattle1.sprite.remove();
+                                uBattle2 = new Button('Upgrade: Battle Lv2', 'uBattle2', 30, this.x, this.y - 160, 175, 60, 'Ship Scraps');
+                                break;
+                            case 'uMining2':
+                                playerUpgradeController.upgradeMiningLv2();
+                                uMining2.sprite.remove();
+                                break;
+                            case 'uBattle2':
+                                playerUpgradeController.upgradeBattleLv2();
+                                uBattle2.sprite.remove();
+                                break;
+                        }
+                        
+                    }, 3000);
+                }
+            }
+          
+          if (type === 'recall' || type === 'recall'|| type === 'recall' || type === 'recall') { 
+              setTimeout(() => {
+                  this.isWaiting = false;
+                  clickedFlag = false;
+                  this.fillProgress = 0;
 
-    queueBattleShip() {
-        if (mothership.resource >= this.cost) {
-            mothership.resource -= this.cost;
-            mothership.spawnBattleShip();
-        }
-    }
+                  switch(type) {
+                  case 'recall':
+                      mothership.recallUnits();
+                      break;
+                  case 'harvest':
+                      mothership.harvestAsteroids();
+                      break;
+                  case 'hunt':
+                      break;
+              } 
 
-    queueMissile()
-    {
-        if(mothership.resource >= this.cost)
-        {
-            mothership.resource -= this.cost;
-            mothership.spawnMissile();
-        }
+              }, 3000);
+          }
     }
 
     remove() {
         this.index = unitButtons.indexOf(this);
         if (this.index != -1) {
-            unitButtons.splice(this.index, 1);
+            unitButtons.splice(this.index, 1)
         }
         this.sprite.remove();
     }
 }
-
-class Button {
-    constructor(name, type,  x = 0, y = 0, w, h) {
-        console.log(x + " " + y);
-        this.w = w;
-        this.h = h;
-        this.x = x;
-        this.y = y;
-        this.name = name;
-        this.type = type;
-        this.color = defaultButtonColor;
-    }
-
-    update() {
-
-        push();
-        fill(this.color);
-        rect(this.x, this.y, this.w, this.h);
-        pop();
-
-        push();
-        fill(255);
-        textAlign(CENTER, CENTER);
-        textSize(20);
-        text(this.name, this.x + this.w/2, this.y - 10);
-        pop();
-        
-        if (this.isHovered(mx, my) && mouse.released(LEFT)) {
-            this.checkPressed();
-        }
-        if (this.isHovered(mx, my) && mouse.pressing(LEFT)) {
-            this.color = pressedButtonColor;
-        } else if (this.isHovered(mx, my)) {
-            this.color = hoveredButtonColor;
-        } else { 
-            this.color = defaultButtonColor;
-        }
-        
-    }
-
-    isHovered(x, y) {
-        return (
-            x >= this.x && 
-            x <= this.x + this.w && 
-            y >= this.y && 
-            y <= this.y + this.h
-        );
-    }
-
-    checkPressed() {  
-        if (!clickedFlag) {
-            clickedFlag = true;
-            switch(this.type) {
-                case 'recall':
-                    mothership.recallUnits();
-                    break;
-                case 'harvest':
-                    mothership.harvestAsteroids();
-                    break;
-                case 'hunt':
-
-            } 
-        }
-        if (clickedFlag) {
-            setTimeout(() => clickedFlag = false, 200);
-        }
-    }
-
-    remove() {
-        this.index = unitButtons.indexOf(this);
-        if (this.index != -1) {
-            unitButtons.splice(this.index, 1);
-        }
-        this.sprite.remove();
-    }
-}
-
+  
 let clickedFlag = false;

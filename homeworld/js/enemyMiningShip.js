@@ -1,11 +1,11 @@
 
 class MiningShipUnit extends EnemyUnit {
     constructor(x, y) {
-        const defaultSpeed = 0.75;
+        const defaultSpeed = 1;
         const defaultHealth = 200;
         const defaultRange = 100;
         super(x, y, defaultSpeed, defaultHealth, defaultRange);
-        miningShips.push(this);
+        miningShipUnits.push(this);
         this.name = 'Mining Ship Unit';
         
         this.detectionRange = this.range*1.5;
@@ -20,18 +20,14 @@ class MiningShipUnit extends EnemyUnit {
     initializeResources() {
         this.resource = 0;
         this.lastMined = 0;
-        this.capacity = 10;
-        this.miningRate = 0.5;
-        this.sprite.text = this.resource;
-        this.sprite.textColor = 'white';
-        this.sprite.textSize = 20;
+        this.capacity = 15;
+        this.miningRate = 1;
     }
 
     update() {
         super.update();
         this.updateAnimation();
         this.findClosestAsteroid();
-        this.sprite.text = this.resource;
 
         let mothershipRange = dist(mothershipUnit.sprite.x, mothershipUnit.sprite.y, this.sprite.x, this.sprite.y);
         if (mothershipRange <= this.range) {
