@@ -81,6 +81,33 @@ class Mothership extends PlayerShip {
         }
     }
 
+    harvestAsteroids() {
+        const visibleAsteroids = userInterface.getAsteroidsInArea();
+
+        if (visibleAsteroids.length == 0) {
+            console.log("No visible asteroids to harvest");
+            return;
+        }
+
+        const miningShipGroups = userInterface.divideMiningShipsIntoGroups(miningShips.length, visibleAsteroids.length);
+
+        miningShipGroups.forEach((group, index) => {
+            const asteroid = visibleAsteroids[index];
+
+
+            group.forEach(miningShipIndex => {
+                const miningShip = miningShips[miningShipIndex];
+                console.log("Mining Ship Type:", miningShip instanceof MiningShip);
+                miningShip.setTarget(asteroid.sprite.x, asteroid.sprite.y);
+                miningShip.handleMoveToTarget();
+            });
+            
+        });
+    }
+
+   
+    
+
 
     updateAnimation() {
         this.sprite.ani.scale = this.sprite.d / 22;

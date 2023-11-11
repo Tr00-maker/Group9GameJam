@@ -85,6 +85,47 @@ class UserInterface {
         this.huntButton.update();
     }
 
+    getVisibleEnemiesInArea(area) {
+        return enemyUnits.filter(enemy => enemy.isVisible() && this.isShipInArea(enemy, area));
+    }
+
+    getAsteroidsInArea() {
+        const area = {
+            x1: cameraSprite.x - windowWidth / 2,
+            y1: cameraSprite.y - windowHeight / 2,
+            x2: cameraSprite.x + windowWidth / 2,
+            y2: cameraSprite.y + windowHeight / 2,
+        };
+
+        return asteroids.filter(asteroid => this.isAsteroidInArea(asteroid, area))
+    }
+
+    isShipInArea(ship, area) {
+        return (
+            ship.sprite.x >= area.x1 &&
+            ship.sprite.x <= area.x2 && 
+            ship.sprite.y >= area.y1 &&
+            ship.sprite.y <= area.y2
+        );
+    }
+
+    isAsteroidInArea(asteroid, area) {
+        return (
+            asteroid.sprite.x >= area.x1 &&
+            asteroid.sprite.x <= area.x2 && 
+            asteroid.sprite.y >= area.y1 &&
+            asteroid.sprite.y <= area.y2
+        );
+    }
+
+    divideMiningShipsIntoGroups(numMiningShips, numGroups) {
+        const groups = Array.from({length: numGroups }, () => []);
+        for (let i = 0; i < numMiningShips; i++) {
+            groups[i % numGroups].push(miningShips[i]);
+        }
+        return groups;
+    }
+
     positionButtons() {
         let x = this.x - windowWidth/2;
         let y = this.y + windowHeight/2 - 100;
@@ -275,11 +316,13 @@ class Button {
             clickedFlag = true;
             switch(this.type) {
                 case 'recall':
-                mothership.recallUnits();
-                break;
-                case 'qBattle':
-                this.queueBattleShip();
-                break;
+                    mothership.recallUnits();
+                    break;
+                case 'harvest':
+                    mothership.harvestAsteroids();
+                    break;
+                case 'hunt':
+
             } 
         }
         if (clickedFlag) {
