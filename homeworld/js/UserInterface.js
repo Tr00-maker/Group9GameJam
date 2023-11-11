@@ -295,6 +295,23 @@ class Button {
                 this.color = color(57,255,20, 100);
             }
         }
+
+        if (this.type === 'recall' || this.type === 'harvest' || this.type === 'hunt') {
+            if (this.cost <= mothership.scrap && !this.isWaiting) {
+                if (this.isHovered(mx, my) && mouse.released(LEFT)) {
+                    this.checkPressed(this.type);
+                }
+                if (this.isHovered(mx, my) && mouse.pressing(LEFT)) {
+                    this.color = color(57,255,20, 200);
+                } else if (this.isHovered(mx, my)) {
+                    this.color = color(57,255,20, 100);
+                } else {
+                    this.color = color(57,255,20);
+                }
+            } else {
+                this.color = color(57,255,20, 100);
+            }
+        }
         
     }
 
