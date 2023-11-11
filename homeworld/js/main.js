@@ -74,6 +74,8 @@ function preload() {
     dreadnoughtImg = loadAnimation('./images/turret.png', { frameSize: [50, 50], frames: 1, row: 0, col: 0 });
     dreadnoughtSelectedImg = loadAnimation('./images/turret.png', { frameSize: [50, 50], frames: 1, row: 1, col: 0 });
 
+    enemyDreadImg = loadAnimation('./images/enemydread.png', { frameSize: [50, 50], frames: 1, row: 0, col: 0 });
+
     battleShipImg = loadAnimation('./images/ships.png', { frameSize: [32, 32], frames: 1, row: 1, col: 1 });
     battleShipSelectedImg = loadAnimation('./images/selected.png', { frameSize: [32, 32], frames: 1, row: 1, col: 1 });
 
