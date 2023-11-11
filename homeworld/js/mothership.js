@@ -105,10 +105,6 @@ class Mothership extends PlayerShip {
         });
     }
 
-   
-    
-
-
     updateAnimation() {
         this.sprite.ani.scale = this.sprite.d / 22;
     }

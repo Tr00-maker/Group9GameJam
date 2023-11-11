@@ -52,9 +52,9 @@ class UserInterface {
         uBattle1 = new Button('Upgrade: Battle Lv1', 'uBattle1', 20, this.x, this.y - 160, 175, 60, 'Ship Scraps');
       
         //command buttons
-        recallButton = new Button('Recall', 'recall', this.x, this.y + 300, 50, 50);
-        harvestButton = new Button('Harvest', 'harvest', this.x, this.y + 350, 50, 50);
-        huntButton = new Button('Hunt', 'hunt', this.x, this.y + 400, 50, 50);
+        recallButton = new Button('Recall', 'recall', 0, this.x, this.y + 300, 50, 50, ' ');
+        harvestButton = new Button('Harvest', 'harvest', 0, this.x, this.y + 350, 50, 50, ' ');
+        huntButton = new Button('Hunt', 'hunt', this.x, 0, this.y + 400, 50, 50, ' ');
     }
     
     getVisibleEnemiesInArea(area) {
@@ -121,13 +121,13 @@ class UserInterface {
       
         if (harvestButton) {
           harvestButton.sprite.x = this.sprite.x;
-          harvestButton.sprite.y = this.sprite.y + 300;
+          harvestButton.sprite.y = this.sprite.y + 350;
           harvestButton.update()
         }
       
         if (huntButton) {   
           huntButton.sprite.x = this.sprite.x;
-          huntButton.sprite.y = this.sprite.y + 300;
+          huntButton.sprite.y = this.sprite.y + 400;
           huntButton.update()
         }
 
@@ -193,31 +193,6 @@ class Button {
         this.isWaiting = false; // Track if the button is in a waiting state
         this.fillProgress = 0; // Progress of the fill bar (0 to 1)
 
-        this.sprite.draw = () => {
-            push();
-            fill(0);
-            stroke(this.color);
-            strokeWeight(2);
-            rect(0, 0, this.w, this.h);
-            pop();
-
-            push();
-            fill(this.color);
-            strokeWeight(0);
-            textSize(18);
-            textFont('Pixelify Sans');
-            textAlign(CENTER, CENTER);
-            text(this.name + '\n' + this.resource + ': '+ this.cost, 0, 0);
-            pop();
-
-            push();
-            fill(57,255,20, 100);
-            noStroke();
-            rectMode(CORNER);
-            rect(-this.w/2, -this.h/2, this.fillProgress * this.w, this.h);
-            pop();
-        };
-
         this.sprite.overlaps(allSprites);
         this.name = name;
         this.type = type;
@@ -225,7 +200,63 @@ class Button {
 
         this.sprite.debug = true;
     }
+
     update() {
+        if (this.type !== 'recall' && this.type !== 'hunt' && this.type !== 'harvest') {
+            this.sprite.draw = () => {
+                push();
+                fill(0);
+                stroke(this.color);
+                strokeWeight(2);
+                rect(0, 0, this.w, this.h);
+                pop();
+
+                push();
+                fill(this.color);
+                strokeWeight(0);
+                textSize(18);
+                textFont('Pixelify Sans');
+                textAlign(CENTER, CENTER);
+                
+                    text(this.name + '\n' + this.resource + ': '+ this.cost, 0, 0);
+                pop();
+
+                push();
+                fill(57,255,20, 100);
+                noStroke();
+                rectMode(CORNER);
+                rect(-this.w/2, -this.h/2, this.fillProgress * this.w, this.h);
+                pop();
+            };
+        }
+
+        if (this.type === 'recall' || this.type === 'hunt' || this.type === 'harvest') {
+            this.sprite.draw = () => {
+                push();
+                fill(0);
+                stroke(this.color);
+                strokeWeight(2);
+                rect(0, 0, this.w, this.h);
+                pop();
+
+                push();
+                fill(this.color);
+                strokeWeight(0);
+                textSize(18);
+                textFont('Pixelify Sans');
+                textAlign(CENTER, CENTER);
+                text(this.name, 0, 0);
+                pop();
+
+                push();
+                fill(57,255,20, 100);
+                noStroke();
+                rectMode(CORNER);
+                rect(-this.w/2, -this.h/2, this.fillProgress * this.w, this.h);
+                pop();
+            };
+        }
+
         if (this.isWaiting) {
             const currentTime = Date.now();
             this.fillProgress = Math.min((currentTime - this.timer) / 3000, 1);
@@ -285,7 +316,8 @@ class Button {
             this.timer = currentTime;
             this.fillProgress = 0;
             
-            if (type === 'qMining' || type === 'qBattle' || type === 'qDread') {
+            if (type === 'qMining' || type === 'qBattle' || type === 'qDread') 
+            {
                 if (mothership.resource >= this.cost) {
                     mothership.resource -= this.cost;  
                     setTimeout(() => {
@@ -308,67 +340,59 @@ class Button {
                     }, 3000);
                 }
             }
-
-            if (type === 'uMining1' || type === 'uBattle1'|| type === 'uMining2' || type === 'uBattle2') {
-                if (mothership.scrap >= this.cost) {
-                    mothership.scrap -= this.cost;  
-                    setTimeout(() => {
-                        this.isWaiting = false;
-                        clickedFlag = false;
-                        this.fillProgress = 0;
-            
-                        switch(type) {
-                            case 'uMining1':
-                                playerUpgradeController.upgradeMiningLv1();
-                                uMining1.sprite.remove();
-                                uMining2 = new Button('Upgrade: Mining Lv2', 'uMining2', 25, this.x, this.y - 160, 175, 60, 'Ship Scraps');
-                                break;
-                            case 'uBattle1':
-                                playerUpgradeController.upgradeBattleLv1();
-                                uBattle1.sprite.remove();
-                                uBattle2 = new Button('Upgrade: Battle Lv2', 'uBattle2', 30, this.x, this.y - 160, 175, 60, 'Ship Scraps');
-                                break;
-                            case 'uMining2':
-                                playerUpgradeController.upgradeMiningLv2();
-                                uMining2.sprite.remove();
-                                break;
-                            case 'uBattle2':
-                                playerUpgradeController.upgradeBattleLv2();
-                                uBattle2.sprite.remove();
-                                break;
-                        }
-                        
-                    }, 3000);
-                }
-            }
-          
-          if (type === 'recall' || type === 'recall'|| type === 'recall' || type === 'recall') { 
-              setTimeout(() => {
-                  this.isWaiting = false;
-                  clickedFlag = false;
-                  this.fillProgress = 0;
-
-                  switch(type) {
-                  case 'recall':
-                      mothership.recallUnits();
-                      break;
-                  case 'harvest':
-                      mothership.harvestAsteroids();
-                      break;
-                  case 'hunt':
-                      break;
-              } 
-
-              }, 3000);
-          }
-    }
-
-    remove() {
-        this.index = unitButtons.indexOf(this);
-        if (this.index != -1) {
-            unitButtons.splice(this.index, 1)
         }
-        this.sprite.remove();
+
+        if (type === 'uMining1' || type === 'uBattle1'|| type === 'uMining2' || type === 'uBattle2') {
+            if (mothership.scrap >= this.cost) {
+                mothership.scrap -= this.cost;  
+                setTimeout(() => {
+                    this.isWaiting = false;
+                    clickedFlag = false;
+                    this.fillProgress = 0;
+        
+                    switch(type) {
+                        case 'uMining1':
+                            playerUpgradeController.upgradeMiningLv1();
+                            uMining1.sprite.remove();
+                            uMining2 = new Button('Upgrade: Mining Lv2', 'uMining2', 25, this.x, this.y - 160, 175, 60, 'Ship Scraps');
+                            break;
+                        case 'uBattle1':
+                            playerUpgradeController.upgradeBattleLv1();
+                            uBattle1.sprite.remove();
+                            uBattle2 = new Button('Upgrade: Battle Lv2', 'uBattle2', 30, this.x, this.y - 160, 175, 60, 'Ship Scraps');
+                            break;
+                        case 'uMining2':
+                            playerUpgradeController.upgradeMiningLv2();
+                            uMining2.sprite.remove();
+                            break;
+                        case 'uBattle2':
+                            playerUpgradeController.upgradeBattleLv2();
+                            uBattle2.sprite.remove();
+                            break;
+                    }
+                    
+                }, 3000);
+            }
+        }
+        
+        if (type === 'recall' || type === 'harvest'|| type === 'hunt') { 
+            setTimeout(() => {
+                this.isWaiting = false;
+                clickedFlag = false;
+                this.fillProgress = 0;
+                }, 3000);
+
+                switch(type) {
+                case 'recall':
+                    mothership.recallUnits();
+                    break;
+                case 'harvest':
+                    mothership.harvestAsteroids();
+                    break;
+                case 'hunt':
+                    break;
+            } 
+        }
     }
 }
   
