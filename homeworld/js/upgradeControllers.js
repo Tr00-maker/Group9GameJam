@@ -45,7 +45,7 @@ class PlayerUpgradeController {
             health: 1800,
             range: 500, 
             size: 50,
-            fireRate: 0.2,
+            fireRate: 0.4,
             shotSpeed: 20,
             damage: 50,
         }
