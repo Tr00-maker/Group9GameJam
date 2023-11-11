@@ -112,6 +112,7 @@ function preload() {
 
 function setup() {
     new Canvas(5000, 5000, 'pixelated x1');
+    fullscreen();
     changeState(state.play);
     allSprites.pixelPerfect;
     initializeCamera();
