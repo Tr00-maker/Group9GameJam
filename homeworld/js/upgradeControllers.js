@@ -3,7 +3,8 @@ class PlayerUpgradeController {
 
         this.initializeMiningShipStats();
         this.initializeMothershipStats();
-        this.initializeBattleShipStats();   
+        this.initializeBattleShipStats();
+        this.initializeDreadnoughtStats();   
     }
 
     initializeMiningShipStats() {
@@ -35,6 +36,18 @@ class PlayerUpgradeController {
             health: 2000,
             range: 100,
             size: 70,
+        }
+    }
+    //dreadnought
+    initializeDreadnoughtStats() {
+        this.dreadnoughtStat = {
+            speed: 0.2,
+            health: 1800,
+            range: 400, 
+            size: 50,
+            fireRate: 0.4,
+            shotSpeed: 12,
+            damage: 20,
         }
     }
 

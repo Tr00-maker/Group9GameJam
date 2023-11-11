@@ -89,8 +89,8 @@ function playStateUpdate() {
         }
 
         //missiles
-        for (let i = missiles.length - 1; i >= 0; i--) {
-            missiles[i].update();
+        for (let i = dreadnoughts.length - 1; i >= 0; i--) {
+            dreadnoughts[i].update();
         } 
     }
 }

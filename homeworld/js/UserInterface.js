@@ -45,7 +45,7 @@ class BottomUi {
         //queue buttons
         qMining = new Button('Build: Mining', 'qMining', 40, this.x, this.y - 160, 175, 60, 'Resource');
         qBattle = new Button('Build: Battle', 'qBattle', 50, this.x, this.y + 60, 175, 60, 'Resource');
-        qTurret = new Button('Build: Turret', 'qTurret', 60, this.x, this.y + 60, 175, 60, 'Resource');
+        qDread = new Button('Build: Dreadnought', 'qDread', 80, this.x, this.y + 60, 175, 80, 'Resource');
 
         //upgrade buttons
         uMining1 = new Button('Upgrade: Mining Lv1', 'uMining1', 15, this.x, this.y - 160, 175, 60, 'Ship Scraps');
@@ -59,13 +59,14 @@ class BottomUi {
         qBattle.sprite.x = this.sprite.x;
         qBattle.sprite.y = this.sprite.y - 60;
 
-        qTurret.sprite.x = this.sprite.x;
-        qTurret.sprite.y = this.sprite.y + 40;
+        qDread.sprite.x = this.sprite.x;
+        qDread.sprite.y = this.sprite.y + 40;
 
         
             
         qMining.update();
         qBattle.update();
+        qDread.update();
 
         if(uMining1) {
             uMining1.sprite.x = this.sprite.x;
@@ -91,6 +92,12 @@ class BottomUi {
             uBattle2.update();
         }
 
+        if(uDread) {
+            uDread.sprite.x = this.sprite.x;
+            uDread.sprite.y = this.sprite.y + 140;
+            uDread.update();
+        }
+
     }
     
     update() {
@@ -103,10 +110,10 @@ class BottomUi {
 
 
 }
-let qMining, qBattle, qTurret;
-let uMining1, uBattle1, uTurret1, uMining2, uBattle2, uTurret2;
+let qMining, qBattle, qDread;
+let uMining1, uBattle1, uDread, uMining2, uBattle2;
 
-let unitButtons = [qMining, qBattle];
+let unitButtons = [qMining, qBattle, qDread];
 
 class Button {
     constructor(name, type, cost, x, y, w, h, resource) {
@@ -161,7 +168,7 @@ class Button {
             this.fillProgress = Math.min((currentTime - this.timer) / 3000, 1);
         }
 
-        if (this.type === 'qMining' || this.type === 'qBattle' || this.type === 'qTurret') {
+        if (this.type === 'qMining' || this.type === 'qBattle' || this.type === 'qDread') {
             if (this.cost <= mothership.resource && !this.isWaiting) {
                 if (this.isHovered(mx, my) && mouse.released(LEFT)) {
                     this.checkPressed(this.type);
@@ -178,7 +185,7 @@ class Button {
             }
         }
 
-        if (this.type === 'uMining1' || this.type === 'uBattle1' || this.type === 'uTurret1' || this.type === 'uMining2' || this.type === 'uBattle2' || this.type === 'uTurret2') {
+        if (this.type === 'uMining1' || this.type === 'uBattle1' || this.type === 'uMining2' || this.type === 'uBattle2') {
             if (this.cost <= mothership.scrap && !this.isWaiting) {
                 if (this.isHovered(mx, my) && mouse.released(LEFT)) {
                     this.checkPressed(this.type);
@@ -215,7 +222,7 @@ class Button {
             this.timer = currentTime;
             this.fillProgress = 0;
             
-            if (type === 'qMining' || type === 'qBattle' || type === 'qTurret') {
+            if (type === 'qMining' || type === 'qBattle' || type === 'qDread') {
                 if (mothership.resource >= this.cost) {
                     mothership.resource -= this.cost;  
                     setTimeout(() => {
@@ -230,13 +237,16 @@ class Button {
                             case 'qBattle':
                                 mothership.spawnBattleShip();
                                 break;
+                            case 'qDread':
+                                mothership.spawnDread();
+                                break;
                         }
                         
                     }, 3000);
                 }
             }
 
-            if (type === 'uMining1' || type === 'uBattle1' || type === 'uTurret1' || type === 'uMining2' || type === 'uBattle2' || type === 'uTurret2') {
+            if (type === 'uMining1' || type === 'uBattle1'|| type === 'uMining2' || type === 'uBattle2') {
                 if (mothership.scrap >= this.cost) {
                     mothership.scrap -= this.cost;  
                     setTimeout(() => {

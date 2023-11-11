@@ -325,20 +325,23 @@ class ShootingUnit extends EnemyUnit {
                 closestShip = ship;
             }
         }
+        if(closestShip != null)
+        {
+            let distToClosestUnit = dist(this.sprite.x, this.sprite.y, closestShip.sprite.x, closestShip.sprite.y);
 
-        let distToClosestUnit = dist(this.sprite.x, this.sprite.y, closestShip.sprite.x, closestShip.sprite.y);
+            if (distToClosestUnit < this.detectionRange) {
+                this.closestShip = closestShip;
+                this.state = 'combat';
+            } else {
+                this.closestShip = null;
+                this.state = 'patrol';
+            }
+            if (this.closestShip) {
 
-        if (distToClosestUnit < this.detectionRange) {
-            this.closestShip = closestShip;
-            this.state = 'combat';
-        } else {
-            this.closestShip = null;
-            this.state = 'patrol';
+                console.log('detecting combat ' + this.closestShip);
+            }
         }
-        if (this.closestShip) {
-
-            console.log('detecting combat ' + this.closestShip);
-        }
+        
     }
 
     //shoots at the units rotation

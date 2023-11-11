@@ -46,9 +46,10 @@ let roamingShips = [];
 let roamingShipController;
 let startingRoamingShips = 5;
 
-//missiles
-let missiles = [];
-let missileImg;
+//dreadnoughts
+let dreadnoughts = [];
+let dreadnoughtController;
+let dreadnoughtImg;
 
 //explosions
 let explosions = [];
@@ -69,7 +70,9 @@ function preload() {
 
     mothershipImg = loadAnimation('./images/ships.png', { frameSize: [32, 32], frames: 1, row: 2, col: 1 });
     mothershipSelectedImg = loadAnimation('./images/selected.png', { frameSize: [32, 32], frames: 1, row: 2, col: 1 });
-    missileImg = loadAnimation('./images/redmissile.png');
+
+    dreadnoughtImg = loadAnimation('./images/turret.png', { frameSize: [50, 50], frames: 1, row: 0, col: 0 });
+    dreadnoughtSelectedImg = loadAnimation('./images/turret.png', { frameSize: [50, 50], frames: 1, row: 1, col: 0 });
 
     battleShipImg = loadAnimation('./images/ships.png', { frameSize: [32, 32], frames: 1, row: 1, col: 1 });
     battleShipSelectedImg = loadAnimation('./images/selected.png', { frameSize: [32, 32], frames: 1, row: 1, col: 1 });
@@ -100,9 +103,9 @@ function preload() {
     battleButtonPressed = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 1, col: 0});
     battleButtonBlacked = loadAnimation('./images/unitbuttonsBlack.png', {frameSize: 50, frames:1, row: 1, col: 0});
 
-    turretButton = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 2, col: 1});
-    turretButtonPressed = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 2, col: 0});
-    turretButtonBlacked = loadAnimation('./images/unitbuttonsBlack.png', {frameSize: 50, frames:1, row: 2, col: 0});
+    dreadButton = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 2, col: 1});
+    dreadButtonPressed = loadAnimation('./images/unitbuttons.png', {frameSize: 50, frames:1, row: 2, col: 0});
+    dreadButtonBlacked = loadAnimation('./images/unitbuttonsBlack.png', {frameSize: 50, frames:1, row: 2, col: 0});
 
     squareUiImg = loadAnimation('./images/squareUi.png');
     titleFrameImg = loadAnimation('./images/titleFrame.png');

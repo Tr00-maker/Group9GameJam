@@ -72,8 +72,13 @@ class PlayerShip {
                     text('HP ' + this.health + '/' + 2000, this.sprite.x, this.sprite.y + this.sprite.d + 20);
                     pop();
                     break;
-                case 'Turret Ship':
-
+                case 'Dreadnought':
+                    push();
+                    fill('#39FF14');
+                    strokeWeight(0);
+                    textAlign(CENTER, CENTER);
+                    text('HP ' + this.health + '/' + playerUpgradeController.dreadnoughtStat.health, this.sprite.x, this.sprite.y + this.sprite.d + 20);
+                    pop();
                     break;
             }
         } 
@@ -173,6 +178,9 @@ class PlayerShip {
                 break;
             case 'Mothership':
                 this.setSpawnTarget();
+                break;
+            case 'Dreadnought':
+                this.handleMoveToTarget();
                 break;
         }
 
