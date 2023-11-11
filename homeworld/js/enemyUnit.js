@@ -8,17 +8,30 @@ class EnemyUnit {
         this.range = range;
         this.rotationSpeed = this.speed*3;
 
-        this.sprite.debug = false;
+        this.sprite.debug = true;
         targetableSprites.push(this);
         enemyUnits.push(this);
-        this.sprite.overlaps(allSprites);
+        
+        for (let s of selectableSprites){
+            for (let e of enemyUnits) {
+                for (let a of asteroids) {
+                    this.sprite.overlaps(s.sprite);
+                    this.sprite.overlaps(e.sprite);
+                    this.sprite.overlaps(a.sprite);
+                }
+            }
+        }
+        this.sprite.overlaps(bCT);
+        this.sprite.overlaps(bCL);
+        this.sprite.overlaps(bCB);
+        this.sprite.overlaps(bCR);
 
         this.sprite.direction = 0;
         this.sprite.speed = this.speed;
 
         this.active = true;
         this.inPatrol = false;
-        this.sprite.debug = true;
+        this.sprite.debug = false;
 
         this.state = 'idle';
     }
@@ -42,6 +55,44 @@ class EnemyUnit {
                 break;
             case 'patrol':
                 this.handlePatrol();
+                break;
+        }
+        
+        for (let s of selectableSprites) {
+            if (s.targetSprite === this) {
+                this.displayHP();
+            }
+        }
+    }
+
+    displayHP() {
+        switch(this.name) {
+            case 'Mining Ship Unit':
+                push();
+                fill('#FF3131');
+                strokeWeight(0);
+                textAlign(CENTER, CENTER);
+                text('HP ' + this.health + '/' + 100, this.sprite.x, this.sprite.y + this.sprite.d + 20);
+                pop();
+                break;
+            case 'Shooting Unit':
+                push();
+                fill('#FF3131');
+                strokeWeight(0);
+                textAlign(CENTER, CENTER);
+                text('HP ' + this.health + '/' + 200, this.sprite.x, this.sprite.y + this.sprite.d + 20);
+                pop();
+                break;
+            case 'Mothership Unit':
+                push();
+                fill('#FF3131');
+                strokeWeight(0);
+                textAlign(CENTER, CENTER);
+                text('HP ' + this.health + '/' + 2000, this.sprite.x, this.sprite.y + this.sprite.d + 20);
+                pop();
+                break;
+            case 'Roaming Ship':
+                
                 break;
         }
     }
@@ -217,7 +268,7 @@ class MothershipUnit extends EnemyUnit {
 class ShootingUnit extends EnemyUnit {
     constructor(x, y) {
         const defaultSpeed = 0.5;
-        const defaultHealth = 100;
+        const defaultHealth = 200;
         const defaultRange = 200;
         super(x, y, defaultSpeed, defaultHealth, defaultRange);
         
@@ -225,13 +276,13 @@ class ShootingUnit extends EnemyUnit {
         this.detectionRange = this.range*1.5;
         this.sprite.addAni('default', shootingUnitImg);
         this.sprite.addAni('selected', shootingUnitSelectedImg);
-        this.sprite.d = 30;
+        this.sprite.d = 40;
 
         this.closestShip = null;
-        this.fireRate = 0.5;
+        this.fireRate = 0.75;
         this.lastFired = 0;
-        this.shotSpeed = 3;
-        this.damage = 5;
+        this.shotSpeed = 5;
+        this.damage = 10;
     }
 
     update() {
@@ -253,8 +304,8 @@ class ShootingUnit extends EnemyUnit {
         //at max range move toward player ships
         if (distToClosestShip < this.detectionRange && distToClosestShip > this.detectionRange/1.2) {
             this.sprite.moveTo(this.closestShip.sprite, this.speed);
-        } else if (distToClosestShip < this.detectionRange/1.2 && distToClosestShip > this.range) {
-            this.sprite.attractTo(this.closestShip.sprite, this.speed/3);
+        } else if (distToClosestShip < this.detectionRange && distToClosestShip > this.range) {
+            this.sprite.attractTo(this.closestShip.sprite, 0.3*(this.speed/3));
         } else if (distToClosestShip < this.range) {
             this.shoot();
             this.handlePlayerShipSpread();

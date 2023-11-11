@@ -5,7 +5,7 @@ let gamePause = false;
 let mothershipImg, mothership;
 
 //User Interface
-let userInterface, bottomUi;
+let squareUiImg, bottomUi;
 let miningShipCost = 50;
 let missileCost = 40;
 const defaultButtonColor = [255, 255, 255, 100];
@@ -112,6 +112,7 @@ function preload() {
 
 function setup() {
     new Canvas(5000, 5000, 'pixelated x1');
+    fullscreen();
     changeState(state.play);
     allSprites.pixelPerfect;
     initializeCamera();
@@ -124,10 +125,20 @@ function setup() {
     }
 
 function initializeCamera() {
-    cameraSprite = new Sprite(width/2, height/2, 'n');
+    cameraSprite = new Sprite(width/2, height/2, 'd');
     cameraSprite.d = 10;
     cameraSprite.color = color(255, 0);
     cameraSprite.stroke = color(0,0);
+
+    for (let s of selectableSprites){
+        for (let e of enemyUnits) {
+            for (let a of asteroids) {
+                cameraSprite.overlaps(s.sprite);
+                cameraSprite.overlaps(e.sprite);
+                cameraSprite.overlaps(a.sprite);
+            }
+        }
+    }
 }
 
 function cameraEffect() {
@@ -151,10 +162,48 @@ function cameraEffect() {
     }
 
     if (kb.pressed('x')) {
+        for (let i = 0; i < selectableSprites.length; i++) {
+            selectableSprites[i].selected = false;
+        }
+
+        mothership.selected = true;
+
         cameraSprite.pos = mothership.sprite.pos;
     }
+
+    if (kb.pressed('e')) {
+        for (let i = 0; i < selectableSprites.length; i++) {
+            selectableSprites[i].selected = false;
+        }
+    
+        cameraSprite.pos = battleShips[currentBattleShipIndex].sprite.pos;
+        battleShips[currentBattleShipIndex].selected = true;
+    
+        currentBattleShipIndex++;
+        if (currentBattleShipIndex >= battleShips.length) {
+            currentBattleShipIndex = 0;
+        }
+    }
+    
+
+    if (kb.pressed('q')) {
+        for (let i = 0; i < selectableSprites.length; i++) {
+            selectableSprites[i].selected = false;
+        }
+    
+        cameraSprite.pos = miningShips[currentMiningShipIndex].sprite.pos;
+        miningShips[currentMiningShipIndex].selected = true;
+
+        currentMiningShipIndex++;
+        if (currentMiningShipIndex >= miningShips.length) {
+            currentMiningShipIndex = 0;
+        }
+    }
+    
 }
 
 //var for cameraEffect
 let cameraSprite, tx, ty, mx, my;
+let currentBattleShipIndex = 0;
+let currentMiningShipIndex = 0;
 
