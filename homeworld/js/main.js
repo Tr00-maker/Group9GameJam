@@ -119,6 +119,7 @@ function setup() {
 
     function draw() {  
         clear();
+        fullscreen(1);
         cameraEffect(); 
         loopStates();
     }
