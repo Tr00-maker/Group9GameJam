@@ -1,13 +1,13 @@
 class Projectile {
-    constructor(x, y, direction, speed, damage, radius, animation, array) {
+    constructor(x, y, direction, speed, damage, radius, animation, array, size) {
         this.sprite = new Sprite(x, y, 'd');
         this.sprite.overlaps(allSprites);
         this.array = array;
 
         this.sprite.ani = animation;
-        this.sprite.animation.scale = 0.2;
+        this.sprite.animation.scale = 0.2 * size/10;
 
-        this.sprite.d = 10;
+        this.sprite.d = 10 * size;
         this.sprite.rotation = direction;
         this.sprite.rotationLock = true;
 

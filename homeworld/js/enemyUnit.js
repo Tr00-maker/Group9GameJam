@@ -358,7 +358,8 @@ class ShootingUnit extends EnemyUnit {
                     this.shotSpeed, 
                     this.damage, 10, 
                     redBulletImg, 
-                    enemyProjectiles));
+                    enemyProjectiles,
+                    10));
                 this.lastFired = currentTime;
             }
         }
