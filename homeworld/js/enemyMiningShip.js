@@ -1,8 +1,8 @@
 
 class MiningShipUnit extends EnemyUnit {
     constructor(x, y) {
-        const defaultSpeed = 0.75;
-        const defaultHealth = 100;
+        const defaultSpeed = 1;
+        const defaultHealth = 200;
         const defaultRange = 100;
         super(x, y, defaultSpeed, defaultHealth, defaultRange);
         miningShipUnits.push(this);
@@ -20,8 +20,8 @@ class MiningShipUnit extends EnemyUnit {
     initializeResources() {
         this.resource = 0;
         this.lastMined = 0;
-        this.capacity = 10;
-        this.miningRate = 0.5;
+        this.capacity = 15;
+        this.miningRate = 1;
     }
 
     update() {

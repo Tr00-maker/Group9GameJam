@@ -55,7 +55,7 @@ class Dreadnought extends PlayerShip {
                 this.shotSpeed, 
                 this.damage, 10/* radius*/, 
                 tealBulletImg, 
-                playerProjectiles));
+                playerProjectiles, 30));
             this.lastFired = currentTime;
         }
     }

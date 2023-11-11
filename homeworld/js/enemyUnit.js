@@ -118,8 +118,9 @@ class EnemyUnit {
         if (this.inPatrol) return;
         this.inPatrol = true;
 
-        let x = random(0, width - 300);
-        let y = random(0, height - 300);
+        let x = mothershipUnit.sprite.x + random() * 500 - 250;
+        let y = mothershipUnit.sprite.y + random() * 500 - 250;
+        
     
         this.sprite.rotateTo(x, y, this.rotationSpeed);
         await this.sprite.moveTo(x, y, this.speed);
@@ -249,19 +250,19 @@ class MothershipUnit extends EnemyUnit {
         this.sprite.ani.scale = 3;
     }
 
-    //spawns a mining ship every 5 enemy units, else it spawn a shooting ship. Spawn a dreadnought if it can afford it
+    //spawns a mining ship every 4 enemy units, else it spawn a shooting ship. Spawn a dreadnought if it can afford it
     spawnUnits() {
-        if(this.resource >= miningShipCost * 2)
+        if(this.resource >= 80)
         {
-            this.resource -= miningShipCost * 2;
+            this.resource -= 80;
             enemyUnits.push(new EnemyDread(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100)));
         }
-        if (this.resource >= miningShipCost) {
-            if (enemyUnits.length % 3 === 0) {
-                this.resource -= miningShipCost;  // Deduct the cost for mining ship
+        if (this.resource >= 30) {
+            if (enemyUnits.length % 4 === 0) {
+                this.resource -= 30;  
                 enemyUnits.push(new MiningShipUnit(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100)));
             } else {
-                this.resource -= miningShipCost;  // Deduct the cost for shooting unit, assuming it has a different cost
+                this.resource -= 40;
                 enemyUnits.push(new ShootingUnit(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100)));
             }
         }
@@ -273,7 +274,7 @@ class MothershipUnit extends EnemyUnit {
 class ShootingUnit extends EnemyUnit {
     constructor(x, y) {
         const defaultSpeed = 0.5;
-        const defaultHealth = 200;
+        const defaultHealth = 150;
         const defaultRange = 200;
         super(x, y, defaultSpeed, defaultHealth, defaultRange);
         
@@ -286,7 +287,7 @@ class ShootingUnit extends EnemyUnit {
         this.closestShip = null;
         this.fireRate = 0.75;
         this.lastFired = 0;
-        this.shotSpeed = 5;
+        this.shotSpeed = 3;
         this.damage = 10;
     }
 
@@ -362,7 +363,8 @@ class ShootingUnit extends EnemyUnit {
                     this.shotSpeed, 
                     this.damage, 10, 
                     redBulletImg, 
-                    enemyProjectiles));
+                    enemyProjectiles,
+                    10));
                 this.lastFired = currentTime;
             }
         }

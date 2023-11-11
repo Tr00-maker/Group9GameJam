@@ -130,7 +130,7 @@ function setup() {
     }
 
 function initializeCamera() {
-    cameraSprite = new Sprite(width/2, height/2, 'd');
+    cameraSprite = new Sprite(width/1.5, height/1.5, 'd');
     cameraSprite.d = 10;
     cameraSprite.color = color(255, 0);
     cameraSprite.stroke = color(0,0);

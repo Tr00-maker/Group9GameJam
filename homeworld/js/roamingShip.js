@@ -10,7 +10,7 @@ class RoamingShip {
         
         this.sprite.addAni('default', roamingShipImg);
         this.sprite.addAni('selected', roamingShipSelectedImg);
-        this.sprite.d = 50;
+        this.sprite.d = 75;
 
         targetableSprites.push(this);
         enemyUnits.push(this);
