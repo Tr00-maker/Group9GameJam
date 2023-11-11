@@ -56,6 +56,12 @@ class MiningShip extends PlayerShip {
 
     //minging ship resource gathering logic
     handleMiningLogic(target) {
+        if (!target || !target.sprite || !target.sprite.x || !target.sprite.y) {
+            console.error("Invalid target or target properties:", target);
+            //target doesnt have sprite property or is invalid
+            return;
+        }
+
         let targetRange = dist(target.sprite.x, target.sprite.y, this.sprite.x, this.sprite.y);
 
         if (this.resource < this.capacity && targetRange < this.range) {

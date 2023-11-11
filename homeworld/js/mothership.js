@@ -83,23 +83,36 @@ class Mothership extends PlayerShip {
 
     harvestAsteroids() {
         const visibleAsteroids = userInterface.getAsteroidsInArea();
+        console.log(visibleAsteroids);
 
-        if (visibleAsteroids.length == 0) {
+        if (visibleAsteroids.length === 0) {
             console.log("No visible asteroids to harvest");
             return;
         }
 
         const miningShipGroups = userInterface.divideMiningShipsIntoGroups(miningShips.length, visibleAsteroids.length);
 
+        console.log("Mining Ships Array:", miningShips)
         miningShipGroups.forEach((group, index) => {
             const asteroid = visibleAsteroids[index];
 
+            if (!asteroid || !asteroid.sprite) {
+                console.error("Invalid asteroid or asteroid sprite:", asteroid);
+                return;
+             }
 
-            group.forEach(miningShipIndex => {
-                const miningShip = miningShips[miningShipIndex];
-                console.log("Mining Ship Type:", miningShip instanceof MiningShip);
-                miningShip.setTarget(asteroid.sprite.x, asteroid.sprite.y);
-                miningShip.handleMoveToTarget();
+            group.forEach(miningShip => {
+                console.log("Mining Ship Index:", miningShip);
+                
+                if (miningShip instanceof MiningShip) {
+                    console.log("Mining Ship: ", miningShip);
+                    miningShip.setTarget(asteroid.sprite.x, asteroid.sprite.y);
+                    miningShip.handleMiningLogic(asteroid);
+                    console.log("Move command sent to Mining Ship")
+                } else {
+                    console.error("Invalid Mining Ship Index: ", miningShipIndex);
+                    console.log("Mining Ships Array:", miningShips);                    
+                } 
             });
             
         });
