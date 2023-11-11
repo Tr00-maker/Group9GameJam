@@ -1,5 +1,5 @@
 //game state
-let gamePause = true;
+let gamePause = false;
 
 //mothership
 let mothershipImg, mothership;

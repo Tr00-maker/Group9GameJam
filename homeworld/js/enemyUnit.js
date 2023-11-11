@@ -69,7 +69,7 @@ class EnemyUnit {
         switch(this.name) {
             case 'Mining Ship Unit':
                 push();
-                fill('##FF3131');
+                fill('#FF3131');
                 strokeWeight(0);
                 textAlign(CENTER, CENTER);
                 text('HP ' + this.health + '/' + 100, this.sprite.x, this.sprite.y + this.sprite.d + 20);
@@ -77,7 +77,7 @@ class EnemyUnit {
                 break;
             case 'Shooting Unit':
                 push();
-                fill('##FF3131');
+                fill('#FF3131');
                 strokeWeight(0);
                 textAlign(CENTER, CENTER);
                 text('HP ' + this.health + '/' + 200, this.sprite.x, this.sprite.y + this.sprite.d + 20);
@@ -85,7 +85,7 @@ class EnemyUnit {
                 break;
             case 'Mothership Unit':
                 push();
-                fill('##FF3131');
+                fill('#FF3131');
                 strokeWeight(0);
                 textAlign(CENTER, CENTER);
                 text('HP ' + this.health + '/' + 2000, this.sprite.x, this.sprite.y + this.sprite.d + 20);
