@@ -72,7 +72,7 @@ class PlayerShip {
                     text('HP ' + this.health + '/' + 2000, this.sprite.x, this.sprite.y + this.sprite.d + 20);
                     pop();
                     break;
-                case 'Turret Ship':
+                case 'Dreadnought':
 
                     break;
             }
