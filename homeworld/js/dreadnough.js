@@ -1,17 +1,17 @@
 class Dreadnought extends PlayerShip {
     constructor(x, y) {
-        const defaultSpeed = playerUpgradeController.battleShipStat.speed;
-        const defaultHealth = playerUpgradeController.battleShipStat.health;
-        const defaultRange = playerUpgradeController.battleShipStat.range;
-        const defaultSize = playerUpgradeController.battleShipStat.size;
+        const defaultSpeed = playerUpgradeController.dreadnoughtStat.speed;
+        const defaultHealth = playerUpgradeController.dreadnoughtStat.health;
+        const defaultRange = playerUpgradeController.dreadnoughtStat.range;
+        const defaultSize = playerUpgradeController.dreadnoughtStat.size;
 
         super(x, y, defaultSpeed, defaultHealth, defaultRange); 
         
-        this.sprite.addAni('default', battleShipImg);
-        this.sprite.addAni('selected', battleShipSelectedImg);
+        this.sprite.addAni('default', dreadnoughtImg);
+        this.sprite.addAni('selected', dreadnoughtSelectedImg);
         this.sprite.d = defaultSize;
 
-        battleShips.push(this);
+        dreadnoughts.push(this);
         
         this.name = 'Dreadnought';
 
@@ -19,9 +19,9 @@ class Dreadnought extends PlayerShip {
     }
 
     initializeStats() {
-        this.fireRate = playerUpgradeController.battleShipStat.fireRate;
-        this.shotSpeed = playerUpgradeController.battleShipStat.shotSpeed;
-        this.damage = playerUpgradeController.battleShipStat.damage;
+        this.fireRate = playerUpgradeController.dreadnoughtStat.fireRate;
+        this.shotSpeed = playerUpgradeController.dreadnoughtStat.shotSpeed;
+        this.damage = playerUpgradeController.dreadnoughtStat.damage;
         this.lastFired = 0;
     }
 

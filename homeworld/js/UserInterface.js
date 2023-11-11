@@ -45,7 +45,7 @@ class BottomUi {
         //queue buttons
         qMining = new Button('Build: Mining', 'qMining', 40, this.x, this.y - 160, 175, 60, 'Resource');
         qBattle = new Button('Build: Battle', 'qBattle', 50, this.x, this.y + 60, 175, 60, 'Resource');
-        qDread = new Button('Build: Dreadnought', 'qDread', 70, this.x, this.y + 60, 175, 80, 'Resource');
+        qDread = new Button('Build: Dreadnought', 'qDread', 80, this.x, this.y + 60, 175, 80, 'Resource');
 
         //upgrade buttons
         uMining1 = new Button('Upgrade: Mining Lv1', 'uMining1', 15, this.x, this.y - 160, 175, 60, 'Ship Scraps');
@@ -66,6 +66,7 @@ class BottomUi {
             
         qMining.update();
         qBattle.update();
+        qDread.update();
 
         if(uMining1) {
             uMining1.sprite.x = this.sprite.x;
@@ -91,6 +92,12 @@ class BottomUi {
             uBattle2.update();
         }
 
+        if(uDread) {
+            uDread.sprite.x = this.sprite.x;
+            uDread.sprite.y = this.sprite.y + 140;
+            uDread.update();
+        }
+
     }
     
     update() {
@@ -106,7 +113,7 @@ class BottomUi {
 let qMining, qBattle, qDread;
 let uMining1, uBattle1, uDread, uMining2, uBattle2;
 
-let unitButtons = [qMining, qBattle];
+let unitButtons = [qMining, qBattle, qDread];
 
 class Button {
     constructor(name, type, cost, x, y, w, h, resource) {
@@ -229,6 +236,9 @@ class Button {
                                 break;
                             case 'qBattle':
                                 mothership.spawnBattleShip();
+                                break;
+                            case 'qDread':
+                                mothership.spawnDread();
                                 break;
                         }
                         
