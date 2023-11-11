@@ -5,6 +5,7 @@ class Asteroid {
         this.sprite.d = 125;
         this.sprite.color = 'grey';
         targetableSprites.push(this);
+        asteroids.push(this);
 
         for (let s of selectableSprites){
             for (let e of enemyUnits) {
