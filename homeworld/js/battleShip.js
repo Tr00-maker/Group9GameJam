@@ -41,6 +41,24 @@ class BattleShip extends PlayerShip {
         
     }
 
+    returnToMothership() {
+        let mothershipRange = dist(mothership.sprite.x, mothership.sprite.y, this.sprite.x, this.sprite.y);
+        
+        if (mothershipRange > this.range) {
+            this.setTarget(mothership.sprite.x, mothership.sprite.y);
+            this.sprite.rotateTo(this.target, this.rotationSpeed);
+            this.sprite.move(this.distance, this.direction, this.speed);
+        } 
+
+        if (mothershipRange <= this.range) {
+            if (this.targetSprite === null) {
+                this.sprite.speed = 0;
+                this.state = 'idle';
+            }
+        }
+
+    }
+
     shoot() {
         const currentTime = Date.now();
         const shotDelay = 1000/this.fireRate;

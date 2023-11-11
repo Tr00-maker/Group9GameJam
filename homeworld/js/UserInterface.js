@@ -74,11 +74,15 @@ class UserInterface {
         if (!this.commandButtonsCreated) {
             this.commandButtonsCreated = true;
             this.recallButton = new Button('Recall', 'recall', this.button3X, this.button3Y, 50, 50);
-            this.harvestButton = new Button('Harvest', 'harvest', this.button4X, this.button4Y, )
+            this.harvestButton = new Button('Harvest', 'harvest', this.button4X, this.button4Y, 50, 50);
+            this.huntButton = new Button('Hunt', 'hunt', this.button5X, this.button5Y, 50, 50);
 
         }
         this.miningShipButton.update();
         this.battleShipButton.update();
+        this.recallButton.update();
+        this.harvestButton.update();
+        this.huntButton.update();
     }
 
     positionButtons() {
@@ -91,11 +95,14 @@ class UserInterface {
         this.button2X = x + 300;
         this.button2Y = y + 30;
 
-        this.button3X = x + 500;
+        this.button3X = x + 800;
         this.button3Y = y + 30;
 
-        this.button4X = x + 700;
+        this.button4X = x + 1000;
         this.button4Y = y + 30;
+
+        this.button5X = x + 1200;
+        this.button5Y = y + 30;
 
         this.miningShipButton.x = this.button1X;
         this.miningShipButton.y = this.button1Y;
@@ -108,6 +115,9 @@ class UserInterface {
 
         this.harvestButton.x = this.button4X;
         this.harvestButton.y = this.button4Y;
+
+        this.huntButton.x = this.button5X;
+        this.huntButton.y = this.button5Y;
     }
 }
 
@@ -235,7 +245,7 @@ class Button {
         fill(255);
         textAlign(CENTER, CENTER);
         textSize(20);
-        text(this.name + ': ' + this.cost, this.x + this.w/2, this.y - 10);
+        text(this.name, this.x + this.w/2, this.y - 10);
         pop();
         
         if (this.isHovered(mx, my) && mouse.released(LEFT)) {
@@ -245,7 +255,7 @@ class Button {
             this.color = pressedButtonColor;
         } else if (this.isHovered(mx, my)) {
             this.color = hoveredButtonColor;
-        } else {
+        } else { 
             this.color = defaultButtonColor;
         }
         
@@ -264,8 +274,8 @@ class Button {
         if (!clickedFlag) {
             clickedFlag = true;
             switch(this.type) {
-                case 'qMining':
-                this.queueMiningShip();
+                case 'recall':
+                mothership.recallUnits();
                 break;
                 case 'qBattle':
                 this.queueBattleShip();
