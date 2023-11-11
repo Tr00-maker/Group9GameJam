@@ -43,11 +43,11 @@ class PlayerUpgradeController {
         this.dreadnoughtStat = {
             speed: 0.2,
             health: 1800,
-            range: 400, 
+            range: 500, 
             size: 50,
-            fireRate: 0.4,
-            shotSpeed: 12,
-            damage: 20,
+            fireRate: 0.2,
+            shotSpeed: 15,
+            damage: 50,
         }
     }
 
