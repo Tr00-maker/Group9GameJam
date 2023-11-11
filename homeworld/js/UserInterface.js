@@ -25,6 +25,15 @@ class BottomUi {
             text('Mining Ships:' +'\n' + miningShips.length, -80, -320);
             text('Battle Ships:' +'\n' + battleShips.length, -80, -250);
             pop();
+
+            push();
+            fill('#39FF14');
+            strokeWeight(0);
+            textSize(25);
+            textAlign(CENTER, CENTER);
+            textFont('Pixelify Sans');
+            text('Keyboard Inputs:' +'\n' + '( Q ) - Go to next Mining Ship  ( E ) - Go to next Battle Ship  ( X ) - Go to MotherShip', 1000, -530);
+            pop();
         }
 
         this.initializeButtons();
@@ -39,8 +48,8 @@ class BottomUi {
         qTurret = new Button('Build: Turret', 'qTurret', 60, this.x, this.y + 60, 175, 60, 'Resource');
 
         //upgrade buttons
-        uMining1 = new Button('Upgrade: Mining Lv1', 'uMining1', 1, this.x, this.y - 160, 175, 60, 'Ship Scraps');
-        uBattle1 = new Button('Upgrade: Battle Lv1', 'uBattle1', 1, this.x, this.y - 160, 175, 60, 'Ship Scraps');
+        uMining1 = new Button('Upgrade: Mining Lv1', 'uMining1', 15, this.x, this.y - 160, 175, 60, 'Ship Scraps');
+        uBattle1 = new Button('Upgrade: Battle Lv1', 'uBattle1', 20, this.x, this.y - 160, 175, 60, 'Ship Scraps');
     }
 
     updateButtons() {
@@ -239,12 +248,12 @@ class Button {
                             case 'uMining1':
                                 playerUpgradeController.upgradeMiningLv1();
                                 uMining1.sprite.remove();
-                                uMining2 = new Button('Upgrade: Mining Lv2', 'uMining2', 1, this.x, this.y - 160, 175, 60, 'Ship Scraps');
+                                uMining2 = new Button('Upgrade: Mining Lv2', 'uMining2', 25, this.x, this.y - 160, 175, 60, 'Ship Scraps');
                                 break;
                             case 'uBattle1':
                                 playerUpgradeController.upgradeBattleLv1();
                                 uBattle1.sprite.remove();
-                                uBattle2 = new Button('Upgrade: Battle Lv2', 'uBattle2', 1, this.x, this.y - 160, 175, 60, 'Ship Scraps');
+                                uBattle2 = new Button('Upgrade: Battle Lv2', 'uBattle2', 30, this.x, this.y - 160, 175, 60, 'Ship Scraps');
                                 break;
                             case 'uMining2':
                                 playerUpgradeController.upgradeMiningLv2();

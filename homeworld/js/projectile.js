@@ -7,7 +7,7 @@ class Projectile {
         this.sprite.ani = animation;
         this.sprite.animation.scale = 0.2;
 
-        this.sprite.d = 5;
+        this.sprite.d = 10;
         this.sprite.rotation = direction;
         this.sprite.rotationLock = true;
 

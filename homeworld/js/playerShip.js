@@ -44,6 +44,38 @@ class PlayerShip {
             rectMode(CENTER);
             rect(this.sprite.x, this.sprite.y, this.sprite.d * 2, this.sprite.d * 2);
             pop();
+            
+
+            switch(this.name) {
+                case 'Mining Ship':
+                    push();
+                    fill('#39FF14');
+                    strokeWeight(0);
+                    textAlign(CENTER, CENTER);
+                    text('HP ' + this.health + '/' + playerUpgradeController.miningShipStat.health, this.sprite.x, this.sprite.y + this.sprite.d + 20);
+                    text('Re ' + this.resource + '\n' + 'Sc ' + this.scrap, this.sprite.x, this.sprite.y + this.sprite.d + 40);
+                    pop();
+                    break;
+                case 'Battle Ship':
+                    push();
+                    fill('#39FF14');
+                    strokeWeight(0);
+                    textAlign(CENTER, CENTER);
+                    text('HP ' + this.health + '/' + playerUpgradeController.battleShipStat.health, this.sprite.x, this.sprite.y + this.sprite.d + 20);
+                    pop();
+                    break;
+                case 'Mothership':
+                    push();
+                    fill('#39FF14');
+                    strokeWeight(0);
+                    textAlign(CENTER, CENTER);
+                    text('HP ' + this.health + '/' + 2000, this.sprite.x, this.sprite.y + this.sprite.d + 20);
+                    pop();
+                    break;
+                case 'Turret Ship':
+
+                    break;
+            }
         } 
 
         if (this.health <= 0) {

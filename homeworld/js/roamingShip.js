@@ -55,6 +55,17 @@ class RoamingShip {
         this.handlePatrol();
         this.updateAnimation();
         this.showTarget();
+
+        for (let s of selectableSprites) {
+            if (s.targetSprite === this) {
+                push();
+                fill('##FFFF00');
+                strokeWeight(0);
+                textAlign(CENTER, CENTER);
+                text('HP ' + this.health + '/' + 200, this.sprite.x, this.sprite.y + this.sprite.d + 20);
+                pop();
+            }
+        }
     }
 
     updateAnimation() {

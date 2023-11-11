@@ -26,8 +26,6 @@ class MiningShip extends PlayerShip {
     initializeResources() {
         this.resource = 0;
         this.scrap = 0;    
-        this.sprite.textColor = 'white';
-        this.sprite.textSize = 10;
     }
 
     update() {
@@ -41,8 +39,6 @@ class MiningShip extends PlayerShip {
 
     updateAnimation() {
         this.sprite.ani.scale = this.sprite.d / 20;
-        this.sprite.text = this.resource + ' ' + this.scrap;
-
     }
 
     mineTarget(target) {

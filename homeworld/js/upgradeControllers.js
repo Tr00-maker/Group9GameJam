@@ -65,6 +65,7 @@ class PlayerUpgradeController {
         for (let b of battleShips) {
             b.fireRate *= 1.25;
             b.shotSpeed *= 1.2;
+            b.damage *= 1.25;
         }
     }
 
@@ -76,6 +77,7 @@ class PlayerUpgradeController {
             b.shotSpeed *= 1.4;
             b.health *= 1.5;
             b.speed *= 1.2;
+            b.damage *= 2;
         }
     }
 }
