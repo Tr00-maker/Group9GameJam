@@ -24,8 +24,8 @@ class SelectionSquare {
             this.sprite.h = 1 +abs(my - this.y);
     
             push();
-            fill(255, 255, 255, 50);
-            stroke(255);
+            fill(255, 255, 255, 10);
+            stroke('#39FF14');
             strokeWeight(0.5);
             rect(this.sprite.x, this.sprite.y, this.sprite.w, this.sprite.h);
             pop();

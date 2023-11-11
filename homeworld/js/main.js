@@ -117,12 +117,12 @@ function setup() {
     new Canvas(5000, 5000, 'pixelated x1');
     fullscreen();
     changeState(state.play);
-    allSprites.pixelPerfect;
     initializeCamera();
     }
 
     function draw() {  
         clear();
+        fullscreen(1);
         cameraEffect(); 
         loopStates();
     }

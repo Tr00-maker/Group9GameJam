@@ -22,16 +22,12 @@ class MiningShipUnit extends EnemyUnit {
         this.lastMined = 0;
         this.capacity = 10;
         this.miningRate = 0.5;
-        this.sprite.text = this.resource;
-        this.sprite.textColor = 'white';
-        this.sprite.textSize = 20;
     }
 
     update() {
         super.update();
         this.updateAnimation();
         this.findClosestAsteroid();
-        this.sprite.text = this.resource;
 
         let mothershipRange = dist(mothershipUnit.sprite.x, mothershipUnit.sprite.y, this.sprite.x, this.sprite.y);
         if (mothershipRange <= this.range) {

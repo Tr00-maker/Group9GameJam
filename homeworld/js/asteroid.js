@@ -5,6 +5,7 @@ class Asteroid {
         this.sprite.d = 125;
         this.sprite.color = 'grey';
         targetableSprites.push(this);
+        asteroids.push(this);
 
         for (let s of selectableSprites){
             for (let e of enemyUnits) {
@@ -27,7 +28,6 @@ class Asteroid {
         this.resource = 200;
         this.sprite.textColor = 'white';
         this.sprite.textSize = 20;
-        this.sprite.text = this.resource;
         
         this.active = true;
 
@@ -43,7 +43,6 @@ class Asteroid {
     update() {
         this.sprite.ani.scale = 3;
         this.sprite.rotation += 0.5 * this.sprite.speed;
-        this.sprite.text = this.resource;
         this.showTarget();
         
         if (this.sprite.collides(bT) || this.sprite.collides(bL) || this.sprite.collides(bB) || this.sprite.collides(bR)) {
