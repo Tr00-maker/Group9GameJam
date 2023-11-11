@@ -32,7 +32,7 @@ class BottomUi {
             textSize(25);
             textAlign(CENTER, CENTER);
             textFont('Pixelify Sans');
-            text('Keyboard Inputs:' +'\n' + '( Q ) - Go to next Mining Ship  ( E ) - Go to next Battle Ship  ( X ) - Go to MotherShip', 1000, -530);
+            text('Keyboard Inputs:' +'\n' + '( Q ) - Go to next Mining Ship  ( E ) - Go to next Battle Ship  ( X ) - Go to MotherShip   ( Space ) - Toggle Pause', 1000, -530);
             pop();
         }
 
