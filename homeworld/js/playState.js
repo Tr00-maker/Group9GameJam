@@ -29,6 +29,8 @@ function playStateSetup() {
     enemyUnits.push(new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100)));
     enemyUnits.push(new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100)));
     enemyUnits.push(new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100)));
+
+    missiles.push(new Missile(mothership.sprite.x + (random() * 200 - 100), mothership.sprite.y + (random() * 200 - 100), 10, 10, 10));
 }
 
 function playState() {
@@ -52,7 +54,6 @@ function playStateUpdate() {
         mothership.update();
         asteroidController.update();
         roamingShipController.update();
-    
 
         for (let i = asteroids.length - 1; i >= 0; i--) {
             asteroids[i].update();
@@ -88,7 +89,8 @@ function playStateUpdate() {
 
         //missiles
         for (let i = missiles.length - 1; i >= 0; i--) {
-            missiles[i].update();
+            console.log(missiles[i].sprite.x);
+            //missiles[i].update();
         } 
     }
 }

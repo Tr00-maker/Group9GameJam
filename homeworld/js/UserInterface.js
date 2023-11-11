@@ -116,6 +116,7 @@ class UnitButton {
 
         push();
         fill(this.color);
+        //console.log(this.name);
         rect(this.x, this.y, this.w, this.h);
         pop();
 

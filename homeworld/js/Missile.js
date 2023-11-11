@@ -1,22 +1,24 @@
 class Missile{
     constructor(x, y, dmg, health, radius) {
+        this.sprite = new Sprite();
         this.initializeSprite(x, y);
         this.initializeStatus();
         this.health = health;
         this.damage = dmg;
         this.radius = radius;
+        
     }
     
     initializeSprite(x, y) {
-        this.sprite = new Sprite(x, y, 'd');
+        
         this.sprite.d = 10;
         this.sprite.addAni('default', missileImg);
         this.sprite.addAni('selected', missileImg);
-        selectableSprites.push(this);
+        //selectableSprites.push(this);
         this.sprite.collides(allSprites);
         this.sprite.type = 'bomb-drone';
 
-        
+        this.handleDestination();
         this.sprite.text = 'bomba';
         this.sprite.textColor = 'red';
         this.sprite.textSize = 20;
@@ -38,54 +40,60 @@ class Missile{
     }
     //these run every frame
     update() {
-        this.handleSelection();
-        this.handleDestination();
-        this.updateAnimation();
+        //this.handleSelection();
+        console.log('1', this.sprite.w, this.sprite.h);
+        //this.handleDestination();
+        //this.updateAnimation();
         if(this.targeting == true)
         {
             this.setTarget(this.enemy);
             this.explode(this, this.enemy);
         }
+        console.log('enemy', this.enemy);
+        console.log('3', this.sprite.x, this.sprite.y);
         //this.explode(this.sprite, this.target);
     }
-    
-    handleSelection() {
-        if (this.sprite.mouse.presses(LEFT)) {
-            allSprites.forEach(sprite => sprite.selected = false);
-            this.selected = true;
-            console.log('missile select');
-            setTimeout(() => selectionSquare.selectionFlag = false, 100);
-        }
-    } 
 
     handleDestination() {
-        if (!this.selected) return;
-    
-        if (mouse.pressed(RIGHT) && this.targeting == false) {
-            for (let target of targetableSprites) {
-                if (target.sprite.mouse.pressed(RIGHT)) {
-                    this.enemy = target;
-                    this.setTarget(target);
-                    return;
-                }
+        let closestDistance = Number.MAX_VALUE;
+        let closestShip = this.enemy;
+        console.log('handled', this.sprite.x);  
+        for (let ship of enemyUnits) {
+            let currentDistance = dist(this.sprite.x, this.sprite.y, ship.sprite.x, ship.sprite.y);
+            console.log('ship', ship, this.sprite.x, ship.sprite.w, this.sprite.h);
+            if (currentDistance < closestDistance) {
+                closestDistance = currentDistance;
+                closestShip = ship;
+                console.log('closest');
             }
-
         }
+
+        
+        console.log('closestship', closestShip);
+        if(closestShip != null)
+        {   
+            this.enemy = closestShip.sprite;
+            this.setTarget(closestShip);
+        }
+        
+        return;
     }    
 
     setTarget(target) {
+        console.log(this.enemy, 'target', this.sprite.x, this.sprite.w, this.sprite.h);
         this.setTargetVector(target.sprite.x, target.sprite.y);
         this.targeting = target;
         this.sprite.move(this.distance, this.direction, this.speed);
         this.targeting = true;
         this.targetClicked = true;
+        console.log(this.enemy, 'target2', this.sprite.x);
     }
 
 
     updateAnimation() {
         this.sprite.ani.scale = 1.5;
         this.sprite.text = this.resource;
-        this.sprite.ani = this.selected ? 'selected' : 'default';
+        //this.sprite.ani = this.selected ? 'selected' : 'default';
         this.sprite.rotateTowards(this.sprite.direction, 0.05);
 
     }
@@ -109,6 +117,7 @@ class Missile{
         {
             enemy.takeDamage(missile.sprite.x, missile.sprite.y, this.damage, this.radius);
             this.sprite.remove();
+            console.log('removed');
         }
     }
 
@@ -117,6 +126,7 @@ class Missile{
         if(this.health <= 0)
         {
             this.sprite.remove();
+            console.log('died');
         }
         
     }
