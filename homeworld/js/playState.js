@@ -4,7 +4,7 @@ function playStateSetup() {
     spaceBackground.resize(400, 400);
     playerUpgradeController = new PlayerUpgradeController();
     selectionSquare = new SelectionSquare();
-    asteroidController = new AsteroidController(5000, 25);
+    asteroidController = new AsteroidController(5000, 40);
     roamingShipController = new RoamingShipController(1000, 10);
 
     mothership = new Mothership(width/2, height/2);

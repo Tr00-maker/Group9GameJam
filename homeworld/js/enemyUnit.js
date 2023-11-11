@@ -269,7 +269,7 @@ class MothershipUnit extends EnemyUnit {
 class ShootingUnit extends EnemyUnit {
     constructor(x, y) {
         const defaultSpeed = 0.5;
-        const defaultHealth = 200;
+        const defaultHealth = 150;
         const defaultRange = 200;
         super(x, y, defaultSpeed, defaultHealth, defaultRange);
         
@@ -282,7 +282,7 @@ class ShootingUnit extends EnemyUnit {
         this.closestShip = null;
         this.fireRate = 0.75;
         this.lastFired = 0;
-        this.shotSpeed = 5;
+        this.shotSpeed = 3;
         this.damage = 10;
     }
 
