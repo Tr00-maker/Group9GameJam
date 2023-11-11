@@ -118,8 +118,9 @@ class EnemyUnit {
         if (this.inPatrol) return;
         this.inPatrol = true;
 
-        let x = random(0, width - 300);
-        let y = random(0, height - 300);
+        let x = mothershipUnit.sprite.x + random() * 500 - 250;
+        let y = mothershipUnit.sprite.y + random() * 500 - 250;
+        
     
         this.sprite.rotateTo(x, y, this.rotationSpeed);
         await this.sprite.moveTo(x, y, this.speed);
