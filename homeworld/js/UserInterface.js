@@ -52,9 +52,9 @@ class UserInterface {
         uBattle1 = new Button('Upgrade: Battle Lv1', 'uBattle1', 20, this.x, this.y - 160, 175, 60, 'Ship Scraps');
       
         //command buttons
-        recallButton = new Button('Recall', 'recall', 0, this.x, this.y + 300, 50, 50, ' ');
-        harvestButton = new Button('Harvest', 'harvest', 0, this.x, this.y + 350, 50, 50, ' ');
-        huntButton = new Button('Hunt', 'hunt', this.x, 0, this.y + 400, 50, 50, ' ');
+        recallButton = new Button('Recall', 'recall', 0, this.x, this.y + 325, 50, 50, ' ');
+        //harvestButton = new Button('Harvest', 'harvest', 0, this.x, this.y + 350, 50, 50, ' ');
+        //huntButton = new Button('Hunt', 'hunt', this.x, 0, this.y + 400, 50, 50, ' ');
     }
     
     getVisibleEnemiesInArea(area) {
