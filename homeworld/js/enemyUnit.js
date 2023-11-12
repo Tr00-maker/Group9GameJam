@@ -250,7 +250,6 @@ class MothershipUnit extends EnemyUnit {
         this.sprite.ani.scale = 3;
     }
 
-    //spawns a mining ship every 4 enemy units, else it spawn a shooting ship. Spawn a dreadnought if it can afford it
     spawnUnits() {
         // if(this.resource >= 80 && enemyUnits.length % 3 == 0)
         // {
