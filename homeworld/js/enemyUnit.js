@@ -252,7 +252,7 @@ class MothershipUnit extends EnemyUnit {
 
     //spawns a mining ship every 4 enemy units, else it spawn a shooting ship. Spawn a dreadnought if it can afford it
     spawnUnits() {
-        if(this.resource >= 80 && enemyUnits.length % 9 == 0)
+        if(this.resource >= 80)
         {
             this.resource -= 80;
             enemyUnits.push(new EnemyDread(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100)));
