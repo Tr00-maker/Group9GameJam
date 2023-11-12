@@ -11,11 +11,11 @@ function playStateSetup() {
     mothershipUnit = (new MothershipUnit(1000, 1000));
     
     for (let i = 0; i < startingAsteroids; i++) {
-        asteroids.push(new Asteroid(width/2 + (random() * (width - 100) - width/2), height/2 + (random() * (height - 100) - height/2), random(0, 360)));
+        new Asteroid(width/2 + (random() * (width - 100) - width/2), height/2 + (random() * (height - 100) - height/2), random(0, 360));
         asteroidController.enemyCurrent++;
     }
     for (let i = 0; i < startingRoamingShips; i++) {
-        enemyUnits.push(new RoamingShip(width/2 + (random() * (width - 100) - width/2), height/2 + (random() * (height - 100) - height/2), random(0, 360)));
+        new RoamingShip(width/2 + (random() * (width - 100) - width/2), height/2 + (random() * (height - 100) - height/2), random(0, 360));
         roamingShipController.enemyCurrent++;
     }
     
@@ -26,7 +26,6 @@ function playStateSetup() {
     new BattleShip(mothership.sprite.x + (random() * 400 - 200), mothership.sprite.y + (random() * 400 - 200));
     
     new ShootingUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100));
-    new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100));
     new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100));
     new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100));
     new MiningShipUnit(mothershipUnit.sprite.x + (random() * 200 - 100), mothershipUnit.sprite.y + (random() * 200 - 100));

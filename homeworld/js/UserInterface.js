@@ -259,7 +259,7 @@ class Button {
 
         if (this.isWaiting) {
             const currentTime = Date.now();
-            this.fillProgress = Math.min((currentTime - this.timer) / 3000, 1);
+            this.fillProgress = min((currentTime - this.timer) / 3000, 1);
         }
 
         if (this.type === 'qMining' || this.type === 'qBattle' || this.type === 'qDread') {

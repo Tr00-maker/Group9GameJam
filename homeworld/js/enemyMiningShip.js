@@ -20,8 +20,8 @@ class MiningShipUnit extends EnemyUnit {
     initializeResources() {
         this.resource = 0;
         this.lastMined = 0;
-        this.capacity = 15;
-        this.miningRate = 1;
+        this.capacity = 10;
+        this.miningRate = 0.5;
     }
 
     update() {
