@@ -53,7 +53,7 @@ class UserInterface {
       
         //command buttons
         recallButton = new Button('Recall', 'recall', 0, this.x, this.y + 325, 50, 50, ' ');
-        //harvestButton = new Button('Harvest', 'harvest', 0, this.x, this.y + 350, 50, 50, ' ');
+        harvestButton = new Button('Harvest', 'harvest', 0, this.x, this.y + 350, 50, 50, ' ');
         //huntButton = new Button('Hunt', 'hunt', this.x, 0, this.y + 400, 50, 50, ' ');
     }
     

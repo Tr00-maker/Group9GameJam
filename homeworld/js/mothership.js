@@ -106,7 +106,7 @@ class Mothership extends PlayerShip {
                 
                 if (miningShip instanceof MiningShip) {
                     console.log("Mining Ship: ", miningShip);
-                    miningShip.setTarget(asteroid.sprite.x, asteroid.sprite.y);
+                    miningShip.targetSprite = asteroid;
                     miningShip.handleMiningLogic(asteroid);
                     console.log("Move command sent to Mining Ship")
                 } else {
