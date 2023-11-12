@@ -257,7 +257,7 @@ class MothershipUnit extends EnemyUnit {
         //     enemyUnits.push(new EnemyDread(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100)));
         // }
         if (this.resource >= 30) {
-            if (enemyUnits.length % 8 === 0) {
+            if (enemyUnits.length % 4 === 0) {
                 this.resource -= 40;  
                 enemyUnits.push(new MiningShipUnit(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100)));
             } else {
