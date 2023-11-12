@@ -48,12 +48,12 @@ class UserInterface {
         qDread = new Button('Build: Dreadnought', 'qDread', 80, this.x, this.y + 60, 175, 80, 'Resource');
 
         //upgrade buttons
-        uMining1 = new Button('Upgrade: Mining Lv1', 'uMining1', 15, this.x, this.y - 160, 175, 60, 'Ship Scraps');
-        uBattle1 = new Button('Upgrade: Battle Lv1', 'uBattle1', 20, this.x, this.y - 160, 175, 60, 'Ship Scraps');
+        uMining1 = new Button('Upgrade: Mining Lv1', 'uMining1', 10, this.x, this.y - 160, 175, 60, 'Ship Scraps');
+        uBattle1 = new Button('Upgrade: Battle Lv1', 'uBattle1', 10, this.x, this.y - 160, 175, 60, 'Ship Scraps');
       
         //command buttons
-        recallButton = new Button('Recall', 'recall', 0, this.x, this.y + 325, 50, 50, ' ');
-        harvestButton = new Button('Harvest', 'harvest', 0, this.x, this.y + 350, 50, 50, ' ');
+        recallButton = new Button('Recall', 'recall', 0, this.x, this.y + 325, 175, 60, ' ');
+        harvestButton = new Button('Harvest', 'harvest', 0, this.x, this.y + 350, 175, 60, ' ');
         //huntButton = new Button('Hunt', 'hunt', this.x, 0, this.y + 400, 50, 50, ' ');
     }
     
@@ -115,13 +115,13 @@ class UserInterface {
       
         if (recallButton) {
           recallButton.sprite.x = this.sprite.x;
-          recallButton.sprite.y = this.sprite.y + 300;
+          recallButton.sprite.y = this.sprite.y + 350;
           recallButton.update()
         }
       
         if (harvestButton) {
           harvestButton.sprite.x = this.sprite.x;
-          harvestButton.sprite.y = this.sprite.y + 350;
+          harvestButton.sprite.y = this.sprite.y + 450;
           harvestButton.update()
         }
       

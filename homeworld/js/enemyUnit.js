@@ -256,9 +256,9 @@ class MothershipUnit extends EnemyUnit {
         //     this.resource -= 80;
         //     enemyUnits.push(new EnemyDread(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100)));
         // }
-        if (this.resource >= 30) {
-            if (enemyUnits.length % 4 === 0) {
-                this.resource -= 40;  
+        if (this.resource >= 50) {
+            if (enemyUnits.length % 3 === 0) {
+                this.resource -= 50;  
                 enemyUnits.push(new MiningShipUnit(this.sprite.x + (random() * 200 - 100), this.sprite.y + (random() * 200 - 100)));
             } else {
                 this.resource -= 50;
@@ -274,7 +274,7 @@ class ShootingUnit extends EnemyUnit {
     constructor(x, y) {
         const defaultSpeed = 0.5;
         const defaultHealth = 150;
-        const defaultRange = 200;
+        const defaultRange = 175;
         super(x, y, defaultSpeed, defaultHealth, defaultRange);
         
         this.name = 'Shooting Unit';
